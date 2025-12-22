@@ -151,4 +151,16 @@
   </div>
 </section>
 
+
+<!-- Botón flotante de WhatsApp -->
+ 
+<div class="whatsapp-float">
+  <a href="https://wa.me/5493454123456?text=Hola,%20estoy%20interesado%20en%20una%20propiedad" 
+     target="_blank" 
+     class="whatsapp-button"
+     aria-label="Contactar por WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+    <span class="whatsapp-tooltip">¡Chateá con nosotros!</span>
+  </a>
+</div>
 @endsection

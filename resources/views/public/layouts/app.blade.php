@@ -93,21 +93,6 @@
   </div>
 </footer>
 
-<div class="chatbot-container">
-    <div class="chatbot-window" id="chatWindow">
-        <div class="chat-header">
-            <strong>Asistente Virtual</strong>
-            <i class="fa-solid fa-circle" style="color: #22c55e; font-size: 10px;"></i>
-        </div>
-        <div class="chat-body">
-            <p class="bot-msg">¡Hola! 👋 Soy el asistente de <strong>Rodrigo Dalmolin</strong>. ¿En qué puedo ayudarte hoy?</p>
-        </div>
-        <div class="chat-footer">
-            <input type="text" placeholder="Escribe un mensaje...">
-            <button><i class="fa-solid fa-paper-plane"></i></button>
-        </div>
-    </div>
-</div>
   
 <script src="{{ asset('js/web.js') }}"></script> 
 <script src="https://cdn.lordicon.com/lordicon.js"></script>

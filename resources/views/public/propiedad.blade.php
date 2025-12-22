@@ -59,6 +59,30 @@
                 </div>
             </div>
 
+            @if($propiedad->imagenes->count() > 0)
+                <div class="mt-12">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Galería de Fotos</h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        @foreach($propiedad->imagenes as $imagen)
+                            <div class="relative group overflow-hidden rounded-lg shadow-lg cursor-pointer h-64">
+                                <img src="{{ asset('storage/' . $imagen->ruta) }}" 
+                                    alt="Foto de {{ $propiedad->titulo }}" 
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    onclick="window.open(this.src, '_blank')"
+                                    >
+                                
+                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                                    <span class="text-white opacity-0 group-hover:opacity-100 font-bold bg-black bg-opacity-50 px-3 py-1 rounded">
+                                        Ver Grande 🔍
+                                    </span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
             <div style="margin-bottom: 40px;">
                 <h3 style="font-size: 1.5rem; color: #1f2937; margin-bottom: 15px; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">Descripción</h3>
                 <div style="line-height: 1.8; color: #4b5563; white-space: pre-line;">

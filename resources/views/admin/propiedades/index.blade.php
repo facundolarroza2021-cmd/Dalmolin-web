@@ -1,13 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Administrar Propiedades') }}
-            </h2>
-            <a href="{{ route('admin.properties.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                + Nueva Propiedad
-            </a>
-        </div>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Administrar Propiedades') }}
+        </h2>
     </x-slot>
 
     <div class="py-12">
@@ -22,6 +17,14 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold text-gray-700">Listado de Inmuebles</h3>
+                        
+                        <a href="{{ route('admin.properties.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            Nueva Propiedad
+                        </a>
+                    </div>
                     <table class="min-w-full leading-normal">
                         <thead>
                             <tr>
@@ -79,8 +82,7 @@
                                         <a href="{{ route('public.propiedad.show', $propiedad->slug) }}" target="_blank" class="text-blue-600 hover:text-blue-900" title="Ver en web">
                                             🔍
                                         </a>
-
-                                        <a href="#" class="text-orange-600 hover:text-orange-900 font-bold">
+                                        <a href="{{ route('admin.properties.edit', $propiedad->id) }}" class="text-orange-600 hover:text-orange-900 font-bold">
                                             Editar
                                         </a>
 

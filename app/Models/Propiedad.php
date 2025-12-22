@@ -47,4 +47,8 @@ class Propiedad extends Model
     {
         return $query->where('publicada', true);
     }
+    public function imagenes()
+    {
+        return $this->hasMany(Imagen::class);
+    }
 }

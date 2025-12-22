@@ -20,7 +20,7 @@
             <a href="#" class="navbar-social"><i class="fa-brands fa-instagram"></i></a>
             
             @auth
-                <a href="{{ route('admin.dashboard') }}" class="navbar-user" title="Ir al Panel"><i class="fa-solid fa-user-gear"></i></a>
+                <a href="{{ route('dashboard') }}" class="navbar-user" title="Ir al Panel"><i class="fa-solid fa-user-gear"></i></a>
             @else
                 <a href="{{ route('login') }}" class="navbar-user"><i class="fa-solid fa-user"></i></a>
             @endauth
