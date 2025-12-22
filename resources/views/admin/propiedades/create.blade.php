@@ -38,9 +38,15 @@
                                 <select name="tipo_propiedad" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full mt-1">
                                     <option value="casa">Casa</option>
                                     <option value="departamento">Departamento</option>
-                                    <option value="terreno">Terreno</option>
-                                    <option value="local">Local</option>
-                                    <option value="oficina">Oficina</option>
+                                    <option value="terreno">Quinta</option>
+                                    <option value="local">Terreno</option>
+                                    <option value="oficina">Campo</option>
+                                    <option value="garage">Cochera</option>
+                                    <option value="bodega">Fondo de comercio</option>
+                                    <option value="otro">Galpon</option>
+                                    <option value="otro">Local</option>
+                                    <option value="otro">Edificio</option>
+                                    <option value="otro">Hotel</option>
                                 </select>
                             </div>
                         </div>

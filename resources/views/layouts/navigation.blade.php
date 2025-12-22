@@ -6,17 +6,14 @@
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-10 w-auto text-white" style="height: 60px; width: auto;" />
                     </a>
-                    <span class="hidden md:block font-bold text-xl text-white tracking-wide">
-                        Inmobiliaria <span class="text-blue-400">Dalmolin</span>
-                    </span>
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-gray-300 hover:text-white hover:border-blue-400 focus:text-white focus:border-blue-400">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-gray-300  focus:text-white">
                         {{ __('Inicio') }}
                     </x-nav-link>
                     
-                    <x-nav-link :href="route('admin.properties.index')" :active="request()->routeIs('admin.properties.*')" class="text-gray-300 hover:text-white hover:border-blue-400 focus:text-white focus:border-blue-400">
+                    <x-nav-link :href="route('admin.properties.index')" :active="request()->routeIs('admin.properties.*')" class="text-gray-300  focus:text-white">
                         {{ __('Propiedades') }}
                     </x-nav-link>
                 </div>

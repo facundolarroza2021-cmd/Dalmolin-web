@@ -20,11 +20,38 @@
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-bold text-gray-700">Listado de Inmuebles</h3>
                         
+
+                        <form action="{{ route('admin.properties.index') }}" method="GET" class="w-full md:w-auto">
+                            <div class="relative">
+                                <input type="text" 
+                                    name="search" 
+                                    value="{{ request('search') }}" 
+                                    placeholder="Buscar por nombre o ciudad..." 
+                                    class="w-full md:w-80 pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+                                >
+                                <div class="absolute top-0 left-0 h-full flex items-center pl-3 pointer-events-none text-gray-400">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </div>
+                                
+                                <button type="submit" class="absolute top-0 right-0 h-full px-3 text-blue-600 hover:text-blue-800 font-bold">
+                                    Ir
+                                </button>
+                            </div>
+                        </form>
+
                         <a href="{{ route('admin.properties.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                             Nueva Propiedad
                         </a>
                     </div>
+
+                    @if(request('search'))
+                        <div class="mb-4">
+                            <a href="{{ route('admin.properties.index') }}" class="text-sm text-red-500 hover:text-red-700 underline">
+                                <i class="fa-solid fa-xmark"></i> Borrar filtro de búsqueda: "{{ request('search') }}"
+                            </a>
+                        </div>
+                    @endif
                     <table class="min-w-full leading-normal">
                         <thead>
                             <tr>

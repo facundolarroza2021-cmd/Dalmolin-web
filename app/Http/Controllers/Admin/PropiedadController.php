@@ -96,11 +96,27 @@ class PropiedadController extends Controller
         return view('public.propiedad', compact('propiedad'));
     }
     
-    public function index()
+    public function index(Request $request)
     {
-        // Traemos las propiedades ordenadas por fecha (más nuevas primero)
-        $propiedades = Propiedad::latest()->paginate(10);
-        
+        // Iniciamos la consulta
+        $query = Propiedad::query();
+    
+        // Si hay una búsqueda, aplicamos el filtro
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            
+            $query->where(function($q) use ($search) {
+                $q->where('titulo', 'LIKE', "%{$search}%")
+                  ->orWhere('ciudad', 'LIKE', "%{$search}%")
+                  ->orWhere('tipo_operacion', 'LIKE', "%{$search}%"); // Agregué este extra por si buscan "Alquiler"
+            });
+        }
+    
+        // Ordenamos por fecha y paginamos manteniendo el filtro en los links
+        $propiedades = $query->latest()
+            ->paginate(10)
+            ->withQueryString(); 
+    
         return view('admin.propiedades.index', compact('propiedades'));
     }
 
@@ -160,16 +176,28 @@ class PropiedadController extends Controller
         return redirect()->route('admin.properties.index')->with('success', 'Propiedad actualizada correctamente.');
     }
     
-    // Método para borrar una sola foto de la galería
-    public function destroyImagen(Imagen $imagen)
+    public function destroy($id)
     {
-        // 1. Borrar archivo del disco
-        Storage::disk('public')->delete($imagen->ruta);
-        
-        // 2. Borrar registro de la BD
-        $imagen->delete();
+        // 1. Buscar la propiedad
+        $propiedad = Propiedad::findOrFail($id);
 
-        // 3. Volver atrás
-        return back()->with('success', 'Imagen eliminada de la galería.');
+        // 2. Eliminar la imagen de portada del disco (Storage)
+        if ($propiedad->imagen_principal) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($propiedad->imagen_principal);
+        }
+
+        // 3. Eliminar las imágenes de la galería del disco
+        foreach ($propiedad->imagenes as $imagen) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($imagen->ruta);
+        }
+
+        // 4. Eliminar los registros de las fotos de la galería en BD
+        $propiedad->imagenes()->delete();
+
+        // 5. Eliminar la propiedad de la base de datos
+        $propiedad->delete();
+
+        return redirect()->route('admin.properties.index')
+        ->with('success', 'La propiedad fue eliminada correctamente.');
     }
 }

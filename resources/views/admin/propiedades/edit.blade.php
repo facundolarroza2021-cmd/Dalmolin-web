@@ -37,9 +37,20 @@
                                 <select name="tipo_propiedad" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full mt-1">
                                     <option value="casa" {{ $propiedad->tipo_propiedad == 'casa' ? 'selected' : '' }}>Casa</option>
                                     <option value="departamento" {{ $propiedad->tipo_propiedad == 'departamento' ? 'selected' : '' }}>Departamento</option>
-                                    <option value="terreno" {{ $propiedad->tipo_propiedad == 'terreno' ? 'selected' : '' }}>Terreno</option>
-                                    <option value="local" {{ $propiedad->tipo_propiedad == 'local' ? 'selected' : '' }}>Local</option>
+                                    <option value="terreno" {{ $propiedad->tipo_propiedad == 'quinta' ? 'selected' : '' }}>Quinta</option>
+                                    <option value="local" {{ $propiedad->tipo_propiedad == 'terreno' ? 'selected' : '' }}>Terreno</option>
+                                    <option value="garage" {{ $propiedad->tipo_propiedad == 'campo' ? 'selected' : '' }}>Campo</option>
+                                    <option value="bodega" {{ $propiedad->tipo_propiedad == 'cochera' ? 'selected' : '' }}>Cochera</option>
+                                    <option value="oficina" {{ $propiedad->tipo_propiedad == 'fondo de comercio' ? 'selected' : '' }}>Fondo de Comercio</option>
+                                    <option value="hotel" {{ $propiedad->tipo_propiedad == 'galpon' ? 'selected' : '' }}>Galpon</option>
+                                    <option value="otro" {{ $propiedad->tipo_propiedad == 'local' ? 'selected' : '' }}>Local</option>
+                                    <option value="otro" {{ $propiedad->tipo_propiedad == 'edificio' ? 'selected' : '' }}>Edificio</option>
+                                    <option value="otro" {{ $propiedad->tipo_propiedad == 'hotel' ? 'selected' : '' }}>Hotel</option>
                                 </select>
+                            </div>
+                            <div class="ml-6 flex items-center gap-2">
+                                <input type="checkbox" name="destacada" value="1" {{ old('destacada', $propiedad->destacada ?? false) ? 'checked' : '' }} class="rounded border-gray-300 text-yellow-500 shadow-sm focus:ring-yellow-500">
+                               <label class="font-bold text-gray-700">⭐ Destacar en Inicio</label>
                             </div>
                         </div>
 

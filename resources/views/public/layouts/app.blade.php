@@ -69,27 +69,166 @@
 </main>
 
 <footer class="footer">
+  <!-- Contenido principal del footer -->
   <div class="footer-main">
+    
+    <!-- Columna 1: Marca y redes sociales -->
     <div class="footer-brand">
       <div class="footer-logo">
         <img src="{{ asset('img/dalmolin_logo2.png') }}" alt="Rodrigo Dalmolin">
       </div>
-      <p>Tu socio de confianza en bienes raíces. Con más de 15 años de experiencia.</p>
+      <p>
+        Tu socio de confianza en bienes raíces. Con más de 15 años de experiencia 
+        en el mercado inmobiliario, te ayudamos a encontrar la propiedad perfecta 
+        para ti y tu familia.
+      </p>
+      
+      <!-- Redes sociales destacadas -->
       <div class="footer-social">
-        <a href="#" class="facebook"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="#" class="instagram"><i class="fa-brands fa-instagram"></i></a>
-        </div>
+        <a href="https://facebook.com/tu-pagina" target="_blank" class="facebook">
+          <i class="fa-brands fa-facebook-f"></i>
+        </a>
+        <a href="https://instagram.com/tu-perfil" target="_blank" class="instagram">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://linkedin.com/company/tu-empresa" target="_blank" class="linkedin">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+      </div>
     </div>
-    
+
+    <!-- Columna 2: Enlaces rápidos -->
     <div class="footer-column">
-        <h4>Contacto</h4>
-        <div class="footer-contact-item"><i class="fa-solid fa-location-dot"></i> <span>La Rioja Nº 654<br>Concordia, Entre Ríos</span></div>
-        <div class="footer-contact-item"><i class="fa-solid fa-phone"></i> <a href="tel:+543456256190">+54 345 625 6190</a></div>
+      <h4>
+        <i class="fa-solid fa-link"></i>
+        Enlaces Rápidos
+      </h4>
+      <ul>
+        <li>
+          <a href="#inicio">
+            <i class="fa-solid fa-chevron-right"></i>
+            Inicio
+          </a>
+        </li>
+        <li>
+          <a href="#propiedades">
+            <i class="fa-solid fa-chevron-right"></i>
+            Propiedades
+          </a>
+        </li>
+        <li>
+          <a href="#nosotros">
+            <i class="fa-solid fa-chevron-right"></i>
+            Nosotros
+          </a>
+        </li>
+        <li>
+          <a href="#servicios">
+            <i class="fa-solid fa-chevron-right"></i>
+            Servicios
+          </a>
+        </li>
+        <li>
+          <a href="#blog">
+            <i class="fa-solid fa-chevron-right"></i>
+            Blog
+          </a>
+        </li>
+        <li>
+          <a href="#contacto">
+            <i class="fa-solid fa-chevron-right"></i>
+            Contacto
+          </a>
+        </li>
+      </ul>
     </div>
+
+    <!-- Columna 3: Servicios -->
+    <div class="footer-column">
+      <h4>
+        <i class="fa-solid fa-briefcase"></i>
+        Nuestros Servicios
+      </h4>
+      <ul>
+        <li>
+          <a href="#compra">
+            <i class="fa-solid fa-chevron-right"></i>
+            Compra de Propiedades
+          </a>
+        </li>
+        <li>
+          <a href="#venta">
+            <i class="fa-solid fa-chevron-right"></i>
+            Venta de Propiedades
+          </a>
+        </li>
+        <li>
+          <a href="#alquiler">
+            <i class="fa-solid fa-chevron-right"></i>
+            Alquiler
+          </a>
+        </li>
+        <li>
+          <a href="#tasacion">
+            <i class="fa-solid fa-chevron-right"></i>
+            Tasación
+          </a>
+        </li>
+        <li>
+          <a href="#asesoria">
+            <i class="fa-solid fa-chevron-right"></i>
+            Asesoría Inmobiliaria
+          </a>
+        </li>
+        <li>
+          <a href="#inversion">
+            <i class="fa-solid fa-chevron-right"></i>
+            Inversión
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Columna 4: Contacto y Newsletter -->
+    <div class="footer-column">
+      <h4>
+        <i class="fa-solid fa-address-book"></i>
+        Contacto
+      </h4>
+      
+      <div class="footer-contact-item">
+        <i class="fa-solid fa-location-dot"></i>
+        <span>La Rioja Nº 654<br>Concordia, Entre Ríos</span>
+      </div>
+
+      <div class="footer-contact-item">
+        <i class="fa-solid fa-phone"></i>
+        <a href="tel:+543456256190">+54 345 625 6190</a>
+      </div>
+
+      <div class="footer-contact-item">
+        <i class="fa-solid fa-envelope"></i>
+        <a href="mailto:info@dalmolin.com">dalmolinnegociosinmobiliarios@gmail.com</a>
+      </div>
+
+      <div class="footer-contact-item">
+        <i class="fa-solid fa-clock"></i>
+        <span>Lun - Vie: 9:00 - 18:00<br>Sáb: 10:00 - 14:00</span>
+      </div>
+
+
+    </div>
+
   </div>
 
+  <!-- Footer Bottom -->
   <div class="footer-bottom">
     <p>© 2025 Rodrigo Dalmolin Inmobiliaria. Todos los derechos reservados.</p>
+    <div class="footer-bottom-links">
+      <a href="#privacidad">Política de Privacidad</a>
+      <a href="#terminos">Términos y Condiciones</a>
+      <a href="#cookies">Cookies</a>
+    </div>
   </div>
 </footer>
 
