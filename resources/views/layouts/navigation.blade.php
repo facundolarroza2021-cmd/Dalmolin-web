@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-slate-800">
+<nav x-data="{ open: false }" class="bg-white border-b ">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
@@ -9,11 +9,11 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-gray-300  focus:text-white">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-gray-300">
                         {{ __('Inicio') }}
                     </x-nav-link>
                     
-                    <x-nav-link :href="route('admin.properties.index')" :active="request()->routeIs('admin.properties.*')" class="text-gray-300  focus:text-white">
+                    <x-nav-link :href="route('admin.properties.index')" :active="request()->routeIs('admin.properties.*')" class="text-gray-300">
                         {{ __('Propiedades') }}
                     </x-nav-link>
                 </div>
@@ -22,7 +22,7 @@
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-300 bg-slate-800 hover:text-white focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-black-300 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ml-1">

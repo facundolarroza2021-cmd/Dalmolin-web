@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Rodrigo Dalmolin Inmobiliaria</title>
-
+  <title>@yield('meta_title', 'Inmobiliaria Dalmolin | Propiedades en Concordia')</title>
+  <meta name="description" content="@yield('meta_description', 'Compra, venta y alquiler de propiedades en Concordia. Asesoramiento profesional y confianza.')">
+  <meta name="keywords" content="inmobiliaria, propiedades, Concordia, venta, alquiler, compra">
+  <meta property="og:title" content="@yield('meta_title', 'Inmobiliaria Dalmolin')" />
+  <meta property="og:description" content="@yield('meta_description', 'Encontrá tu lugar en el mundo con nosotros.')" />
+  <meta property="og:image" content="@yield('meta_image', asset('img/dalmolin_logo2.png'))" />
+  <meta property="og:type" content="website" />
   <link href="https://unpkg.com/lucide-static/font/lucide.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
@@ -17,8 +22,113 @@
   <div class="navbar-container">
     
     <ul class="navbar-menu">
-      <li><a href="{{ route('home') }}">Comprar</a></li>
-      <li><a href="#">Vender</a></li>
+      <!-- DROPDOWN COMPRAR -->
+      <li class="dropdown">
+        <a href="{{ route('home') }}" class="dropdown-toggle">
+          Comprar
+          <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+        </a>
+        <div class="dropdown-menu">
+          <div class="dropdown-content">
+            <a href="#casas" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Casas</span>
+                <span class="dropdown-desc">Viviendas familiares</span>
+              </div>
+            </a>
+            <a href="#departamentos" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Departamentos</span>
+                <span class="dropdown-desc">Unidades en edificios</span>
+              </div>
+            </a>
+            <a href="#terrenos" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Terrenos</span>
+                <span class="dropdown-desc">Lotes para construir</span>
+              </div>
+            </a>
+            <a href="#campos" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Campos</span>
+                <span class="dropdown-desc">Propiedades rurales</span>
+              </div>
+            </a>
+            <a href="#locales" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Locales Comerciales</span>
+                <span class="dropdown-desc">Espacios comerciales</span>
+              </div>
+            </a>
+            <a href="#galpones" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Galpones</span>
+                <span class="dropdown-desc">Almacenes industriales</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </li>
+
+      <!-- DROPDOWN VENDER -->
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          Vender
+          <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+        </a>
+        <div class="dropdown-menu">
+          <div class="dropdown-content">
+            <a href="#vender-casa" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Vender mi Propiedad</span>
+                <span class="dropdown-desc">Asesoramiento completo</span>
+              </div>
+            </a>
+            <a href="#tasar" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Tasación Gratuita</span>
+                <span class="dropdown-desc">Valuá tu propiedad</span>
+              </div>
+            </a>
+            <a href="#publicar" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Plan de Marketing</span>
+                <span class="dropdown-desc">Máxima difusión</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </li>
+
+      <!-- DROPDOWN ALQUILAR -->
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          Alquilar
+          <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+        </a>
+        <div class="dropdown-menu">
+          <div class="dropdown-content">
+            <a href="#alquiler-casas" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Buscar Alquileres</span>
+                <span class="dropdown-desc">Propiedades disponibles</span>
+              </div>
+            </a>
+            <a href="#alquilar-propiedad" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Alquilar mi Propiedad</span>
+                <span class="dropdown-desc">Administración completa</span>
+              </div>
+            </a>
+            <a href="#garantias" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Garantías</span>
+                <span class="dropdown-desc">Opciones y requisitos</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </li>
     </ul>
 
     <a href="{{ route('home') }}" class="navbar-logo">
@@ -26,7 +136,43 @@
     </a>
 
     <ul class="navbar-menu">
-      <li><a href="#nosotros">Tasar</a></li>
+      <!-- DROPDOWN SERVICIOS -->
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          Servicios
+          <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+        </a>
+        <div class="dropdown-menu">
+          <div class="dropdown-content">
+            <a href="#tasaciones" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Tasaciones</span>
+                <span class="dropdown-desc">Valuación profesional</span>
+              </div>
+            </a>
+            <a href="#asesoria" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Asesoría Inmobiliaria</span>
+                <span class="dropdown-desc">Consultoría especializada</span>
+              </div>
+            </a>
+            <a href="#administracion" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Administración</span>
+                <span class="dropdown-desc">Gestión de propiedades</span>
+              </div>
+            </a>
+            <a href="#inversiones" class="dropdown-item">
+              <div>
+                <span class="dropdown-title">Inversiones</span>
+                <span class="dropdown-desc">Oportunidades de inversión</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </li>
+
+      <li><a href="#nosotros">Nosotros</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
 
@@ -42,28 +188,76 @@
     </div>
 
     <button class="navbar-toggle" id="navbarToggle">
-      <i class="lucide lucide-menu"></i>
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
   </div>
 
   <div class="navbar-mobile" id="navbarMobile">
     <a href="{{ route('home') }}">Inicio</a>
+    
+    <!-- Dropdown móvil Comprar -->
+    <div class="mobile-dropdown">
+      <button class="mobile-dropdown-toggle">
+        Comprar <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="mobile-dropdown-content">
+        <a href="#casas">🏠 Casas</a>
+        <a href="#departamentos">🏢 Departamentos</a>
+        <a href="#terrenos">🗺️ Terrenos</a>
+        <a href="#campos">🚜 Campos</a>
+        <a href="#locales">🏪 Locales</a>
+        <a href="#galpones">🏭 Galpones</a>
+      </div>
+    </div>
+
+    <!-- Dropdown móvil Vender -->
+    <div class="mobile-dropdown">
+      <button class="mobile-dropdown-toggle">
+        Vender <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="mobile-dropdown-content">
+        <a href="#vender-casa">💰 Vender mi Propiedad</a>
+        <a href="#tasar">🔢 Tasación Gratuita</a>
+        <a href="#publicar">📢 Plan de Marketing</a>
+      </div>
+    </div>
+
+    <!-- Dropdown móvil Alquilar -->
+    <div class="mobile-dropdown">
+      <button class="mobile-dropdown-toggle">
+        Alquilar <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="mobile-dropdown-content">
+        <a href="#alquiler-casas">🔑 Buscar Alquileres</a>
+        <a href="#alquilar-propiedad">📋 Alquilar mi Propiedad</a>
+        <a href="#garantias">🛡️ Garantías</a>
+      </div>
+    </div>
+
+    <!-- Dropdown móvil Servicios -->
+    <div class="mobile-dropdown">
+      <button class="mobile-dropdown-toggle">
+        Servicios <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="mobile-dropdown-content">
+        <a href="#tasaciones">📊 Tasaciones</a>
+        <a href="#asesoria">🤝 Asesoría</a>
+        <a href="#administracion">🏢 Administración</a>
+        <a href="#inversiones">💰 Inversiones</a>
+      </div>
+    </div>
+
     <a href="#nosotros">Nosotros</a>
     <a href="#contacto">Contacto</a>
+    @auth
+    <a href="{{ route('dashboard') }}">Dashboard</a>
+    @else
+    <a href="{{ route('login') }}">Iniciar Sesión</a>
+    @endauth
   </div>
 </nav>
-
-<div class="mini-navbar">
-  <div class="mini-navbar-container">
-    <a href="#casas"><i class="fa-solid fa-house"></i> Casas</a>
-    <a href="#departamentos"><i class="fa-solid fa-building"></i> Departamentos</a>
-    <a href="#terrenos"><i class="fa-solid fa-map"></i> Terrenos</a>
-    <a href="#locales"><i class="fa-solid fa-store"></i> Locales Comerciales</a>
-    <a href="#oficinas"><i class="fa-solid fa-briefcase"></i> Oficinas</a>
-    <a href="#nuevo"><i class="fa-solid fa-star"></i> Nosotros</a>
-  </div>
-</div>
-
 <main>
     @yield('contenido')
 </main>

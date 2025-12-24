@@ -1,6 +1,10 @@
 @extends('public.layouts.app')
 
-@section('titulo', $propiedad->titulo)
+@section('meta_title', $propiedad->titulo . ' - ' . ucfirst($propiedad->tipo_operacion))
+
+@section('meta_description', 'Propiedad en ' . $propiedad->ciudad . '. ' . $propiedad->habitaciones . ' habitaciones, ' . $propiedad->banos . ' baños. Precio: ' . $propiedad->moneda . ' ' . number_format($propiedad->precio, 0, ',', '.'))
+
+@section('meta_image', asset('storage/' . $propiedad->imagen_principal))
 
 @section('contenido')
 
