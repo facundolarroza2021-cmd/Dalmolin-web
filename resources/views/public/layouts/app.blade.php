@@ -4,12 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>@yield('meta_title', 'Inmobiliaria Dalmolin | Propiedades en Concordia')</title>
-  <meta name="description" content="@yield('meta_description', 'Compra, venta y alquiler de propiedades en Concordia. Asesoramiento profesional y confianza.')">
-  <meta name="keywords" content="inmobiliaria, propiedades, Concordia, venta, alquiler, compra">
-  <meta property="og:title" content="@yield('meta_title', 'Inmobiliaria Dalmolin')" />
-  <meta property="og:description" content="@yield('meta_description', 'Encontrá tu lugar en el mundo con nosotros.')" />
-  <meta property="og:image" content="@yield('meta_image', asset('img/dalmolin_logo2.png'))" />
+
   <meta property="og:type" content="website" />
+  <meta property="og:title" content="@yield('meta_title', 'Rodrigo Dalmolin Inmobiliaria')" />
+  <meta property="og:description" content="@yield('meta_description', 'Tu socio de confianza en bienes raíces en Concordia.')" />
+  <meta property="og:image" content="@yield('meta_image', asset('img/dalmolin_logo2.png'))" />
+  <meta property="og:url" content="{{ url()->current() }}" />
+  <meta property="og:site_name" content="Rodrigo Dalmolin Inmobiliaria" />
+
   <link href="https://unpkg.com/lucide-static/font/lucide.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 

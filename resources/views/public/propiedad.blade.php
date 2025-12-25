@@ -10,294 +10,435 @@
 
 <div class="property-detail-page">
   
-  <nav class="breadcrumb">
-    <a href="{{ route('home') }}">Inicio</a>
-    <i class="fa-solid fa-chevron-right"></i>
-    <a href="{{ route('home') }}#propiedades">Propiedades</a>
-    <i class="fa-solid fa-chevron-right"></i>
-    <span style="text-transform: capitalize">{{ $propiedad->tipo_operacion }}</span>
-    <i class="fa-solid fa-chevron-right"></i>
-    <span class="current">{{ \Illuminate\Support\Str::limit($propiedad->titulo, 30) }}</span>
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb-nav">
+    <div class="container-breadcrumb">
+      <a href="{{ route('home') }}">Inicio</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <a href="{{ route('home') }}#propiedades">Propiedades</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <span style="text-transform: capitalize">{{ $propiedad->tipo_operacion }}</span>
+      <i class="fa-solid fa-chevron-right"></i>
+      <span class="current">{{ \Illuminate\Support\Str::limit($propiedad->titulo, 30) }}</span>
+    </div>
   </nav>
 
-  <div class="property-detail-container">
+  <div class="property-container">
     
-    <div class="detail-grid">
-      
-      <div class="detail-main">
+    <!-- GALERÍA DE IMÁGENES -->
+    <div class="property-gallery-section">
+      <div class="gallery-main-image">
+        @if($propiedad->imagen_principal)
+            <img src="{{ asset('storage/' . $propiedad->imagen_principal) }}" alt="{{ $propiedad->titulo }}" id="mainImage">
+        @else
+            <img src="{{ asset('img/placeholder.jpg') }}" alt="Sin Imagen" id="mainImage">
+        @endif
+
         
-        <div class="property-gallery">
-          <div class="gallery-main">
-            @if($propiedad->imagen_principal)
-                <img src="{{ asset('storage/' . $propiedad->imagen_principal) }}" alt="{{ $propiedad->titulo }}" id="mainImage">
-            @else
-                <img src="{{ asset('img/placeholder.jpg') }}" alt="Sin Imagen" id="mainImage">
-            @endif
+        <button class="btn-fullscreen" onclick="openLightbox()">
+          <i class="fa-solid fa-expand"></i>
+        </button>
+      </div>
 
-            <span class="gallery-badge">{{ ucfirst($propiedad->tipo_operacion) }}</span>
-            
-            <div class="gallery-controls">
-              <button class="gallery-btn" onclick="window.open(document.getElementById('mainImage').src, '_blank')">
-                <i class="fa-solid fa-expand"></i>
-              </button>
-            </div>
-          </div>
+      <!-- Solo 2 miniaturas a la derecha -->
+      @if($propiedad->imagenes->count() > 0)
+      <div class="gallery-thumbnails">
+        @foreach($propiedad->imagenes->take(2) as $index => $img)
+        <div class="thumb-image">
+          <img src="{{ asset('storage/' . $img->ruta) }}" alt="Foto {{ $index + 1 }}">
+          @if($index == 1 && $propiedad->imagenes->count() > 2)
+          <div class="counter-overlay" onclick="openLightbox()">+{{ $propiedad->imagenes->count() - 2 }}</div>
+          @endif
+        </div>
+        @endforeach
+      </div>
+      @endif
+    </div>
 
-          @if($propiedad->imagenes->count() > 0)
-          <div class="gallery-thumbs">
-            <div class="thumb active">
-              <img src="{{ asset('storage/' . $propiedad->imagen_principal) }}" alt="Portada">
-            </div>
-            @foreach($propiedad->imagenes as $img)
-            <div class="thumb">
-              <img src="{{ asset('storage/' . $img->ruta) }}" alt="Foto extra">
-            </div>
-            @endforeach
+    <!-- Lightbox Modal -->
+    <div id="lightboxModal" class="lightbox-modal">
+      <div class="lightbox-content">
+        <button class="lightbox-close" onclick="closeLightbox()">
+          <i class="fa-solid fa-times"></i>
+        </button>
+        <button class="lightbox-prev" onclick="changeLightboxImage(-1)">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button class="lightbox-next" onclick="changeLightboxImage(1)">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <img id="lightboxImage" src="" alt="Vista completa">
+        <div class="lightbox-counter">
+          <span id="lightboxCounter">1 / 1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- INFORMACIÓN BÁSICA -->
+    <div class="property-header-section">
+      <div class="header-top">
+        <div class="header-left">
+          <div class="property-location">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>{{ $propiedad->ciudad }}</span>
           </div>
+          
+          <h1 class="property-title">{{ $propiedad->titulo }}</h1>
+          
+          @if($propiedad->direccion)
+          <p class="property-address">
+            <i class="fa-solid fa-map-marker-alt"></i>
+            {{ $propiedad->direccion }}
+          </p>
           @endif
         </div>
 
-        <div class="property-header">
-          <div class="property-title-section">
-            <div class="property-title">
-              <h1>{{ $propiedad->titulo }}</h1>
-              <div class="property-location">
-                <i class="fa-solid fa-location-dot"></i>
-                <span>{{ $propiedad->direccion ? $propiedad->direccion . ', ' : '' }}{{ $propiedad->ciudad }}</span>
-              </div>
-            </div>
-            <div class="property-actions">
-              <button class="action-btn" title="Favorito">
-                <i class="fa-regular fa-heart"></i>
-              </button>
-              <button class="action-btn" title="Compartir" onclick="navigator.share({title: '{{ $propiedad->titulo }}', url: window.location.href})">
-                <i class="fa-solid fa-share-nodes"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="property-main-info">
-            <div class="property-price">
-              <span class="price-label">Precio</span>
-              <span class="price-amount">{{ $propiedad->moneda }} {{ number_format($propiedad->precio, 0, ',', '.') }}</span>
-            </div>
-            <div class="property-features-main">
-              <div class="feature-item">
-                <div class="feature-icon"><i class="fa-solid fa-bed"></i></div>
-                <div class="feature-label">Habitaciones</div>
-                <div class="feature-value">{{ $propiedad->habitaciones ?? '-' }}</div>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon"><i class="fa-solid fa-bath"></i></div>
-                <div class="feature-label">Baños</div>
-                <div class="feature-value">{{ $propiedad->banos ?? '-' }}</div>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon"><i class="fa-solid fa-maximize"></i></div>
-                <div class="feature-label">Superficie</div>
-                <div class="feature-value">{{ $propiedad->superficie_total ?? '-' }} m²</div>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon"><i class="fa-solid fa-car"></i></div>
-                <div class="feature-label">Cocheras</div>
-                <div class="feature-value">{{ $propiedad->cocheras ?? '-' }}</div>
-              </div>
-            </div>
+        <div class="header-right">
+          <div class="price-box">
+            <span class="price-label">Precio</span>
+            <span class="price-amount">{{ $propiedad->moneda }} {{ number_format($propiedad->precio, 0, ',', '.') }}</span>
           </div>
         </div>
-
-        <div class="property-description">
-          <h2>Descripción de la Propiedad</h2>
-          <div style="white-space: pre-line; line-height: 1.6; color: #4b5563;">
-            {{ $propiedad->descripcion }}
-          </div>
-        </div>
-
-        <div class="property-details">
-          <h2>Características y Servicios</h2>
-          <div class="details-grid">
-            <div class="detail-item">
-              <div class="detail-icon"><i class="fa-solid fa-layer-group"></i></div>
-              <div class="detail-content">
-                <div class="detail-label">Tipo</div>
-                <div class="detail-value">{{ ucfirst($propiedad->tipo_propiedad) }}</div>
-              </div>
-            </div>
-
-            <div class="detail-item">
-              <div class="detail-icon"><i class="fa-solid fa-house-flag"></i></div>
-              <div class="detail-content">
-                <div class="detail-label">Estado</div>
-                <div class="detail-value">Disponible</div>
-              </div>
-            </div>
-            
-            <div class="detail-item">
-                <div class="detail-icon"><i class="fa-solid fa-calendar"></i></div>
-                <div class="detail-content">
-                  <div class="detail-label">Publicado</div>
-                  <div class="detail-value">{{ $propiedad->created_at->format('d/m/Y') }}</div>
-                </div>
-            </div>
-
-            </div>
-        </div>
-
-        <div class="property-map">
-          <h2>Ubicación Aproximada</h2>
-          <div class="map-container" style="display: flex; align-items: center; justify-content: center; background: #f3f4f6; color: #9ca3af;">
-            <div style="text-align: center;">
-                <i class="fa-solid fa-map-location-dot" style="font-size: 3rem; margin-bottom: 10px;"></i>
-                <p>Mapa próximamente</p>
-            </div>
-          </div>
-        </div>
-
       </div>
 
-      <div class="detail-sidebar">
-        
-        <div class="contact-card">
-          <h3>Contactar al Agente</h3>
-          
-          <div class="agent-info">
-            <div class="agent-avatar">
-              <img src="{{ asset('img/dalmolin_logo2.png') }}" alt="Agente" style="object-fit: contain; padding: 5px; background: white;">
-            </div>
-            <div class="agent-details">
-              <h4>Inmobiliaria Dalmolin</h4>
-              <p>Agente Autorizado</p>
-            </div>
-          </div>
-
-          <a href="https://wa.me/5493456256190?text=Hola,%20me%20interesa%20la%20propiedad:%20{{ $propiedad->titulo }}" 
-             target="_blank" 
-             class="submit-btn btn-conversion-whatsapp" 
-             style="display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; margin-bottom: 20px; background-color: #22c55e;">
-             <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i>
-             Consultar por WhatsApp
-          </a>
-
-          <div class="contact-methods">
-            <a href="tel:+543456256190" class="contact-method-btn">
-              <i class="fa-solid fa-phone"></i> Llamar
-            </a>
-            <a href="mailto:info@dalmolin.com" class="contact-method-btn">
-              <i class="fa-solid fa-envelope"></i> Email
-            </a>
+      <!-- Características principales -->
+      <div class="features-section">
+        <div class="feature-item">
+          <i class="fa-solid fa-ruler-combined"></i>
+          <div class="feature-text">
+            <span class="feature-label">Superficie</span>
+            <span class="feature-value">{{ $propiedad->superficie_total ?? '-' }} m²</span>
           </div>
         </div>
 
+        <div class="feature-item">
+          <i class="fa-solid fa-bed"></i>
+          <div class="feature-text">
+            <span class="feature-label">Habitaciones</span>
+            <span class="feature-value">{{ $propiedad->habitaciones ?? '-' }}</span>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <i class="fa-solid fa-bath"></i>
+          <div class="feature-text">
+            <span class="feature-label">Baños</span>
+            <span class="feature-value">{{ $propiedad->banos ?? '-' }}</span>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <i class="fa-solid fa-car"></i>
+          <div class="feature-text">
+            <span class="feature-label">Cocheras</span>
+            <span class="feature-value">{{ $propiedad->cocheras ?? '-' }}</span>
+          </div>
+        </div>
       </div>
 
+      <!-- Botones de acción -->
+      <div class="action-buttons-group">
+        <button class="btn-action" onclick="navigator.share({title: '{{ $propiedad->titulo }}', url: window.location.href})">
+          <i class="fa-solid fa-share-nodes"></i>
+          <span>Compartir</span>
+        </button>
+        <button class="btn-action btn-favorite">
+          <i class="fa-regular fa-heart"></i>
+          <span>Guardar</span>
+        </button>
+        <button class="btn-action" onclick="window.print()">
+          <i class="fa-solid fa-print"></i>
+          <span>Imprimir</span>
+        </button>
+        <a href="https://wa.me/5493456256190?text=Hola,%20me%20interesa%20la%20propiedad:%20{{ urlencode($propiedad->titulo) }}" 
+           target="_blank" 
+           class="btn-action btn-whatsapp">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span>Consultar</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- DESCRIPCIÓN -->
+    <div class="content-section">
+      <h2 class="section-heading">Descripción</h2>
+      <div class="section-body">
+        <p class="description-text">{{ $propiedad->descripcion }}</p>
+      </div>
+    </div>
+
+    <!-- CARACTERÍSTICAS DETALLADAS -->
+    <div class="content-section">
+      <h2 class="section-heading">Características</h2>
+      <div class="characteristics-grid">
+        <div class="char-item">
+          <span class="char-name">Tipo de propiedad</span>
+          <span class="char-value">{{ ucfirst($propiedad->tipo_propiedad) }}</span>
+        </div>
+        <div class="char-item">
+          <span class="char-name">Estado</span>
+          <span class="char-value">Disponible</span>
+        </div>
+        <div class="char-item">
+          <span class="char-name">Publicado</span>
+          <span class="char-value">{{ $propiedad->created_at->format('d/m/Y') }}</span>
+        </div>
+        @if($propiedad->superficie_terreno)
+        <div class="char-item">
+          <span class="char-name">Superficie de terreno</span>
+          <span class="char-value">{{ $propiedad->superficie_terreno }} m²</span>
+        </div>
+        @endif
+        @if($propiedad->superficie_total)
+        <div class="char-item">
+          <span class="char-name">Superficie total</span>
+          <span class="char-value">{{ $propiedad->superficie_total }} m²</span>
+        </div>
+        @endif
+        @if($propiedad->habitaciones)
+        <div class="char-item">
+          <span class="char-name">Habitaciones</span>
+          <span class="char-value">{{ $propiedad->habitaciones }}</span>
+        </div>
+        @endif
+        @if($propiedad->banos)
+        <div class="char-item">
+          <span class="char-name">Baños</span>
+          <span class="char-value">{{ $propiedad->banos }}</span>
+        </div>
+        @endif
+        @if($propiedad->cocheras)
+        <div class="char-item">
+          <span class="char-name">Cocheras</span>
+          <span class="char-value">{{ $propiedad->cocheras }}</span>
+        </div>
+        @endif
+      </div>
+    </div>
+
+    <!-- UBICACIÓN -->
+    <div class="content-section">
+      <h2 class="section-heading">Ubicación</h2>
+      <div class="map-container">
+        <div class="map-placeholder">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <p>{{ $propiedad->ciudad }}</p>
+          <span>Mapa próximamente</span>
+        </div>
+      </div>
     </div>
 
   </div>
 
 </div>
 
+<!-- PROPIEDADES SIMILARES -->
 @if(isset($sugeridas) && $sugeridas->count() > 0)
-    <div class="suggested-section" style="margin-top: 80px; padding-top: 60px; border-top: 1px solid #e5e7eb;">
-        
-        <div class="properties-container">
-            <div class="properties-header" style="text-align: center; margin-bottom: 50px;">
-                <h2 style="font-size: 1.8rem; color: #111827; font-weight: 600; margin-bottom: 10px;">Propiedades Similares</h2>
-                <p style="color: #6b7280; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
-                    </strong>, creemos que estas opciones te pueden interesar.
-                </p>
-            </div>
-
-            <div class="properties-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; justify-content: center;">
-                
-                @foreach($sugeridas as $sugerencia)
-                <article class="property-card">
-                    
-                    <div class="property-image">
-                        @if($sugerencia->imagen_principal)
-                            <img src="{{ asset('storage/' . $sugerencia->imagen_principal) }}" alt="{{ $sugerencia->titulo }}">
-                        @else
-                            <img src="{{ asset('img/placeholder-casa.jpg') }}" alt="Sin imagen">
-                        @endif
-                        
-                        <span class="property-badge">{{ ucfirst($sugerencia->tipo_operacion) }}</span>
-                        <button class="property-favorite" title="Guardar"><i class="fa-regular fa-heart"></i></button>
-                    </div>
-                    
-                    <div class="property-content">
-                        <div class="property-location">
-                            <i class="fa-solid fa-location-dot"></i>
-                            {{ $sugerencia->ciudad }}
-                        </div>
-                        
-                        <h3>{{ $sugerencia->titulo }}</h3>
-                        
-                        <div class="property-features">
-                            <div class="property-feature">
-                                <i class="fa-solid fa-bed"></i>
-                                <span>{{ $sugerencia->habitaciones }} hab</span>
-                            </div>
-                            <div class="property-feature">
-                                <i class="fa-solid fa-bath"></i>
-                                <span>{{ $sugerencia->banos }} baños</span>
-                            </div>
-                            <div class="property-feature">
-                                <i class="fa-solid fa-maximize"></i>
-                                <span>{{ $sugerencia->superficie_total }} m²</span>
-                            </div>
-                        </div>
-                        
-                        <div class="property-footer">
-                            <div class="property-price">
-                                <span class="property-price-label">Precio</span>
-                                <span class="property-price-amount">{{ $sugerencia->moneda }} {{ number_format($sugerencia->precio, 0, ',', '.') }}</span>
-                            </div>
-                            <a href="{{ route('public.propiedad.show', $sugerencia->slug) }}" class="property-details-btn">
-                                Ver detalles <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                </article>
-                @endforeach
-
-            </div>
-        </div>
-
+<div class="similar-properties">
+  <div class="similar-container">
+    <div class="similar-header">
+      <h2>Propiedades Similares</h2>
+      <p>Otras opciones que podrían interesarte</p>
     </div>
-    @endif
 
+    <div class="properties-grid">
+      @foreach($sugeridas as $sugerencia)
+      <article class="property-card">
+        <div class="card-image">
+          <a href="{{ route('public.propiedad.show', $sugerencia->slug) }}">
+            @if($sugerencia->imagen_principal)
+                <img src="{{ asset('storage/' . $sugerencia->imagen_principal) }}" alt="{{ $sugerencia->titulo }}">
+            @else
+                <img src="{{ asset('img/placeholder-casa.jpg') }}" alt="Sin imagen">
+            @endif
+          </a>
+          <div class="card-badge">{{ ucfirst($sugerencia->tipo_operacion) }}</div>
+          <button class="card-favorite"><i class="fa-regular fa-heart"></i></button>
+        </div>
+        
+        <div class="card-content">
+          <div class="card-location">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>{{ $sugerencia->ciudad }}</span>
+          </div>
+          <h3 class="card-title">{{ Str::limit($sugerencia->titulo, 45) }}</h3>
+          
+          <div class="card-features">
+            <div class="card-feature">
+              <i class="fa-solid fa-ruler-combined"></i>
+              <span>{{ $sugerencia->superficie_total }} m²</span>
+            </div>
+            <div class="card-feature">
+              <i class="fa-solid fa-bed"></i>
+              <span>{{ $sugerencia->habitaciones }}</span>
+            </div>
+            <div class="card-feature">
+              <i class="fa-solid fa-bath"></i>
+              <span>{{ $sugerencia->banos }}</span>
+            </div>
+          </div>
+          
+          <div class="card-divider"></div>
+          
+          <div class="card-footer">
+            <div class="card-price">
+              <span class="price-tag">Precio</span>
+              <span class="price-text">{{ $sugerencia->moneda }} {{ number_format($sugerencia->precio, 0, ',', '.') }}</span>
+            </div>
+            <a href="{{ route('public.propiedad.show', $sugerencia->slug) }}" class="btn-card">
+              Ver más <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </article>
+      @endforeach
+    </div>
+  </div>
+</div>
+@endif
+
+<!-- JAVASCRIPT -->
 <script>
-  // Galería de imágenes
-  const mainImage = document.getElementById('mainImage');
-  const thumbs = document.querySelectorAll('.thumb');
+const lightboxImages = [
+  @if($propiedad->imagen_principal)
+  "{{ asset('storage/' . $propiedad->imagen_principal) }}",
+  @endif
+  @foreach($propiedad->imagenes as $img)
+  "{{ asset('storage/' . $img->ruta) }}",
+  @endforeach
+];
 
-  thumbs.forEach(thumb => {
-    thumb.addEventListener('click', () => {
-      // Remover clase active de todos
-      thumbs.forEach(t => t.classList.remove('active'));
-      // Agregar al actual
-      thumb.classList.add('active');
-      // Cambiar imagen principal con efecto suave
-      const imgSource = thumb.querySelector('img').src;
-      mainImage.style.opacity = '0.5';
-      setTimeout(() => {
-          mainImage.src = imgSource;
-          mainImage.style.opacity = '1';
-      }, 150);
-    });
+let currentLightboxIndex = 0;
+
+// Abrir lightbox
+function openLightbox(index = 0) {
+  currentLightboxIndex = index;
+  updateLightboxImage();
+  const modal = document.getElementById('lightboxModal');
+  if (modal) {
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+// Cerrar lightbox
+function closeLightbox() {
+  const modal = document.getElementById('lightboxModal');
+  if (modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+}
+
+// Cambiar imagen en lightbox
+function changeLightboxImage(direction) {
+  currentLightboxIndex += direction;
+  if (currentLightboxIndex < 0) {
+    currentLightboxIndex = lightboxImages.length - 1;
+  } else if (currentLightboxIndex >= lightboxImages.length) {
+    currentLightboxIndex = 0;
+  }
+  updateLightboxImage();
+}
+
+// Actualizar imagen del lightbox
+function updateLightboxImage() {
+  const lightboxImg = document.getElementById('lightboxImage');
+  const counter = document.getElementById('lightboxCounter');
+  
+  if (lightboxImg && lightboxImages[currentLightboxIndex]) {
+    lightboxImg.src = lightboxImages[currentLightboxIndex];
+  }
+  
+  if (counter) {
+    counter.textContent = `${currentLightboxIndex + 1} / ${lightboxImages.length}`;
+  }
+}
+
+// Ejecutar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+  // Cerrar con tecla ESC y navegación con flechas
+  document.addEventListener('keydown', (e) => {
+    const modal = document.getElementById('lightboxModal');
+    if (modal && modal.style.display === 'flex') {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') changeLightboxImage(-1);
+      if (e.key === 'ArrowRight') changeLightboxImage(1);
+    }
   });
 
-  // Favorito (Visual)
-  const favoriteBtn = document.querySelector('.action-btn[title="Favorito"]');
+  // Cerrar al hacer click fuera de la imagen
+  const lightboxModal = document.getElementById('lightboxModal');
+  if (lightboxModal) {
+    lightboxModal.addEventListener('click', (e) => {
+      if (e.target.id === 'lightboxModal') {
+        closeLightbox();
+      }
+    });
+  }
+
+  // Click en imagen principal abre lightbox
+  const mainImage = document.getElementById('mainImage');
+  if (mainImage) {
+    mainImage.addEventListener('click', () => {
+      openLightbox(0);
+    });
+    mainImage.style.cursor = 'pointer';
+  }
+
+  // Galería principal - cambiar imagen con miniaturas
+  const thumbImages = document.querySelectorAll('.thumb-image');
+  thumbImages.forEach((thumb, index) => {
+    // Click en miniatura cambia imagen principal
+    const thumbImg = thumb.querySelector('img');
+    if (thumbImg) {
+      thumb.addEventListener('click', (e) => {
+        // Si tiene contador, abrir lightbox
+        if (thumb.querySelector('.counter-overlay') && e.target.closest('.counter-overlay')) {
+          openLightbox(index + 1);
+        } else {
+          // Cambiar imagen principal
+          thumbImages.forEach(t => t.classList.remove('active'));
+          thumb.classList.add('active');
+          
+          if (mainImage) {
+            mainImage.style.opacity = '0.5';
+            setTimeout(() => {
+              mainImage.src = thumbImg.src;
+              mainImage.style.opacity = '1';
+            }, 150);
+          }
+        }
+      });
+    }
+  });
+
+  // Botón favorito
+  const favoriteBtn = document.querySelector('.btn-favorite');
   if(favoriteBtn) {
-      favoriteBtn.addEventListener('click', () => {
-        favoriteBtn.classList.toggle('active');
-        const icon = favoriteBtn.querySelector('i');
+    favoriteBtn.addEventListener('click', () => {
+      favoriteBtn.classList.toggle('active');
+      const icon = favoriteBtn.querySelector('i');
+      if (icon) {
         icon.classList.toggle('fa-regular');
         icon.classList.toggle('fa-solid');
-        icon.style.color = icon.classList.contains('fa-solid') ? '#ef4444' : '';
-      });
+      }
+    });
   }
+
+  // Favoritos en cards
+  const cardFavorites = document.querySelectorAll('.card-favorite');
+  cardFavorites.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const icon = btn.querySelector('i');
+      if (icon) {
+        icon.classList.toggle('fa-regular');
+        icon.classList.toggle('fa-solid');
+      }
+    });
+  });
+});
 </script>
 
 @if(isset($schema))

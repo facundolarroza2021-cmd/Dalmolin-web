@@ -79,168 +79,9 @@
         .hero-img-wrapper { height: 350px; width: 90%; margin: 0 auto; }
         .hero-title { font-size: 2.5rem; }
     }
-
-    .properties-section {
-      background: #f5f5f5;
-      padding: 4rem 0;
-      display: flex;
-      justify-content: center;
-      min-height: auto;
-    }
-
-    .properties-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 2rem;
-      /* AQUÍ ESTÁ EL CAMBIO DE ANCHO: */
-      max-width: 1100px; 
-      width: 100%;
-      padding: 0 1rem;
-    }
-
-    .property-card {
-      background: white;
-      border-radius: 4px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
-      position: relative;
-      display: flex;       /* Agregado para que el footer se alinee */
-      flex-direction: column;
-    }
-
-    .property-card:hover {
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
-      transform: translateY(-4px);
-    }
-
-    .property-image {
-      position: relative;
-      width: 100%;
-      height: 240px;
-      overflow: hidden;
-    }
-
-    .property-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-    }
-
-    .property-card:hover .property-image img {
-      transform: scale(1.05);
-    }
-
-    /* Badge Operación (Ej: Alquiler / Venta) */
-    .property-badge {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      width: 4.5rem;
-      background: rgb(215, 1, 1);
-      color: white;
-      padding: 0.4rem 1rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      border-radius: 4px;
-      text-transform: capitalize;
-    }
-    .property-badge.vendida { background: rgba(196, 30, 58, 0.9); }
-
-    .property-content {
-      padding: 1.5rem;
-      text-align: center;
-      flex-grow: 1;           /* Para llenar espacio */
-      display: flex;          /* Para alinear botón al fondo */
-      flex-direction: column;
-    }
-
-    .property-location {
-      font-size: 1rem;
-      color: #666;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-
-    .property-type {
-      font-size: 0.95rem;
-      color: #333;
-      margin-bottom: 0.75rem;
-      font-weight: 400;
-    }
-
-    .property-price {
-      font-size: 1.5rem;
-      font-weight: 500;
-      color: #333;
-      margin-bottom: 1.25rem;
-    }
-
-    .property-features {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1.5rem;
-      padding: 1rem 0;
-      border-top: 1px solid #e0e0e0;
-      border-bottom: 1px solid #e0e0e0;
-      margin-bottom: 1.25rem;
-      margin-top: auto; /* Empuja las caracteristicas hacia abajo */
-    }
-
-    .property-feature {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.9rem;
-      color: #666;
-    }
-
-    .property-feature i { font-size: 1rem; color: #999; }
-
-    .property-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.65rem 2rem;
-      background:rgb(232, 0, 0);
-      color: white;
-      border: none;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      border-radius: 4px;
-      width: 100%; /* Botón ancho completo */
-    }
-
-    .property-button:hover { background: var(--dalmolin-red); }
-
-    .property-id {
-      position: absolute;
-      bottom: 12px;
-      right: 12px;
-      background: white;
-      color: #666;
-      padding: 0.35rem 0.75rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-    .property-id i { font-size: 0.7rem; }
-
-    @media (max-width: 768px) {
-      .properties-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-      .property-image { height: 200px; }
-      .property-features { gap: 1rem; }
-    }
+    
 </style>
+
 
 {{-- SECCIÓN HERO --}}
 <section class="hero-split-section">
@@ -289,125 +130,22 @@
 <section class="categories-section">
   <div class="categories-container">
     
-    <!-- Header de la sección -->
     <div class="categories-header">
       <h2>Explorá por Tipo de Propiedad</h2>
       <p>Encontrá exactamente lo que estás buscando navegando por nuestras categorías especializadas</p>
     </div>
 
-    <!-- Grid de categorías -->
     <div class="categories-grid">
-      
-      <!-- Casa -->
-      <a href="#casas" class="category-card">
-        <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&q=80" alt="Casas">
-        <div class="category-overlay"></div>
-        <div class="category-content">
-          <h3>Casas</h3>
-          <span class="category-count">45 propiedades</span>
-        </div>
-      </a>
-
-      <!-- Departamento -->
-      <a href="#departamentos" class="category-card">
-        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80" alt="Departamentos">
-        <div class="category-overlay"></div>
-        <div class="category-content">
-          <h3>Departamentos</h3>
-          <span class="category-count">32 propiedades</span>
-        </div>
-      </a>
-
-      <!-- Quinta -->
-      <a href="#quintas" class="category-card">
-        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80" alt="Quintas">
-        <div class="category-overlay"></div>
-        <div class="category-content">
-          <h3>Quintas</h3>
-          <span class="category-count">18 propiedades</span>
-        </div>
-      </a>
-
-      <!-- Terreno -->
-      <a href="#terrenos" class="category-card">
-        <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80" alt="Terrenos">
-        <div class="category-overlay"></div>
-        <div class="category-content">
-          <h3>Terrenos</h3>
-          <span class="category-count">27 propiedades</span>
-        </div>
-      </a>
-
-      <!-- Campo -->
-      <a href="#campos" class="category-card">
-        <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&q=80" alt="Campos">
-        <div class="category-overlay"></div>
-        <div class="category-content">
-          <h3>Campos</h3>
-          <span class="category-count">12 propiedades</span>
-        </div>
-      </a>
-
-      <!-- Cochera -->
-      <a href="#cocheras" class="category-card">
-        <img src="https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=800&q=80" alt="Cocheras">
-        <div class="category-overlay"></div>
-        <div class="category-content">
-          <h3>Cocheras</h3>
-          <span class="category-count">23 propiedades</span>
-        </div>
-      </a>
-
-      <!-- Fondo de Comercio -->
-      <a href="#fondos-comercio" class="category-card">
-        <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80" alt="Fondos de Comercio">
-        <div class="category-overlay"></div>
-        <div class="category-content">
-          <h3>Fondos de Comercio</h3>
-          <span class="category-count">9 propiedades</span>
-        </div>
-      </a>
-
-      <!-- Galpón -->
-      <a href="#galpones" class="category-card">
-        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80" alt="Galpones">
-        <div class="category-overlay"></div>
-        <div class="category-content">
-          <h3>Galpones</h3>
-          <span class="category-count">14 propiedades</span>
-        </div>
-      </a>
-
-      <!-- Local -->
-      <a href="#locales" class="category-card">
-        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80" alt="Locales">
-        <div class="category-overlay"></div>
-        <div class="category-content">
-          <h3>Locales</h3>
-          <span class="category-count">19 propiedades</span>
-        </div>
-      </a>
-
-      <!-- Edificio -->
-      <a href="#edificios" class="category-card">
-        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80" alt="Edificios">
-        <div class="category-overlay"></div>
-        <div class="category-content">
-          <h3>Edificios</h3>
-          <span class="category-count">7 propiedades</span>
-        </div>
-      </a>
-
-      <!-- Hotel -->
-      <a href="#hoteles" class="category-card">
-        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80" alt="Hoteles">
-        <div class="category-overlay"></div>
-        <div class="category-content">
-          <h3>Hoteles</h3>
-          <span class="category-count">3 propiedades</span>
-        </div>
-      </a>
-
+      @foreach($categorias as $key => $data)
+          <a href="{{ route('home', ['tipo' => $key]) }}" class="category-card">
+            <img src="{{ $data['img'] }}" alt="{{ $data['label'] }}" loading="lazy">
+            <div class="category-overlay"></div>
+            <div class="category-content">
+              <h3>{{ $data['label'] }}</h3>
+              <span class="category-count">{{ $conteos[$key] ?? 0 }} propiedades</span>
+            </div>
+          </a>
+      @endforeach
     </div>
 
   </div>
@@ -419,7 +157,9 @@
       
       @forelse($propiedades as $propiedad)
         <article class="property-card">
-          <div class="property-image">
+          
+          <!-- Imagen -->
+          <div class="card-image">
             <a href="{{ route('public.propiedad.show', $propiedad->slug) }}">
                 @if($propiedad->imagen_principal)
                     <img src="{{ asset('storage/' . $propiedad->imagen_principal) }}" alt="{{ $propiedad->titulo }}">
@@ -428,38 +168,54 @@
                 @endif
             </a>
             
-            <div class="property-badge {{ strtolower($propiedad->tipo_operacion) }}">
-                {{ $propiedad->tipo_operacion }}
-            </div>
-            
+            <!-- Badge de operación -->
+            <div class="card-badge">{{ ucfirst($propiedad->tipo_operacion) }}</div>
           </div>
           
-          <div class="property-content">
-            <div class="property-location">
-                {{ Str::limit($propiedad->titulo, 40) }}
+          <!-- Contenido -->
+          <div class="card-content">
+            
+            <!-- Ubicación -->
+            <div class="card-location">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>{{ $propiedad->ciudad }}</span>
             </div>
             
-
+            <!-- Título -->
+            <h3 class="card-title">{{ Str::limit($propiedad->titulo, 45) }}</h3>
             
-            <div class="property-price">
-                {{ $propiedad->moneda }} {{ number_format($propiedad->precio, 0, ',', '.') }}
-            </div>
-            
-            <div class="property-features">
-              <div class="property-feature">
-                <i class="fa-solid fa-expand-arrows-alt"></i>
+            <!-- Features -->
+            <div class="card-features">
+              <div class="card-feature">
+                <i class="fa-solid fa-ruler-combined"></i>
                 <span>{{ $propiedad->superficie_total }} m²</span>
               </div>
-              <div class="property-feature">
+              <div class="card-feature">
                 <i class="fa-solid fa-bed"></i>
-                <span>{{ $propiedad->habitaciones }} hab.</span>
+                <span>{{ $propiedad->habitaciones }}</span>
+              </div>
+              <div class="card-feature">
+                <i class="fa-solid fa-bath"></i>
+                <span>{{ $propiedad->banos }}</span>
               </div>
             </div>
-            
-            <a href="{{ route('public.propiedad.show', $propiedad->slug) }}" class="property-button">
-              Ver propiedad
-              <i class="fa-solid fa-arrow-right"></i>
-            </a>
+
+            <!-- Divider -->
+            <div class="card-divider"></div>
+
+            <!-- Footer: Precio + Botón -->
+            <div class="card-footer">
+              <div class="card-price">
+                <span class="price-tag">Precio</span>
+                <span class="price-text">{{ $propiedad->moneda }} {{ number_format($propiedad->precio, 0, ',', '.') }}</span>
+              </div>
+              
+              <a href="{{ route('public.propiedad.show', $propiedad->slug) }}" class="btn-card">
+                Ver más
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+
           </div>
         </article>
       @empty
