@@ -137,7 +137,7 @@
 
     <div class="categories-grid">
       @foreach($categorias as $key => $data)
-          <a href="{{ route('home', ['tipo' => $key]) }}" class="category-card">
+          <a href="{{ route('public.listado') }}" class="category-card">
             <img src="{{ $data['img'] }}" alt="{{ $data['label'] }}" loading="lazy">
             <div class="category-overlay"></div>
             <div class="category-content">

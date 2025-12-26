@@ -53,62 +53,60 @@ class PropiedadController extends Controller
         return view('public.propiedad', compact('propiedad', 'schema', 'sugeridas'));
     }
 
-/**
+    /**
      * Muestra el listado de propiedades con filtros (Venta, Alquiler, Tipo).
      */
     public function index(Request $request, $operacion = null, $tipo = null)
     {
-        // 1. Iniciar Query base
         $query = Propiedad::where('publicada', true);
-        $titulo = 'Todas las Propiedades';
-    
-        // 2. Filtros de Ruta (URL amigable)
+        $titulo = 'Todas las Propiedades'; // 1. Título por defecto para evitar "Undefined variable"
+
+        // 2. Filtro de Operación (Venta/Alquiler)
         if ($operacion) {
             $query->where('tipo_operacion', $operacion);
             $titulo = ucfirst($operacion);
         }
-    
-        if ($tipo) {
-            $query->where('tipo_propiedad', $tipo);
-            $plural = Str::plural(ucfirst($tipo));
+        
+        // 3. Filtro de Tipo (Detecta si viene por URL amigable O por parámetro ?tipo=)
+        // Esto es lo que hace funcionar los clicks desde el Home
+        $tipoReal = $tipo ?? $request->tipo; 
+
+        if ($tipoReal) {
+            $query->where('tipo_propiedad', $tipoReal);
+            
+            // Mejoramos el título dinámico (Ej: "Casas en Venta")
+            $plural = ucfirst($tipoReal) . 's'; // Simple pluralización visual
             $titulo = $operacion ? "$plural en " . ucfirst($operacion) : $plural;
         }
-    
-        // 3. --- NUEVOS FILTROS (Query Strings) ---
-    
-        // Habitaciones (Mayor o igual)
+
+        // --- FILTROS DEL BUSCADOR LATERAL ---
+
         if ($request->filled('habitaciones')) {
             $query->where('habitaciones', '>=', $request->habitaciones);
         }
-    
-        // Baños (Mayor o igual)
+
         if ($request->filled('banos')) {
             $query->where('banos', '>=', $request->banos);
         }
-    
-        // Cocheras (Exacto o Mayor o igual)
+
         if ($request->filled('cocheras')) {
             if ($request->cocheras == 'si') {
                 $query->where('cocheras', '>=', 1);
-            } else {
-                $query->where('cocheras', '>=', $request->cocheras);
             }
         }
-    
-        // Rango de Precio
+
         if ($request->filled('precio_min')) {
             $query->where('precio', '>=', $request->precio_min);
         }
         if ($request->filled('precio_max')) {
             $query->where('precio', '<=', $request->precio_max);
         }
-    
-        // Ciudad (Buscador por texto)
+
         if ($request->filled('ciudad')) {
             $query->where('ciudad', 'like', '%' . $request->ciudad . '%');
         }
-    
-        // 4. Ordenamiento (Opcional: Más recientes primero)
+
+        // Ordenamiento
         if ($request->has('orden')) {
             if ($request->orden == 'precio_asc') $query->orderBy('precio', 'asc');
             elseif ($request->orden == 'precio_desc') $query->orderBy('precio', 'desc');
@@ -116,12 +114,15 @@ class PropiedadController extends Controller
         } else {
             $query->latest();
         }
-    
-        // 5. Paginación (¡Importante! Mantener filtros en los links de página)
+
         $propiedades = $query->paginate(12)->withQueryString();
-    
-        return view('public.listado')
-            ->with('propiedades', $propiedades)
-            ->with('titulo', $titulo);
+
+        // 4. PASAMOS TODAS LAS VARIABLES (Aquí estaba el error antes)
+        return view('public.listado', [
+            'propiedades' => $propiedades,
+            'titulo'      => $titulo,      // <--- ¡Esto es lo que faltaba!
+            'operacion'   => $operacion,
+            'tipo'        => $tipoReal
+        ]);
     }
 }

@@ -16,6 +16,7 @@ class Propiedad extends Model
         'slug',
         'meta_descripcion',
         'imagen_principal',
+        'estado',
         'precio',
         'moneda',
         'tipo_operacion',

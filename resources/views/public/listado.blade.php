@@ -143,7 +143,7 @@
                         {{-- CARD EXACTA DEL HOME --}}
                         <article class="property-card">
                           
-                          <div class="card-image">
+                        <div class="card-image relative"> {{-- IMPORTANTE: Agregar 'relative' --}}
                             <a href="{{ route('public.propiedad.show', $propiedad->slug) }}">
                                 @if($propiedad->imagen_principal)
                                     <img src="{{ asset('storage/' . $propiedad->imagen_principal) }}" alt="{{ $propiedad->titulo }}">
@@ -152,8 +152,30 @@
                                 @endif
                             </a>
                             
-                            <div class="card-badge">{{ ucfirst($propiedad->tipo_operacion) }}</div>
-                          </div>
+                            {{-- LÓGICA DE ESTADOS (Vendido/Reservado) --}}
+                            @if($propiedad->estado === 'reservado')
+                                <div class="absolute inset-0 bg-yellow-500/80 flex items-center justify-center z-10">
+                                    <span class="text-white font-black text-xl tracking-widest uppercase border-4 border-white px-4 py-2 transform -rotate-12">
+                                        RESERVADO
+                                    </span>
+                                </div>
+                            @elseif($propiedad->estado === 'vendido')
+                                <div class="absolute inset-0 bg-red-600/80 flex items-center justify-center z-10">
+                                    <span class="text-white font-black text-xl tracking-widest uppercase border-4 border-white px-4 py-2 transform -rotate-12">
+                                        VENDIDO
+                                    </span>
+                                </div>
+                            @elseif($propiedad->estado === 'alquilado')
+                                <div class="absolute inset-0 bg-blue-600/80 flex items-center justify-center z-10">
+                                    <span class="text-white font-black text-xl tracking-widest uppercase border-4 border-white px-4 py-2 transform -rotate-12">
+                                        ALQUILADO
+                                    </span>
+                                </div>
+                            @else
+                                {{-- Si está disponible, mostramos el badge normal --}}
+                                <div class="card-badge">{{ ucfirst($propiedad->tipo_operacion) }}</div>
+                            @endif
+                        </div>
                           
                           <div class="card-content">
                             

@@ -82,4 +82,9 @@ class HomeController extends Controller
     {
         return view('public.contacto');
     }
+    
+    public function nosotros()
+    {
+        return view('public.nosotros');
+    }
 }

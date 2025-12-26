@@ -31,7 +31,7 @@ class PropiedadController extends Controller
             'ciudad' => 'required',
             'imagen' => 'required|image|max:2048', // Portada obligatoria
             'imagenes.*' => 'image|max:2048',      // Galería opcional
-            // Campos opcionales
+            'estado' => 'required|in:disponible,reservado,vendido,alquilado',
             'habitaciones' => 'nullable|integer',
             'banos' => 'nullable|integer',
             'cocheras' => 'nullable|integer',
@@ -136,6 +136,7 @@ class PropiedadController extends Controller
             'tipo_operacion' => 'required',
             'tipo_propiedad' => 'required',
             'descripcion' => 'required',
+            'estado' => 'required',
             'ciudad' => 'required',
             // Imagen principal es opcional al editar
             'imagen' => 'nullable|image|max:2048', 
@@ -201,5 +202,21 @@ class PropiedadController extends Controller
 
         return redirect()->route('admin.properties.index')
         ->with('success', 'La propiedad fue eliminada correctamente.');
+    }
+    // Método para eliminar una imagen individual de la galería
+    public function destroyImagen($id)
+    {
+        // 1. Buscar la imagen
+        $imagen = Imagen::findOrFail($id);
+        
+        // 2. Borrar archivo del disco (Storage)
+        if(\Illuminate\Support\Facades\Storage::disk('public')->exists($imagen->ruta)){
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($imagen->ruta);
+        }
+
+        // 3. Borrar registro de la BD
+        $imagen->delete();
+
+        return back()->with('success', 'Imagen eliminada de la galería.');
     }
 }

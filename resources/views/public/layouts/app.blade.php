@@ -114,7 +114,7 @@
           <div class="dropdown-content">
             <a href="{{ route('public.listado', ['operacion' => 'alquiler', 'tipo' => 'casa']) }}" class="dropdown-item">
               <div>
-                <span class="dropdown-title">Buscar Alquileres</span>
+                <span class="dropdown-title">Casas</span>
                 <span class="dropdown-desc">Propiedades disponibles</span>
               </div>
             </a>
@@ -175,7 +175,7 @@
         </div>
       </li>
 
-      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="{{ route('public.nosotros') }}">Nosotros</a></li>
       <li><a href="{{ route('public.contacto') }}">Contacto</a></li>
     </ul>
 

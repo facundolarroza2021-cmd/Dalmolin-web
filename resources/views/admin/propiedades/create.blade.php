@@ -23,6 +23,49 @@
                                 <label class="block font-medium text-sm text-gray-700">Precio (USD)</label>
                                 <input type="number" name="precio" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full mt-1" required>
                             </div>
+
+                            <div class="col-span-full mt-4">
+                                <label class="block font-medium text-sm text-gray-700 mb-2">Estado de la Propiedad</label>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    
+                                    {{-- Opción 1: Disponible (Marcada por defecto 'checked') --}}
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="estado" value="disponible" class="peer sr-only" 
+                                            {{ old('estado') == 'disponible' || !old('estado') ? 'checked' : '' }}>
+                                        <div class="text-center py-2 rounded-md border border-gray-300 peer-checked:bg-green-600 peer-checked:text-white peer-checked:border-green-600 hover:bg-gray-50 transition shadow-sm">
+                                            🟢 Disponible
+                                        </div>
+                                    </label>
+
+                                    {{-- Opción 2: Reservado --}}
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="estado" value="reservado" class="peer sr-only" 
+                                            {{ old('estado') == 'reservado' ? 'checked' : '' }}>
+                                        <div class="text-center py-2 rounded-md border border-gray-300 peer-checked:bg-yellow-500 peer-checked:text-white peer-checked:border-yellow-500 hover:bg-gray-50 transition shadow-sm">
+                                            🟡 Reservado
+                                        </div>
+                                    </label>
+
+                                    {{-- Opción 3: Vendido --}}
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="estado" value="vendido" class="peer sr-only" 
+                                            {{ old('estado') == 'vendido' ? 'checked' : '' }}>
+                                        <div class="text-center py-2 rounded-md border border-gray-300 peer-checked:bg-red-600 peer-checked:text-white peer-checked:border-red-600 hover:bg-gray-50 transition shadow-sm">
+                                            🔴 Vendido
+                                        </div>
+                                    </label>
+                                    
+                                    {{-- Opción 4: Alquilado --}}
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="estado" value="alquilado" class="peer sr-only" 
+                                            {{ old('estado') == 'alquilado' ? 'checked' : '' }}>
+                                        <div class="text-center py-2 rounded-md border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 hover:bg-gray-50 transition shadow-sm">
+                                            🔵 Alquilado
+                                        </div>
+                                    </label>
+
+                                </div>
+                            </div>
                             
                             <div>
                                 <label class="block font-medium text-sm text-gray-700">Operación</label>

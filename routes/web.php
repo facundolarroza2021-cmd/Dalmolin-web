@@ -22,6 +22,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Páginas Estáticas
 Route::get('/contacto', [HomeController::class, 'contacto'])->name('public.contacto');
+Route::get('/nosotros', [HomeController::class, 'nosotros'])->name('public.nosotros');
 
 // Catálogo y Filtros (Importante: poner antes de /{slug} para evitar conflictos)
 Route::get('/propiedades/{operacion?}/{tipo?}', [PropiedadController::class, 'index'])

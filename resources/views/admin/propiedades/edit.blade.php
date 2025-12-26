@@ -32,6 +32,40 @@
                                     <option value="temporal" {{ $propiedad->tipo_operacion == 'temporal' ? 'selected' : '' }}>Alquiler Temporal</option>
                                 </select>
                             </div>
+                            <div class="mb-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Estado de la Propiedad</label>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="estado" value="disponible" class="peer sr-only" {{ $propiedad->estado == 'disponible' ? 'checked' : '' }}>
+                                        <div class="text-center py-2 rounded-md border border-gray-300 peer-checked:bg-green-600 peer-checked:text-white peer-checked:border-green-600 hover:bg-gray-100 transition">
+                                            🟢 Disponible
+                                        </div>
+                                    </label>
+
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="estado" value="reservado" class="peer sr-only" {{ $propiedad->estado == 'reservado' ? 'checked' : '' }}>
+                                        <div class="text-center py-2 rounded-md border border-gray-300 peer-checked:bg-yellow-500 peer-checked:text-white peer-checked:border-yellow-500 hover:bg-gray-100 transition">
+                                            🟡 Reservado
+                                        </div>
+                                    </label>
+
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="estado" value="vendido" class="peer sr-only" {{ $propiedad->estado == 'vendido' ? 'checked' : '' }}>
+                                        <div class="text-center py-2 rounded-md border border-gray-300 peer-checked:bg-red-600 peer-checked:text-white peer-checked:border-red-600 hover:bg-gray-100 transition">
+                                            🔴 Vendido
+                                        </div>
+                                    </label>
+                                    
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="estado" value="alquilado" class="peer sr-only" {{ $propiedad->estado == 'alquilado' ? 'checked' : '' }}>
+                                        <div class="text-center py-2 rounded-md border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 hover:bg-gray-100 transition">
+                                            🔵 Alquilado
+                                        </div>
+                                    </label>
+
+                                </div>
+                            </div>
                             <div>
                                 <label class="block font-medium text-sm text-gray-700">Tipo Inmueble</label>
                                 <select name="tipo_propiedad" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full mt-1">
@@ -78,16 +112,22 @@
                                 
                                 @if($propiedad->imagenes->count() > 0)
                                     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-4">
-                                        @foreach($propiedad->imagenes as $img)
-                                        <div class="relative group">
-                                            <img src="{{ asset('storage/' . $img->ruta) }}" class="w-full h-24 object-cover rounded shadow border">
-                                            
-                                            <button type="button" onclick="if(confirm('¿Borrar esta foto?')) { window.location.href='{{ route('admin.imagen.delete', $img->id) }}' }" 
-                                                class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition shadow-md" title="Borrar foto">
-                                                ✕
-                                            </button>
-                                        </div>
-                                        @endforeach
+                                    @foreach($propiedad->imagenes as $img)
+                                    <div class="relative group">
+                                        <img src="{{ asset('storage/' . $img->ruta) }}" class="w-full h-24 object-cover rounded shadow border">
+                                        
+                                        <button type="button" 
+                                            onclick="if(confirm('¿Seguro que deseas eliminar esta imagen?')) { 
+                                                var form = document.getElementById('deleteImageForm');
+                                                form.action = '{{ route('admin.imagen.delete', $img->id) }}';
+                                                form.submit();
+                                            }" 
+                                            class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition shadow-md hover:bg-red-700" 
+                                            title="Borrar foto">
+                                            ✕
+                                        </button>
+                                    </div>
+                                    @endforeach
                                     </div>
                                 @else
                                     <p class="text-sm text-gray-500 italic mb-4">No hay fotos extra en la galería.</p>
@@ -125,4 +165,10 @@
             </div>
         </div>
     </div>
+
+    {{-- Formulario oculto reutilizable para borrar imágenes --}}
+    <form id="deleteImageForm" action="" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
 </x-app-layout>

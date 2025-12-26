@@ -9,14 +9,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('propiedades', function (Blueprint $table) {
-            $table->boolean('destacada')->default(false)->after('publicada');
+            $table->string('estado')->default('disponible')->after('precio');
         });
     }
-    
+
     public function down(): void
     {
         Schema::table('propiedades', function (Blueprint $table) {
-            $table->dropColumn('destacada');
+            $table->dropColumn('estado');
         });
     }
 };
