@@ -20,6 +20,7 @@ class PropiedadController extends Controller
 
     public function store(Request $request)
     {
+        
         // 1. Validaciones
         $request->validate([
             'titulo' => 'required|max:255',
@@ -60,6 +61,7 @@ class PropiedadController extends Controller
             'tipo_operacion' => $request->tipo_operacion,
             'tipo_propiedad' => $request->tipo_propiedad,
             'descripcion' => $request->descripcion,
+            'meta_descripcion' => $request->meta_descripcion ?? Str::limit("Propiedad en " . $request->tipo_operacion . " en " . $request->ciudad . ". " . $request->descripcion, 155),
             'ciudad' => $request->ciudad,
             'provincia' => 'Entre Ríos',
             'direccion' => $request->direccion,

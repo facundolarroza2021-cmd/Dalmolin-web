@@ -5,7 +5,7 @@ use App\Models\Propiedad;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\PropiedadController;
 use App\Http\Controllers\Admin\PropiedadController as AdminPropiedadController;
-use App\Http\Controllers\ProfileController; 
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,46 +13,59 @@ use App\Http\Controllers\ProfileController;
 |--------------------------------------------------------------------------
 */
 
-// 1. RUTA PRINCIPAL (Home Público)
+// =========================================================================
+// 1. RUTAS PÚBLICAS (Accesibles para todos)
+// =========================================================================
+
+// Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Ruta de Contacto
+// Páginas Estáticas
 Route::get('/contacto', [HomeController::class, 'contacto'])->name('public.contacto');
 
-// 2. Ruta de Detalle de Propiedad (Pública)
+// Catálogo y Filtros (Importante: poner antes de /{slug} para evitar conflictos)
+Route::get('/propiedades/{operacion?}/{tipo?}', [PropiedadController::class, 'index'])
+    ->where('operacion', 'venta|alquiler|temporal')
+    ->name('public.listado');
+
+// Detalle de Propiedad
 Route::get('/propiedad/{slug}', [PropiedadController::class, 'show'])->name('public.propiedad.show');
 
-// 3. Rutas de Autenticación y Admin (Dashboard)
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('properties', AdminPropiedadController::class);
-    Route::get('/imagen/{imagen}/delete', [AdminPropiedadController::class, 'destroyImagen'])->name('imagen.delete');
-});
+// =========================================================================
+// 2. PANEL DE ADMINISTRACIÓN (Requiere Login)
+// =========================================================================
 
-Route::get('/dashboard', function () {
-    // Calculamos las estadísticas en tiempo real
-    $totalPropiedades = Propiedad::count();
-    $enVenta = Propiedad::where('tipo_operacion', 'venta')->count();
-    $enAlquiler = Propiedad::where('tipo_operacion', 'alquiler')->count();
-    
-    // Traemos las últimas 3 propiedades cargadas para mostrar un resumen
-    $ultimas = Propiedad::latest()->take(3)->get();
+Route::middleware(['auth', 'verified'])->group(function () {
 
-    return view('dashboard', compact('totalPropiedades', 'enVenta', 'enAlquiler', 'ultimas'));
-})->middleware(['auth', 'verified'])->name('dashboard');
+    // Dashboard (Estadísticas)
+    Route::get('/dashboard', function () {
+        $totalPropiedades = Propiedad::count();
+        $enVenta = Propiedad::where('tipo_operacion', 'venta')->count();
+        $enAlquiler = Propiedad::where('tipo_operacion', 'alquiler')->count();
+        
+        // Últimas 5 cargadas para acceso rápido
+        $ultimas = Propiedad::latest()->take(5)->get();
 
-// 4. RUTAS DE PERFIL (Esto es lo que faltaba)
-Route::middleware('auth')->group(function () {
+        return view('dashboard', compact('totalPropiedades', 'enVenta', 'enAlquiler', 'ultimas'));
+    })->name('dashboard');
+
+    // Rutas de Admin (Prefijo: /admin)
+    Route::prefix('admin')->name('admin.')->group(function () {
+        
+        // CRUD Completo de Propiedades
+        Route::resource('properties', AdminPropiedadController::class);
+        
+        // Borrar imagen de galería (Método DELETE seguro)
+        Route::delete('/imagen/{id}/delete', [AdminPropiedadController::class, 'destroyImagen'])
+            ->name('imagen.delete');
+    });
+
+    // Perfil de Usuario
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Ruta mágica para listados (Venta, Alquiler, por Tipo, etc.)
-Route::get('/propiedades/{operacion?}/{tipo?}', [PropiedadController::class, 'index'])
-    ->where('operacion', 'venta|alquiler|temporal') // Opcional: restringe palabras válidas
-    ->name('public.listado');
+// Rutas de Autenticación (Login, Registro, etc.)
 require __DIR__.'/auth.php';

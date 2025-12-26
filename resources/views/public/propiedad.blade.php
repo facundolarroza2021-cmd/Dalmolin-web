@@ -1,6 +1,6 @@
 @extends('public.layouts.app')
 
-@section('meta_title', $propiedad->titulo . ' - ' . ucfirst($propiedad->tipo_operacion))
+@section('meta_title', $propiedad->titulo . ' en ' . $propiedad->ciudad . ' | Dalmolin Inmobiliaria')
 
 @section('meta_description', 'Propiedad en ' . $propiedad->ciudad . '. ' . $propiedad->habitaciones . ' habitaciones, ' . $propiedad->banos . ' baños. Precio: ' . $propiedad->moneda . ' ' . number_format($propiedad->precio, 0, ',', '.'))
 
@@ -29,7 +29,7 @@
     <div class="property-gallery-section">
       <div class="gallery-main-image">
         @if($propiedad->imagen_principal)
-            <img src="{{ asset('storage/' . $propiedad->imagen_principal) }}" alt="{{ $propiedad->titulo }}" id="mainImage">
+            <img src="{{ asset('storage/' . $propiedad->imagen_principal) }}" alt="Foto de {{ $propiedad->titulo }} en {{ $propiedad->ciudad }} - Vista {{ $loop->iteration ?? 'principal' }}" id="mainImage">
         @else
             <img src="{{ asset('img/placeholder.jpg') }}" alt="Sin Imagen" id="mainImage">
         @endif
@@ -45,7 +45,7 @@
       <div class="gallery-thumbnails">
         @foreach($propiedad->imagenes->take(2) as $index => $img)
         <div class="thumb-image">
-          <img src="{{ asset('storage/' . $img->ruta) }}" alt="Foto {{ $index + 1 }}">
+          <img src="{{ asset('storage/' . $img->ruta) }}" alt="Foto de {{ $propiedad->titulo }} en {{ $propiedad->ciudad }} - Vista {{ $index + 1 }}">
           @if($index == 1 && $propiedad->imagenes->count() > 2)
           <div class="counter-overlay" onclick="openLightbox()">+{{ $propiedad->imagenes->count() - 2 }}</div>
           @endif
