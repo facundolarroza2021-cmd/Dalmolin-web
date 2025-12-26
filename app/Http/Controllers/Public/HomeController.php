@@ -78,4 +78,8 @@ class HomeController extends Controller
 
         return view('public.home', compact('propiedades', 'conteos', 'categorias'));
     }
+    public function contacto()
+    {
+        return view('public.contacto');
+    }
 }

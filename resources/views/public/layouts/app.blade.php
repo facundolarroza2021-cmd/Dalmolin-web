@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
   <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
   <link rel="shortcut icon" href="{{ asset('img/dalmolin_icon2.png') }}" type="image/x-icon">
 </head>
 <body>
@@ -26,43 +27,43 @@
     <ul class="navbar-menu">
       <!-- DROPDOWN COMPRAR -->
       <li class="dropdown">
-        <a href="{{ route('home') }}" class="dropdown-toggle">
+        <a href="{{ route('public.listado', ['operacion' => 'venta']) }}" class="dropdown-toggle">
           Comprar
           <i class="fa-solid fa-chevron-down dropdown-icon"></i>
         </a>
         <div class="dropdown-menu">
           <div class="dropdown-content">
-            <a href="#casas" class="dropdown-item">
+            <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'casa']) }}" class="dropdown-item">
               <div>
                 <span class="dropdown-title">Casas</span>
                 <span class="dropdown-desc">Viviendas familiares</span>
               </div>
             </a>
-            <a href="#departamentos" class="dropdown-item">
+            <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'departamento']) }}" class="dropdown-item">
               <div>
                 <span class="dropdown-title">Departamentos</span>
                 <span class="dropdown-desc">Unidades en edificios</span>
               </div>
             </a>
-            <a href="#terrenos" class="dropdown-item">
+            <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'terreno']) }}" class="dropdown-item">
               <div>
                 <span class="dropdown-title">Terrenos</span>
                 <span class="dropdown-desc">Lotes para construir</span>
               </div>
             </a>
-            <a href="#campos" class="dropdown-item">
+            <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'campo']) }}" class="dropdown-item">
               <div>
                 <span class="dropdown-title">Campos</span>
                 <span class="dropdown-desc">Propiedades rurales</span>
               </div>
             </a>
-            <a href="#locales" class="dropdown-item">
+            <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'local']) }}" class="dropdown-item">
               <div>
                 <span class="dropdown-title">Locales Comerciales</span>
                 <span class="dropdown-desc">Espacios comerciales</span>
               </div>
             </a>
-            <a href="#galpones" class="dropdown-item">
+            <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'galpon']) }}" class="dropdown-item">
               <div>
                 <span class="dropdown-title">Galpones</span>
                 <span class="dropdown-desc">Almacenes industriales</span>
@@ -74,19 +75,19 @@
 
       <!-- DROPDOWN VENDER -->
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle">
+        <a href="{{ route('public.listado', ['operacion' => 'alquiler']) }}" class="dropdown-toggle">
           Vender
           <i class="fa-solid fa-chevron-down dropdown-icon"></i>
         </a>
         <div class="dropdown-menu">
           <div class="dropdown-content">
-            <a href="#vender-casa" class="dropdown-item">
+            <a href="{{ route('public.listado', ['operacion' => 'venta']) }}" class="dropdown-item">
               <div>
                 <span class="dropdown-title">Vender mi Propiedad</span>
                 <span class="dropdown-desc">Asesoramiento completo</span>
               </div>
             </a>
-            <a href="#tasar" class="dropdown-item">
+            <a href="{{ route('public.listado', ['operacion' => 'venta']) }}#tasar" class="dropdown-item">
               <div>
                 <span class="dropdown-title">Tasación Gratuita</span>
                 <span class="dropdown-desc">Valuá tu propiedad</span>
@@ -104,28 +105,27 @@
 
       <!-- DROPDOWN ALQUILAR -->
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle">
+        <a href="{{ route('public.listado', ['operacion' => 'alquiler']) }}" class="dropdown-toggle">
           Alquilar
           <i class="fa-solid fa-chevron-down dropdown-icon"></i>
         </a>
         <div class="dropdown-menu">
           <div class="dropdown-content">
-            <a href="#alquiler-casas" class="dropdown-item">
+            <a href="{{ route('public.listado', ['operacion' => 'alquiler', 'tipo' => 'casa']) }}" class="dropdown-item">
               <div>
                 <span class="dropdown-title">Buscar Alquileres</span>
                 <span class="dropdown-desc">Propiedades disponibles</span>
               </div>
             </a>
-            <a href="#alquilar-propiedad" class="dropdown-item">
+            <a href="{{ route('public.listado', ['operacion' => 'alquiler', 'tipo' => 'departamento']) }}" class="dropdown-item">
               <div>
-                <span class="dropdown-title">Alquilar mi Propiedad</span>
-                <span class="dropdown-desc">Administración completa</span>
+                <span class="dropdown-title">Departamentos</span>
               </div>
             </a>
-            <a href="#garantias" class="dropdown-item">
+            <a href="{{ route('public.listado', ['operacion' => 'alquiler', 'tipo' => 'local']) }}" class="dropdown-item">
               <div>
-                <span class="dropdown-title">Garantías</span>
-                <span class="dropdown-desc">Opciones y requisitos</span>
+                <span class="dropdown-title">Locales</span>
+                <span class="dropdown-desc">Para tu negocio</span>
               </div>
             </a>
           </div>
@@ -175,7 +175,7 @@
       </li>
 
       <li><a href="#nosotros">Nosotros</a></li>
-      <li><a href="#contacto">Contacto</a></li>
+      <li><a href="{{ route('public.contacto') }}">Contacto</a></li>
     </ul>
 
     <div class="navbar-icons">

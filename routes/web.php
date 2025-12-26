@@ -5,7 +5,7 @@ use App\Models\Propiedad;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\PropiedadController;
 use App\Http\Controllers\Admin\PropiedadController as AdminPropiedadController;
-use App\Http\Controllers\ProfileController; // <--- AGREGAMOS ESTO
+use App\Http\Controllers\ProfileController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +15,9 @@ use App\Http\Controllers\ProfileController; // <--- AGREGAMOS ESTO
 
 // 1. RUTA PRINCIPAL (Home Público)
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Ruta de Contacto
+Route::get('/contacto', [HomeController::class, 'contacto'])->name('public.contacto');
 
 // 2. Ruta de Detalle de Propiedad (Pública)
 Route::get('/propiedad/{slug}', [PropiedadController::class, 'show'])->name('public.propiedad.show');
@@ -48,5 +51,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// 5. Rutas de autenticación (Login, Register, etc.)
+// Ruta mágica para listados (Venta, Alquiler, por Tipo, etc.)
+Route::get('/propiedades/{operacion?}/{tipo?}', [PropiedadController::class, 'index'])
+    ->where('operacion', 'venta|alquiler|temporal') // Opcional: restringe palabras válidas
+    ->name('public.listado');
 require __DIR__.'/auth.php';
