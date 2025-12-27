@@ -1,105 +1,150 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-white leading-tight">
+        <h2 class="font-bold text-xl text-gray-800 leading-tight">
             {{ __('Panel de Control') }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12 bg-gray-50 min-h-screen">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
-            <div class="mb-8">
-                <h3 class="text-2xl font-bold text-gray-800">¡Hola, {{ Auth::user()->name }}! 👋</h3>
-                <p class="text-gray-600">Aquí tienes un resumen de tu inmobiliaria hoy.</p>
+            {{-- 1. BIENVENIDA --}}
+            <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-3xl font-bold text-gray-800">¡Hola, {{ Auth::user()->name }}! 👋</h3>
+                    <p class="text-gray-500 mt-1">Aquí tienes el resumen de tu inmobiliaria hoy.</p>
+                </div>
+                <a href="{{ route('admin.properties.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition flex items-center gap-2 transform hover:scale-105">
+                    <i class="fa-solid fa-plus"></i> Publicar Nueva Propiedad
+                </a>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {{-- 2. TARJETAS DE ESTADÍSTICAS (KPIs) --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
                 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border-l-4 border-blue-500">
-                    <div class="p-6">
-                        <div class="flex items-center">
-                            <div class="p-3 rounded-full bg-blue-100 text-blue-500 mr-4">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                            </div>
-                            <div>
-                                <p class="text-gray-500 text-sm font-medium uppercase tracking-wide">Total Propiedades</p>
-                                <h4 class="text-3xl font-bold text-gray-800">{{ $totalPropiedades }}</h4>
-                            </div>
-                        </div>
+                {{-- Total --}}
+                <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Total Cartera</p>
+                        <h4 class="text-3xl font-black text-gray-800">{{ $total }}</h4>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-building"></i>
                     </div>
                 </div>
 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border-l-4 border-green-500">
-                    <div class="p-6">
-                        <div class="flex items-center">
-                            <div class="p-3 rounded-full bg-green-100 text-green-500 mr-4">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            </div>
-                            <div>
-                                <p class="text-gray-500 text-sm font-medium uppercase tracking-wide">En Venta</p>
-                                <h4 class="text-3xl font-bold text-gray-800">{{ $enVenta }}</h4>
-                            </div>
-                        </div>
+                {{-- Disponibles --}}
+                <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Disponibles</p>
+                        <h4 class="text-3xl font-black text-gray-800">{{ $disponibles }}</h4>
+                    </div>
+                    <div class="w-12 h-12 bg-green-50 text-green-500 rounded-full flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-check-circle"></i>
                     </div>
                 </div>
 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border-l-4 border-orange-500">
-                    <div class="p-6">
-                        <div class="flex items-center">
-                            <div class="p-3 rounded-full bg-orange-100 text-orange-500 mr-4">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
-                            </div>
-                            <div>
-                                <p class="text-gray-500 text-sm font-medium uppercase tracking-wide">En Alquiler</p>
-                                <h4 class="text-3xl font-bold text-gray-800">{{ $enAlquiler }}</h4>
-                            </div>
-                        </div>
+                {{-- Reservadas --}}
+                <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-yellow-400 flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Reservadas</p>
+                        <h4 class="text-3xl font-black text-gray-800">{{ $reservadas }}</h4>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-50 text-yellow-500 rounded-full flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
+                </div>
+
+                {{-- Vendidas --}}
+                <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Vendidas Histórico</p>
+                        <h4 class="text-3xl font-black text-gray-800">{{ $vendidas }}</h4>
+                    </div>
+                    <div class="w-12 h-12 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-trophy"></i>
                     </div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 
-                <div class="bg-white shadow-sm sm:rounded-lg p-6">
-                    <h4 class="text-lg font-bold text-gray-700 mb-4 border-b pb-2">Accesos Rápidos</h4>
-                    <div class="space-y-3">
-                        <a href="{{ route('admin.properties.create') }}" class="block w-full text-center py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded transition">
-                            + Publicar Nueva Propiedad
-                        </a>
-                        <a href="{{ route('home') }}" target="_blank" class="block w-full text-center py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded transition">
-                            Ir al Sitio Web Público
-                        </a>
+                {{-- 3. ÚLTIMAS PUBLICACIONES --}}
+                <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                        <h4 class="font-bold text-gray-800">Últimas Agregadas</h4>
+                        <a href="{{ route('admin.properties.index') }}" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Ver todo el inventario &rarr;</a>
+                    </div>
+                    
+                    <div class="divide-y divide-gray-100">
+                        @forelse($ultimas as $propiedad)
+                            <div class="p-4 flex items-center hover:bg-gray-50 transition">
+                                {{-- Foto --}}
+                                <div class="h-12 w-12 rounded-lg bg-gray-200 overflow-hidden flex-shrink-0 border border-gray-200">
+                                    @if($propiedad->imagen_principal)
+                                        <img src="{{ asset('storage/' . $propiedad->imagen_principal) }}" class="h-full w-full object-cover">
+                                    @else
+                                        <div class="h-full w-full flex items-center justify-center text-gray-400"><i class="fa-solid fa-image"></i></div>
+                                    @endif
+                                </div>
+                                
+                                {{-- Info --}}
+                                <div class="ml-4 flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <h5 class="text-sm font-bold text-gray-900 truncate w-48">{{ $propiedad->titulo }}</h5>
+                                        {{-- Badge de Estado --}}
+                                        @if($propiedad->estado == 'vendido')
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700 uppercase">Vendido</span>
+                                        @elseif($propiedad->estado == 'reservado')
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-yellow-100 text-yellow-700 uppercase">Reservado</span>
+                                        @endif
+                                    </div>
+                                    <p class="text-xs text-gray-500">
+                                        {{ ucfirst($propiedad->tipo_operacion) }} en {{ $propiedad->ciudad }}
+                                    </p>
+                                </div>
+
+                                {{-- Precio y Botón --}}
+                                <div class="text-right">
+                                    <p class="text-sm font-bold text-gray-900">{{ $propiedad->moneda }} {{ number_format($propiedad->precio, 0, ',', '.') }}</p>
+                                    <a href="{{ route('admin.properties.edit', $propiedad->id) }}" class="text-xs text-gray-400 hover:text-blue-600 flex items-center justify-end gap-1 mt-1">
+                                        <i class="fa-solid fa-pen"></i> Editar
+                                    </a>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="p-8 text-center text-gray-500">
+                                <i class="fa-regular fa-folder-open text-3xl mb-2 opacity-30"></i>
+                                <p>Aún no has cargado propiedades.</p>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
 
-                <div class="lg:col-span-2 bg-white shadow-sm sm:rounded-lg p-6">
-                    <h4 class="text-lg font-bold text-gray-700 mb-4 border-b pb-2">Últimas Publicaciones</h4>
-                    
-                    @if($ultimas->count() > 0)
-                        <ul class="divide-y divide-gray-200">
-                            @foreach($ultimas as $casa)
-                            <li class="py-3 flex items-center justify-between">
-                                <div class="flex items-center">
-                                    @if($casa->imagen_principal)
-                                        <img src="{{ asset('storage/' . $casa->imagen_principal) }}" class="h-10 w-10 rounded-full object-cover mr-3">
-                                    @else
-                                        <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-xs mr-3">Img</div>
-                                    @endif
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-900">{{ $casa->titulo }}</p>
-                                        <p class="text-xs text-gray-500">{{ $casa->ciudad }}</p>
-                                    </div>
-                                </div>
-                                <span class="text-sm font-bold text-gray-700">{{ $casa->moneda }} {{ number_format($casa->precio, 0, ',', '.') }}</span>
-                            </li>
-                            @endforeach
-                        </ul>
-                        <div class="mt-4 text-right">
-                            <a href="{{ route('admin.properties.index') }}" class="text-sm text-blue-600 hover:underline">Ver todas &rarr;</a>
+                {{-- 4. ACCESOS RÁPIDOS LATERALES --}}
+                <div class="space-y-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <h4 class="font-bold text-gray-800 mb-4">Accesos Directos</h4>
+                        <div class="space-y-3">
+                            <a href="{{ route('home') }}" target="_blank" class="block w-full text-center py-3 bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold rounded-lg border border-gray-200 transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-globe"></i> Ver Sitio Web
+                            </a>
+                            <a href="{{ route('profile.edit') }}" class="block w-full text-center py-3 bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold rounded-lg border border-gray-200 transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-user-gear"></i> Mi Perfil
+                            </a>
                         </div>
-                    @else
-                        <p class="text-gray-500 text-sm">Aún no hay propiedades cargadas.</p>
-                    @endif
+                    </div>
+                    
+                    {{-- Mini Tip --}}
+                    <div class="bg-blue-600 rounded-xl shadow-lg p-6 text-white relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 text-blue-500 opacity-20">
+                            <i class="fa-solid fa-lightbulb text-9xl"></i>
+                        </div>
+                        <h4 class="font-bold text-lg relative z-10">¿Sabías qué?</h4>
+                        <p class="text-blue-100 text-sm mt-2 relative z-10">
+                            Puedes marcar una propiedad como <span class="font-bold text-white">"Destacada"</span> desde el listado haciendo clic en la estrella ⭐.
+                        </p>
+                    </div>
                 </div>
 
             </div>

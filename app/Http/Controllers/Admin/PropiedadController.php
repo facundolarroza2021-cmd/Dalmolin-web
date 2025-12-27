@@ -57,6 +57,7 @@ class PropiedadController extends Controller
             'titulo' => $request->titulo,
             'slug' => $slug,
             'precio' => $request->precio,
+            'estado' => $request->estado,
             'moneda' => 'USD',
             'tipo_operacion' => $request->tipo_operacion,
             'tipo_propiedad' => $request->tipo_propiedad,
@@ -168,6 +169,7 @@ class PropiedadController extends Controller
         $property->update([
             'titulo' => $request->titulo,
             'precio' => $request->precio,
+            'estado' => $request->estado,
             'tipo_operacion' => $request->tipo_operacion,
             'tipo_propiedad' => $request->tipo_propiedad,
             'descripcion' => $request->descripcion,
@@ -218,5 +220,23 @@ class PropiedadController extends Controller
         $imagen->delete();
 
         return back()->with('success', 'Imagen eliminada de la galería.');
+    }
+
+    public function toggle($id, Request $request)
+    {
+        $propiedad = Propiedad::findOrFail($id);
+        
+        // Detectamos qué botón apretaste: 'publicada' o 'destacada'
+        $campo = $request->input('field');
+
+        if (in_array($campo, ['publicada', 'destacada'])) {
+            // Invertimos el valor (true -> false, false -> true)
+            $propiedad->$campo = ! $propiedad->$campo;
+            $propiedad->save();
+            
+            return back()->with('success', 'Estado actualizado correctamente.');
+        }
+
+        return back()->with('error', 'Acción no válida.');
     }
 }

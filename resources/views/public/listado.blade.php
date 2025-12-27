@@ -54,6 +54,7 @@
                                     <div>
                                         <span class="text-xs text-gray-500 mb-1 block">Dormitorios</span>
                                         <div class="flex gap-2">
+                                            
                                             @foreach([1, 2, 3, 4] as $num)
                                                 <label class="cursor-pointer">
                                                     <input type="radio" name="habitaciones" value="{{ $num }}" 
@@ -141,81 +142,95 @@
                     @forelse($propiedades as $propiedad)
                         
                         {{-- CARD EXACTA DEL HOME --}}
-                        <article class="property-card">
-                          
-                        <div class="card-image relative"> {{-- IMPORTANTE: Agregar 'relative' --}}
-                            <a href="{{ route('public.propiedad.show', $propiedad->slug) }}">
-                                @if($propiedad->imagen_principal)
-                                    <img src="{{ asset('storage/' . $propiedad->imagen_principal) }}" alt="{{ $propiedad->titulo }}">
-                                @else
-                                    <img src="{{ asset('img/placeholder-casa.jpg') }}" alt="Sin imagen">
+                        <article class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden group flex flex-col h-full relative">
+                            
+                            {{-- 1. IMAGEN Y BADGES --}}
+                            <div class="relative h-64 overflow-hidden bg-gray-100">
+                                <a href="{{ route('public.propiedad.show', $propiedad->slug) }}">
+                                    @if($propiedad->imagen_principal)
+                                        <img src="{{ asset('storage/' . $propiedad->imagen_principal) }}" 
+                                            alt="{{ $propiedad->titulo }}" 
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                    @else
+                                        <img src="{{ asset('img/placeholder-casa.jpg') }}" class="w-full h-full object-cover opacity-50" alt="Sin Imagen">
+                                    @endif
+                                </a>
+
+                                {{-- Badge de Operación (Venta/Alquiler) --}}
+                                <div class="absolute top-3 left-3 z-10">
+                                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white shadow-sm {{ $propiedad->tipo_operacion == 'venta' ? 'bg-indigo-600' : 'bg-orange-500' }}">
+                                        {{ $propiedad->tipo_operacion }}
+                                    </span>
+                                </div>
+
+                                {{-- Lógica de Estados (Vendido/Reservado) --}}
+                                @if($propiedad->estado === 'reservado')
+                                    <div class="absolute inset-0 bg-yellow-500/80 flex items-center justify-center z-10 pointer-events-none">
+                                        <span class="text-white font-black text-xl tracking-widest uppercase border-4 border-white px-4 py-2 transform -rotate-12">
+                                            RESERVADO
+                                        </span>
+                                    </div>
+                                @elseif($propiedad->estado === 'vendido')
+                                    <div class="absolute inset-0 bg-red-600/80 flex items-center justify-center z-10 pointer-events-none">
+                                        <span class="text-white font-black text-xl tracking-widest uppercase border-4 border-white px-4 py-2 transform -rotate-12">
+                                            VENDIDO
+                                        </span>
+                                    </div>
+                                @elseif($propiedad->estado === 'alquilado')
+                                    <div class="absolute inset-0 bg-blue-600/80 flex items-center justify-center z-10 pointer-events-none">
+                                        <span class="text-white font-black text-xl tracking-widest uppercase border-4 border-white px-4 py-2 transform -rotate-12">
+                                            ALQUILADO
+                                        </span>
+                                    </div>
                                 @endif
-                            </a>
-                            
-                            {{-- LÓGICA DE ESTADOS (Vendido/Reservado) --}}
-                            @if($propiedad->estado === 'reservado')
-                                <div class="absolute inset-0 bg-yellow-500/80 flex items-center justify-center z-10">
-                                    <span class="text-white font-black text-xl tracking-widest uppercase border-4 border-white px-4 py-2 transform -rotate-12">
-                                        RESERVADO
-                                    </span>
-                                </div>
-                            @elseif($propiedad->estado === 'vendido')
-                                <div class="absolute inset-0 bg-red-600/80 flex items-center justify-center z-10">
-                                    <span class="text-white font-black text-xl tracking-widest uppercase border-4 border-white px-4 py-2 transform -rotate-12">
-                                        VENDIDO
-                                    </span>
-                                </div>
-                            @elseif($propiedad->estado === 'alquilado')
-                                <div class="absolute inset-0 bg-blue-600/80 flex items-center justify-center z-10">
-                                    <span class="text-white font-black text-xl tracking-widest uppercase border-4 border-white px-4 py-2 transform -rotate-12">
-                                        ALQUILADO
-                                    </span>
-                                </div>
-                            @else
-                                {{-- Si está disponible, mostramos el badge normal --}}
-                                <div class="card-badge">{{ ucfirst($propiedad->tipo_operacion) }}</div>
-                            @endif
-                        </div>
-                          
-                          <div class="card-content">
-                            
-                            <div class="card-location">
-                                <i class="fa-solid fa-location-dot"></i>
-                                <span>{{ $propiedad->ciudad }}</span>
+
+                                {{-- BOTÓN VISTA RÁPIDA --}}
+                                <button 
+                                    onclick="openQuickView('{{ $propiedad->id }}')" 
+                                    class="absolute top-3 right-3 z-20 w-10 h-10 bg-white/95 hover:bg-white backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 shadow-lg  opacity-0 group-hover:opacity-100"
+                                    title="Vista Rápida"
+                                >
+                                    <i class="fa-solid fa-eye text-gray-700  transition-colors"></i>
+                                </button>
                             </div>
-                            
-                            <h3 class="card-title">{{ Str::limit($propiedad->titulo, 45) }}</h3>
-                            
-                            <div class="card-features">
-                              <div class="card-feature">
-                                <i class="fa-solid fa-ruler-combined"></i>
-                                <span>{{ $propiedad->superficie_total }} m²</span>
-                              </div>
-                              <div class="card-feature">
-                                <i class="fa-solid fa-bed"></i>
-                                <span>{{ $propiedad->habitaciones }}</span>
-                              </div>
-                              <div class="card-feature">
-                                <i class="fa-solid fa-bath"></i>
-                                <span>{{ $propiedad->banos }}</span>
-                              </div>
+
+                            {{-- 2. CONTENIDO --}}
+                            <div class="p-5 flex flex-col flex-1">
+                                
+                                {{-- Precio y Ubicación --}}
+                                <div class="mb-3">
+                                    <p class="text-2xl  text-gray-800">
+                                        {{ $propiedad->moneda }} {{ number_format($propiedad->precio, 0, ',', '.') }}
+                                    </p>
+                                    <p class="text-gray-500 text-sm flex items-center gap-1">
+                                        <i class="fa-solid fa-location-dot text-red-500"></i> {{ Str::limit($propiedad->ciudad, 25) }}
+                                    </p>
+                                </div>
+
+                                {{-- Título --}}
+                                <h3 class="text-lg text-gray-900 leading-tight mb-4 hover:text-blue-600 transition-colors">
+                                    <a href="{{ route('public.propiedad.show', $propiedad->slug) }}">
+                                        {{ Str::limit($propiedad->titulo, 45) }}
+                                    </a>
+                                </h3>
+
+                                {{-- Características --}}
+                                <div class="grid grid-cols-3 gap-2 border-t border-gray-100 pt-4 mt-auto">
+                                    <div class="text-center">
+                                        <span class="block font-bold text-gray-800">{{ $propiedad->habitaciones ?? '-' }}</span>
+                                        <span class="text-xs text-gray-500">Dorms</span>
+                                    </div>
+                                    <div class="text-center border-l border-gray-100">
+                                        <span class="block font-bold text-gray-800">{{ $propiedad->banos ?? '-' }}</span>
+                                        <span class="text-xs text-gray-500">Baños</span>
+                                    </div>
+                                    <div class="text-center border-l border-gray-100">
+                                        <span class="block font-bold text-gray-800">{{ $propiedad->superficie_total ?? '-' }}</span>
+                                        <span class="text-xs text-gray-500">m²</span>
+                                    </div>
+                                </div>
+
                             </div>
-                
-                            <div class="card-divider"></div>
-                
-                            <div class="card-footer">
-                              <div class="card-price">
-                                <span class="price-tag">Precio</span>
-                                <span class="price-text">{{ $propiedad->moneda }} {{ number_format($propiedad->precio, 0, ',', '.') }}</span>
-                              </div>
-                              
-                              <a href="{{ route('public.propiedad.show', $propiedad->slug) }}" class="btn-card">
-                                Ver más
-                                <i class="fa-solid fa-arrow-right"></i>
-                              </a>
-                            </div>
-                
-                          </div>
                         </article>
                         {{-- FIN CARD --}}
 

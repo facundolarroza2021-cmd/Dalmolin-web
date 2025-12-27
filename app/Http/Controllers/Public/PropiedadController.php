@@ -125,4 +125,11 @@ class PropiedadController extends Controller
             'tipo'        => $tipoReal
         ]);
     }
+    public function quickView($id)
+    {
+        $propiedad = Propiedad::with('imagenes')->findOrFail($id);
+        
+        // Retornamos solo el HTML del contenido del modal, no toda la página
+        return view('public.components.modal-quickview-content', compact('propiedad'));
+    }
 }

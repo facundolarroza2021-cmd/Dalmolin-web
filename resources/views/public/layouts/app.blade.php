@@ -428,8 +428,84 @@
     </div>
   </div>
 </footer>
+<div id="quickViewModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    {{-- Fondo oscuro --}}
+    <div class="fixed inset-0 bg-gray-900/75 transition-opacity backdrop-blur-sm" onclick="closeQuickView()"></div>
 
-  
+    <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+        <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-4xl h-[85vh] md:h-[600px]">
+            
+            {{-- Botón Cerrar --}}
+            <button onclick="closeQuickView()" class="absolute top-4 right-4 z-50 p-2 bg-white/80 hover:bg-white rounded-full text-gray-500 hover:text-red-500 transition shadow-sm">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            {{-- Aquí se cargará el contenido vía AJAX --}}
+            <div id="quickViewContent" class="h-full w-full bg-white flex items-center justify-center">
+                {{-- Spinner de carga --}}
+                <div class="text-blue-600 flex flex-col items-center animate-pulse">
+                    <i class="fa-solid fa-circle-notch fa-spin text-4xl mb-3"></i>
+                    <span class="font-medium text-sm">Cargando propiedad...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function openQuickView(id) {
+        const modal = document.getElementById('quickViewModal');
+        const content = document.getElementById('quickViewContent');
+        
+        // 1. Mostrar modal
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Bloquear scroll del body
+
+        // 2. Limpiar contenido anterior (mostrar spinner)
+        content.innerHTML = `
+            <div class="h-full w-full flex flex-col items-center justify-center text-gray-400">
+                <i class="fa-solid fa-circle-notch fa-spin text-4xl mb-3 text-blue-600"></i>
+                <span class="font-medium text-sm">Cargando...</span>
+            </div>
+        `;
+
+        // 3. Pedir datos al servidor
+        fetch(`/propiedad/quick-view/${id}`)
+            .then(response => response.text())
+            .then(html => {
+                content.innerHTML = html;
+                
+                // 4. Inicializar Swiper (Carrusel) dentro del modal
+                new Swiper('.quickview-swiper', {
+                    loop: true,
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                content.innerHTML = '<p class="text-center text-red-500 p-10">Error al cargar la propiedad.</p>';
+            });
+    }
+
+    function closeQuickView() {
+        const modal = document.getElementById('quickViewModal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto'; // Restaurar scroll
+    }
+
+    // Cerrar con tecla ESC
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") {
+            closeQuickView();
+        }
+    });
+</script>
 <script src="{{ asset('js/web.js') }}"></script> 
 <script src="https://cdn.lordicon.com/lordicon.js"></script>
 </body>

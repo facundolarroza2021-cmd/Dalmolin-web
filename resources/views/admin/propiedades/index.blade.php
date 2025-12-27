@@ -59,13 +59,15 @@
                                     Foto
                                 </th>
                                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Título / Ubicación
+                                    Info Propiedad
                                 </th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Precio
+                                {{-- COLUMNA NUEVA: SITUACIÓN --}}
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Situación
                                 </th>
-                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Estado
+                                {{-- COLUMNA MODIFICADA: VISIBILIDAD --}}
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Visibilidad / Destacada
                                 </th>
                                 <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                     Acciones
@@ -75,49 +77,74 @@
                         <tbody>
                             @foreach($propiedades as $propiedad)
                             <tr>
+                                {{-- FOTO --}}
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <div class="flex-shrink-0 w-16 h-16">
+                                    <div class="flex-shrink-0 w-16 h-16 relative">
                                         @if($propiedad->imagen_principal)
-                                            <img class="w-full h-full rounded object-cover" src="{{ asset('storage/' . $propiedad->imagen_principal) }}" alt="" />
+                                            <img class="w-full h-full rounded object-cover shadow-sm" src="{{ asset('storage/' . $propiedad->imagen_principal) }}" alt="" />
                                         @else
                                             <div class="w-full h-full bg-gray-200 rounded flex items-center justify-center text-gray-500 text-xs">Sin foto</div>
                                         @endif
                                     </div>
                                 </td>
+
+                                {{-- INFO --}}
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap font-bold">
-                                        {{ $propiedad->titulo }}
+                                    <p class="text-gray-900 font-bold text-base mb-1">
+                                        {{ Str::limit($propiedad->titulo, 30) }}
                                     </p>
-                                    <p class="text-gray-600 whitespace-no-wrap text-xs">
-                                        {{ $propiedad->ciudad }} - {{ ucfirst($propiedad->tipo_propiedad) }}
+                                    <p class="text-gray-600 text-xs mb-1">
+                                        <i class="fa-solid fa-location-dot text-red-400"></i> {{ $propiedad->ciudad }} | {{ ucfirst($propiedad->tipo_propiedad) }}
                                     </p>
-                                </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <p class="text-gray-900 whitespace-no-wrap">
+                                    <p class="font-bold text-blue-600">
                                         {{ $propiedad->moneda }} {{ number_format($propiedad->precio, 0, ',', '.') }}
                                     </p>
-                                    <p class="text-xs text-gray-500">{{ ucfirst($propiedad->tipo_operacion) }}</p>
                                 </td>
-                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                        <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                        <span class="relative">{{ $propiedad->publicada ? 'Publicada' : 'Borrador' }}</span>
+
+                                {{-- NUEVO: SITUACIÓN (Disponible/Vendido/etc) --}}
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                    @php
+                                        $estadoClasses = [
+                                            'disponible' => 'bg-green-100 text-green-800 border-green-200',
+                                            'reservado' => 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                                            'vendido' => 'bg-red-100 text-red-800 border-red-200',
+                                            'alquilado' => 'bg-blue-100 text-blue-800 border-blue-200',
+                                        ];
+                                        $clase = $estadoClasses[$propiedad->estado] ?? 'bg-gray-100 text-gray-800';
+                                    @endphp
+                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full border {{ $clase }}">
+                                        {{ ucfirst($propiedad->estado) }}
                                     </span>
                                 </td>
+
+                                {{-- NUEVO: SWITCHES (Publicar / Destacar) --}}
+                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                    <div class="flex flex-col gap-2 items-center justify-center">
+                                        
+                                        {{-- Switch Publicada --}}
+                                        <form action="{{ route('admin.propiedades.toggle', $propiedad->id) }}" method="POST">
+                                            @csrf @method('PATCH')
+                                            <input type="hidden" name="field" value="publicada">
+                                            <button type="submit" class="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold transition-colors w-28 justify-center
+                                                {{ $propiedad->publicada ? 'bg-green-100 text-green-700 hover:bg-green-200 border border-green-200' : 'bg-gray-100 text-gray-500 hover:bg-gray-200 border border-gray-200' }}">
+                                                <div class="w-2 h-2 rounded-full {{ $propiedad->publicada ? 'bg-green-500 animate-pulse' : 'bg-gray-400' }}"></div>
+                                                {{ $propiedad->publicada ? 'Visible' : 'Oculta' }}
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+
+                                {{-- ACCIONES --}}
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
-                                    <div class="flex items-center justify-end gap-2">
-                                        <a href="{{ route('public.propiedad.show', $propiedad->slug) }}" target="_blank" class="text-blue-600 hover:text-blue-900" title="Ver en web">
-                                            🔍
-                                        </a>
-                                        <a href="{{ route('admin.properties.edit', $propiedad->id) }}" class="text-orange-600 hover:text-orange-900 font-bold">
-                                            Editar
+                                    <div class="flex items-center justify-end gap-3">
+                                        <a href="{{ route('admin.properties.edit', $propiedad->id) }}" class="text-gray-500 hover:text-blue-600 transition-colors" title="Editar">
+                                            <i class="fa-solid fa-pen-to-square text-lg"></i>
                                         </a>
 
-                                        <form action="{{ route('admin.properties.destroy', $propiedad->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de borrar esta propiedad?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900 ml-2">
-                                                🗑️
+                                        <form action="{{ route('admin.properties.destroy', $propiedad->id) }}" method="POST" onsubmit="return confirm('¿Borrar definitivamente?');">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="text-gray-500 hover:text-red-600 transition-colors" title="Eliminar">
+                                                <i class="fa-solid fa-trash text-lg"></i>
                                             </button>
                                         </form>
                                     </div>

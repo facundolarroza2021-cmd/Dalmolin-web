@@ -1,174 +1,196 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-bold text-xl text-gray-800 leading-tight">
             {{ __('Editar Propiedad') }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+    <div class="py-12 bg-gray-50">
+        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
+            
+            <form action="{{ route('admin.properties.update', $propiedad->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     
-                    <form action="{{ route('admin.properties.update', $propiedad->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-                        @csrf
-                        @method('PUT')
-
-                        <div>
-                            <label class="block font-medium text-sm text-gray-700">Título</label>
-                            <input type="text" name="titulo" value="{{ old('titulo', $propiedad->titulo) }}" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full mt-1" required>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block font-medium text-sm text-gray-700">Precio (USD)</label>
-                                <input type="number" name="precio" value="{{ old('precio', $propiedad->precio) }}" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full mt-1" required>
+                    {{-- COLUMNA IZQUIERDA --}}
+                    <div class="lg:col-span-2 space-y-8">
+                        
+                        {{-- INFO BÁSICA --}}
+                        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                                    <i class="fa-solid fa-pen-to-square text-orange-500"></i> Información
+                                </h3>
+                                {{-- Link para ver en web --}}
+                                <a href="{{ route('public.propiedad.show', $propiedad->slug) }}" target="_blank" class="text-sm text-blue-600 hover:underline">
+                                    Ver en web <i class="fa-solid fa-external-link-alt ml-1"></i>
+                                </a>
                             </div>
-                            <div>
-                                <label class="block font-medium text-sm text-gray-700">Operación</label>
-                                <select name="tipo_operacion" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full mt-1">
-                                    <option value="venta" {{ $propiedad->tipo_operacion == 'venta' ? 'selected' : '' }}>Venta</option>
-                                    <option value="alquiler" {{ $propiedad->tipo_operacion == 'alquiler' ? 'selected' : '' }}>Alquiler</option>
-                                    <option value="temporal" {{ $propiedad->tipo_operacion == 'temporal' ? 'selected' : '' }}>Alquiler Temporal</option>
-                                </select>
-                            </div>
-                            <div class="mb-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                <label class="block text-gray-700 text-sm font-bold mb-2">Estado de la Propiedad</label>
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                    
-                                    <label class="cursor-pointer">
-                                        <input type="radio" name="estado" value="disponible" class="peer sr-only" {{ $propiedad->estado == 'disponible' ? 'checked' : '' }}>
-                                        <div class="text-center py-2 rounded-md border border-gray-300 peer-checked:bg-green-600 peer-checked:text-white peer-checked:border-green-600 hover:bg-gray-100 transition">
-                                            🟢 Disponible
-                                        </div>
-                                    </label>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block font-medium text-sm text-gray-700 mb-1">Título</label>
+                                    <input type="text" name="titulo" value="{{ old('titulo', $propiedad->titulo) }}" class="w-full rounded-lg border-gray-300 focus:border-orange-500 focus:ring-orange-500 shadow-sm" required>
+                                </div>
 
-                                    <label class="cursor-pointer">
-                                        <input type="radio" name="estado" value="reservado" class="peer sr-only" {{ $propiedad->estado == 'reservado' ? 'checked' : '' }}>
-                                        <div class="text-center py-2 rounded-md border border-gray-300 peer-checked:bg-yellow-500 peer-checked:text-white peer-checked:border-yellow-500 hover:bg-gray-100 transition">
-                                            🟡 Reservado
-                                        </div>
-                                    </label>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block font-medium text-sm text-gray-700 mb-1">Precio (USD)</label>
+                                        <input type="number" name="precio" value="{{ old('precio', $propiedad->precio) }}" class="w-full rounded-lg border-gray-300 focus:border-orange-500 focus:ring-orange-500 shadow-sm" required>
+                                    </div>
+                                    <div>
+                                        <label class="block font-medium text-sm text-gray-700 mb-1">Operación</label>
+                                        <select name="tipo_operacion" class="w-full rounded-lg border-gray-300 focus:border-orange-500 focus:ring-orange-500 shadow-sm">
+                                            <option value="venta" {{ $propiedad->tipo_operacion == 'venta' ? 'selected' : '' }}>Venta</option>
+                                            <option value="alquiler" {{ $propiedad->tipo_operacion == 'alquiler' ? 'selected' : '' }}>Alquiler</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-                                    <label class="cursor-pointer">
-                                        <input type="radio" name="estado" value="vendido" class="peer sr-only" {{ $propiedad->estado == 'vendido' ? 'checked' : '' }}>
-                                        <div class="text-center py-2 rounded-md border border-gray-300 peer-checked:bg-red-600 peer-checked:text-white peer-checked:border-red-600 hover:bg-gray-100 transition">
-                                            🔴 Vendido
-                                        </div>
-                                    </label>
-                                    
-                                    <label class="cursor-pointer">
-                                        <input type="radio" name="estado" value="alquilado" class="peer sr-only" {{ $propiedad->estado == 'alquilado' ? 'checked' : '' }}>
-                                        <div class="text-center py-2 rounded-md border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 hover:bg-gray-100 transition">
-                                            🔵 Alquilado
-                                        </div>
-                                    </label>
+                                <div>
+                                    <label class="block font-medium text-sm text-gray-700 mb-1">Tipo</label>
+                                    <select name="tipo_propiedad" class="w-full rounded-lg border-gray-300 focus:border-orange-500 focus:ring-orange-500 shadow-sm">
+                                        @foreach(['casa', 'departamento', 'terreno', 'local', 'oficina'] as $tipo)
+                                            <option value="{{ $tipo }}" {{ $propiedad->tipo_propiedad == $tipo ? 'selected' : '' }}>{{ ucfirst($tipo) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
+                                {{-- ESTADO --}}
+                                <div class="pt-2">
+                                    <label class="block font-medium text-sm text-gray-700 mb-2">Estado Actual</label>
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                        @foreach(['disponible' => '🟢 Disponible', 'reservado' => '🟡 Reservado', 'vendido' => '🔴 Vendido', 'alquilado' => '🔵 Alquilado'] as $val => $label)
+                                            <label class="cursor-pointer">
+                                                <input type="radio" name="estado" value="{{ $val }}" class="peer sr-only" {{ $propiedad->estado == $val ? 'checked' : '' }}>
+                                                <div class="text-center py-2 text-sm rounded-md border border-gray-200 bg-gray-50 peer-checked:bg-gray-800 peer-checked:text-white peer-checked:border-gray-800 hover:bg-gray-100 transition">
+                                                    {{ $label }}
+                                                </div>
+                                            </label>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                <label class="block font-medium text-sm text-gray-700">Tipo Inmueble</label>
-                                <select name="tipo_propiedad" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full mt-1">
-                                    <option value="casa" {{ $propiedad->tipo_propiedad == 'casa' ? 'selected' : '' }}>Casa</option>
-                                    <option value="departamento" {{ $propiedad->tipo_propiedad == 'departamento' ? 'selected' : '' }}>Departamento</option>
-                                    <option value="terreno" {{ $propiedad->tipo_propiedad == 'quinta' ? 'selected' : '' }}>Quinta</option>
-                                    <option value="local" {{ $propiedad->tipo_propiedad == 'terreno' ? 'selected' : '' }}>Terreno</option>
-                                    <option value="garage" {{ $propiedad->tipo_propiedad == 'campo' ? 'selected' : '' }}>Campo</option>
-                                    <option value="bodega" {{ $propiedad->tipo_propiedad == 'cochera' ? 'selected' : '' }}>Cochera</option>
-                                    <option value="oficina" {{ $propiedad->tipo_propiedad == 'fondo de comercio' ? 'selected' : '' }}>Fondo de Comercio</option>
-                                    <option value="hotel" {{ $propiedad->tipo_propiedad == 'galpon' ? 'selected' : '' }}>Galpon</option>
-                                    <option value="otro" {{ $propiedad->tipo_propiedad == 'local' ? 'selected' : '' }}>Local</option>
-                                    <option value="otro" {{ $propiedad->tipo_propiedad == 'edificio' ? 'selected' : '' }}>Edificio</option>
-                                    <option value="otro" {{ $propiedad->tipo_propiedad == 'hotel' ? 'selected' : '' }}>Hotel</option>
-                                </select>
-                            </div>
-                            <div class="ml-6 flex items-center gap-2">
-                                <input type="checkbox" name="destacada" value="1" {{ old('destacada', $propiedad->destacada ?? false) ? 'checked' : '' }} class="rounded border-gray-300 text-yellow-500 shadow-sm focus:ring-yellow-500">
-                               <label class="font-bold text-gray-700">⭐ Destacar en Inicio</label>
-                            </div>
                         </div>
 
-                        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                            <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Administrar Imágenes</h3>
+                        {{-- DESCRIPCIÓN --}}
+                        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-align-left text-orange-500"></i> Descripción
+                            </h3>
+                            <textarea name="descripcion" rows="6" class="w-full rounded-lg border-gray-300 focus:border-orange-500 focus:ring-orange-500 shadow-sm">{{ old('descripcion', $propiedad->descripcion) }}</textarea>
+                        </div>
 
+                        {{-- FOTOS --}}
+                        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-camera text-orange-500"></i> Gestión de Fotos
+                            </h3>
+                            
+                            {{-- Portada Actual --}}
                             <div class="mb-6">
-                                <label class="block font-bold text-sm text-gray-700 mb-2">Foto de Portada Actual</label>
+                                <label class="block font-medium text-sm text-gray-700 mb-2">Portada Actual</label>
                                 <div class="flex items-center gap-4">
-                                    @if($propiedad->imagen_principal)
-                                        <img src="{{ asset('storage/' . $propiedad->imagen_principal) }}" class="w-32 h-20 object-cover rounded shadow-sm border">
-                                    @else
-                                        <div class="w-32 h-20 bg-gray-200 flex items-center justify-center rounded text-xs text-gray-500">Sin portada</div>
-                                    @endif
-                                    
+                                    <div class="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                                        @if($propiedad->imagen_principal)
+                                            <img src="{{ asset('storage/' . $propiedad->imagen_principal) }}" class="w-full h-full object-cover">
+                                        @else
+                                            <div class="flex items-center justify-center h-full text-xs text-gray-400">Sin imagen</div>
+                                        @endif
+                                    </div>
                                     <div class="flex-1">
-                                        <label class="text-xs text-gray-500">Cambiar Portada:</label>
-                                        <input type="file" name="imagen" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 mt-1">
+                                        <label class="block text-xs text-gray-500 mb-1">Cambiar Portada:</label>
+                                        <input type="file" name="imagen" class="block w-full text-sm text-gray-500 file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer">
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="mb-6">
-                                <label class="block font-bold text-sm text-gray-700 mb-2">Galería ({{ $propiedad->imagenes->count() }} fotos)</label>
+                            {{-- Galería --}}
+                            <div class="border-t border-gray-100 pt-4">
+                                <label class="block font-medium text-sm text-gray-700 mb-2">Galería (Agregar nuevas)</label>
+                                <input type="file" name="imagenes[]" multiple class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer mb-4">
                                 
+                                {{-- Lista de fotos existentes --}}
                                 @if($propiedad->imagenes->count() > 0)
-                                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-4">
-                                    @foreach($propiedad->imagenes as $img)
-                                    <div class="relative group">
-                                        <img src="{{ asset('storage/' . $img->ruta) }}" class="w-full h-24 object-cover rounded shadow border">
-                                        
-                                        <button type="button" 
-                                            onclick="if(confirm('¿Seguro que deseas eliminar esta imagen?')) { 
-                                                var form = document.getElementById('deleteImageForm');
-                                                form.action = '{{ route('admin.imagen.delete', $img->id) }}';
-                                                form.submit();
-                                            }" 
-                                            class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition shadow-md hover:bg-red-700" 
-                                            title="Borrar foto">
-                                            ✕
-                                        </button>
-                                    </div>
-                                    @endforeach
+                                    <p class="text-sm font-bold text-gray-700 mb-2">Fotos en Galería ({{ $propiedad->imagenes->count() }})</p>
+                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                        @foreach($propiedad->imagenes as $img)
+                                            <div class="relative group rounded-lg overflow-hidden border border-gray-200">
+                                                <img src="{{ asset('storage/' . $img->ruta) }}" class="w-full h-24 object-cover">
+                                                {{-- Botón Borrar Foto --}}
+                                                <a href="{{ route('admin.imagen.destroy', $img->id) }}" 
+                                                   onclick="return confirm('¿Borrar esta foto?')"
+                                                   class="absolute inset-0 bg-black/50 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition duration-200">
+                                                    <i class="fa-solid fa-trash text-xl"></i>
+                                                </a>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 @else
-                                    <p class="text-sm text-gray-500 italic mb-4">No hay fotos extra en la galería.</p>
+                                    <p class="text-sm text-gray-400 italic">No hay fotos extra en la galería.</p>
                                 @endif
-
-                                <label class="text-xs text-gray-500 font-bold">Agregar más fotos a la galería:</label>
-                                <input type="file" name="imagenes[]" multiple class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 mt-1">
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block font-medium text-sm text-gray-700">Ciudad</label>
-                                <input type="text" name="ciudad" value="{{ old('ciudad', $propiedad->ciudad) }}" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full mt-1">
-                            </div>
-                            <div>
-                                <label class="block font-medium text-sm text-gray-700">Dirección</label>
-                                <input type="text" name="direccion" value="{{ old('direccion', $propiedad->direccion) }}" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full mt-1">
+                    </div>
+
+                    {{-- COLUMNA DERECHA --}}
+                    <div class="space-y-8">
+                        {{-- CARACTERÍSTICAS --}}
+                        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">Detalles</h3>
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="text-sm text-gray-600">Habitaciones</label>
+                                        <input type="number" name="habitaciones" value="{{ old('habitaciones', $propiedad->habitaciones) }}" class="w-full rounded-lg border-gray-300 focus:border-orange-500 focus:ring-orange-500 shadow-sm h-9">
+                                    </div>
+                                    <div>
+                                        <label class="text-sm text-gray-600">Baños</label>
+                                        <input type="number" name="banos" value="{{ old('banos', $propiedad->banos) }}" class="w-full rounded-lg border-gray-300 focus:border-orange-500 focus:ring-orange-500 shadow-sm h-9">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="text-sm text-gray-600">Cocheras</label>
+                                        <input type="number" name="cocheras" value="{{ old('cocheras', $propiedad->cocheras) }}" class="w-full rounded-lg border-gray-300 focus:border-orange-500 focus:ring-orange-500 shadow-sm h-9">
+                                    </div>
+                                    <div>
+                                        <label class="text-sm text-gray-600">M² Totales</label>
+                                        <input type="number" name="superficie_total" value="{{ old('superficie_total', $propiedad->superficie_total) }}" class="w-full rounded-lg border-gray-300 focus:border-orange-500 focus:ring-orange-500 shadow-sm h-9">
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div>
-                            <label class="block font-medium text-sm text-gray-700">Descripción</label>
-                            <textarea name="descripcion" rows="4" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full mt-1">{{ old('descripcion', $propiedad->descripcion) }}</textarea>
+                        {{-- UBICACIÓN --}}
+                        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">Ubicación</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block font-medium text-sm text-gray-700 mb-1">Ciudad</label>
+                                    <input type="text" name="ciudad" value="{{ old('ciudad', $propiedad->ciudad) }}" class="w-full rounded-lg border-gray-300 focus:border-orange-500 focus:ring-orange-500 shadow-sm" required>
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-sm text-gray-700 mb-1">Dirección</label>
+                                    <input type="text" name="direccion" value="{{ old('direccion', $propiedad->direccion) }}" class="w-full rounded-lg border-gray-300 focus:border-orange-500 focus:ring-orange-500 shadow-sm">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="flex justify-end gap-3">
-                            <a href="{{ route('admin.properties.index') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">Cancelar</a>
-                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition font-bold shadow-md">
-                                Guardar Cambios
+                        {{-- BOTONES --}}
+                        <div class="flex flex-col gap-3 sticky top-6">
+                            <button type="submit" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition flex justify-center items-center gap-2">
+                                <i class="fa-solid fa-save"></i> Actualizar Cambios
                             </button>
+                            <a href="{{ route('admin.properties.index') }}" class="w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-lg border border-gray-300 text-center transition">
+                                Cancelar
+                            </a>
                         </div>
-                    </form>
-
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-
-    {{-- Formulario oculto reutilizable para borrar imágenes --}}
-    <form id="deleteImageForm" action="" method="POST" style="display: none;">
-        @csrf
-        @method('DELETE')
-    </form>
 </x-app-layout>

@@ -6912,6 +6912,12 @@ a {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
 }
 
 .card-favorite {
@@ -6980,7 +6986,7 @@ a {
 }
 
 .card-feature i {
-  color: #333;
+  color: #ce0000;
   font-size: 14px;
 }
 
@@ -7023,11 +7029,17 @@ a {
   text-decoration: none;
   border-radius: 4px;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 15px;
   display: flex;
   align-items: center;
   gap: 8px;
   transition: all 0.3s;
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
 }
 
 

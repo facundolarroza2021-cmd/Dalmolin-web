@@ -32,23 +32,30 @@ Route::get('/propiedades/{operacion?}/{tipo?}', [PropiedadController::class, 'in
 // Detalle de Propiedad
 Route::get('/propiedad/{slug}', [PropiedadController::class, 'show'])->name('public.propiedad.show');
 
-
+Route::get('/propiedad/quick-view/{id}', [PropiedadController::class, 'quickView'])->name('public.quickview');
 // =========================================================================
 // 2. PANEL DE ADMINISTRACIÓN (Requiere Login)
 // =========================================================================
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
+    Route::patch('/admin/properties/{id}/toggle', [\App\Http\Controllers\Admin\PropiedadController::class, 'toggle'])
+         ->name('admin.propiedades.toggle');
     // Dashboard (Estadísticas)
+// Dashboard (Estadísticas Mejoradas)
     Route::get('/dashboard', function () {
-        $totalPropiedades = Propiedad::count();
-        $enVenta = Propiedad::where('tipo_operacion', 'venta')->count();
-        $enAlquiler = Propiedad::where('tipo_operacion', 'alquiler')->count();
+        // 1. Totales
+        $total = Propiedad::count();
         
-        // Últimas 5 cargadas para acceso rápido
+        // 2. Desglose por Estado (KPIs)
+        $disponibles = Propiedad::where('estado', 'disponible')->count();
+        $reservadas  = Propiedad::where('estado', 'reservado')->count();
+        $vendidas    = Propiedad::where('estado', 'vendido')->count();
+        
+        // 3. Últimas 5 cargadas
         $ultimas = Propiedad::latest()->take(5)->get();
 
-        return view('dashboard', compact('totalPropiedades', 'enVenta', 'enAlquiler', 'ultimas'));
+        return view('dashboard', compact('total', 'disponibles', 'reservadas', 'vendidas', 'ultimas'));
     })->name('dashboard');
 
     // Rutas de Admin (Prefijo: /admin)
@@ -58,8 +65,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('properties', AdminPropiedadController::class);
         
         // Borrar imagen de galería (Método DELETE seguro)
-        Route::delete('/imagen/{id}/delete', [AdminPropiedadController::class, 'destroyImagen'])
-            ->name('imagen.delete');
+        Route::get('/imagen/{id}/delete', [AdminPropiedadController::class, 'destroyImagen'])
+            ->name('imagen.destroy');
     });
 
     // Perfil de Usuario
