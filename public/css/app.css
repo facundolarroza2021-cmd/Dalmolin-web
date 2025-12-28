@@ -7645,3 +7645,254 @@ a {
             }
         }
 
+/* ==========================================
+   MINI NAVBAR / TOP BAR
+   ========================================== */
+
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 1001;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.topbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.topbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    gap: 20px;
+}
+
+.topbar-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.topbar-item i {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.topbar-link {
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.topbar-link:hover {
+    color: #c41e3a;
+}
+
+.topbar-link:hover i {
+    color: #c41e3a;
+}
+
+.topbar-separator {
+    width: 1px;
+    height: 14px;
+    background: #d1d5db;
+}
+
+/* Ajustar body y navbar para el topbar */
+body {
+    padding-top: 111px !important; /* 36px topbar + 75px navbar */
+}
+
+.navbar {
+    top: 36px !important;
+}
+
+/* Animación suave */
+.topbar {
+    animation: slideDownTopbar 0.3s ease-out;
+}
+
+@keyframes slideDownTopbar {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 768px) {
+    .topbar-content {
+        justify-content: flex-start;
+        overflow-x: auto;
+        gap: 15px;
+    }
+
+    .topbar-item {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .topbar-item i {
+        font-size: 11px;
+    }
+
+    .topbar-separator {
+        display: none;
+    }
+
+    body {
+        padding-top: 101px !important; /* 36px topbar + 65px navbar mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .topbar-item span {
+        font-size: 11px;
+    }
+    
+    /* Ocultar texto de horarios en móviles muy pequeños */
+    .topbar-item:last-child {
+        display: none;
+    }
+}
+
+/* ==========================================
+   MINI NAVBAR / TOP BAR
+   ========================================== */
+
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 1001;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.topbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.topbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    gap: 20px;
+}
+
+.topbar-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.topbar-item i {
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+.topbar-link {
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.topbar-link:hover {
+    color: #c41e3a;
+}
+
+.topbar-link:hover i {
+    color: #c41e3a;
+}
+
+.topbar-separator {
+    width: 1px;
+    height: 14px;
+    background: #d1d5db;
+}
+
+/* Ajustar body y navbar para el topbar */
+body {
+    padding-top: 107px !important; /* 32px topbar + 75px navbar */
+}
+
+.navbar {
+    top: 32px !important;
+}
+
+/* Animación suave */
+.topbar {
+    animation: slideDownTopbar 0.3s ease-out;
+}
+
+@keyframes slideDownTopbar {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 768px) {
+    .topbar-content {
+        justify-content: flex-start;
+        overflow-x: auto;
+        gap: 15px;
+    }
+
+    .topbar-item {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .topbar-item i {
+        font-size: 11px;
+    }
+
+    .topbar-separator {
+        display: none;
+    }
+
+    body {
+        padding-top: 97px !important; /* 32px topbar + 65px navbar mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .topbar-item span {
+        font-size: 11px;
+    }
+    
+    /* Ocultar texto de horarios en móviles muy pequeños */
+    .topbar-item:last-child {
+        display: none;
+    }
+}

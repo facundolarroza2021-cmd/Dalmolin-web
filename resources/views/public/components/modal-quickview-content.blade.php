@@ -58,6 +58,12 @@
         <h2 class="text-2xl text-gray-900 leading-tight mb-6">
             {{ $propiedad->titulo }}
         </h2>
+        <div class="flex items-center text-sm text-gray-500 mb-4">
+            <span class="flex items-center">
+                <i class="fa-regular fa-clock mr-1"></i>
+                {{ $propiedad->fecha_publicacion ? 'Publicado ' . $propiedad->fecha_publicacion->diffForHumans() : 'Reciente' }}
+            </span>
+        </div>
 
         {{-- Precio destacado minimalista --}}
         <div class="mb-6">
@@ -103,7 +109,7 @@
         </div>
 
         {{-- Botones limpios y espaciados --}}
-        <div class="mt-auto space-y-3">
+        <div class="mb-[120px] space-y-3">
             <a href="{{ route('public.propiedad.show', $propiedad->slug) }}" 
                class="block w-full text-center bg-gray-900 hover:bg-black text-white font-semibold py-3.5 rounded-lg transition-colors">
                 Ver Ficha Completa
@@ -165,6 +171,7 @@
 </style>
 
 <script>
+
     // Actualizar contador
     document.addEventListener('DOMContentLoaded', function() {
         const swiper = document.querySelector('.quickview-swiper')?.swiper;

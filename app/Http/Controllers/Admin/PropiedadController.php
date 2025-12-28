@@ -7,6 +7,8 @@ use App\Models\Propiedad;
 use Illuminate\Http\Request;
 use App\Models\Imagen;
 use Illuminate\Support\Str; 
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 use Illuminate\Support\Facades\Storage; 
 
@@ -37,6 +39,8 @@ class PropiedadController extends Controller
             'cocheras' => 'nullable|integer',
             'superficie_total' => 'nullable|integer',
             'direccion' => 'nullable|string|max:255',
+            'porcentaje_descuento' => 'nullable|integer|min:1|max:99',
+            
         ]);
     
         // Generar Slug
@@ -48,7 +52,7 @@ class PropiedadController extends Controller
         // Subir imagen de portada
         $rutaImagen = null;
         if ($request->hasFile('imagen')) {
-            $rutaImagen = $request->file('imagen')->store('propiedades', 'public');
+            $rutaImagen = $this->subirImagenConMarcaAgua($request->file('imagen'), 'propiedades');
         }
     
         // 2. CREAR LA PROPIEDAD Y GUARDARLA EN LA VARIABLE $propiedad
@@ -72,15 +76,18 @@ class PropiedadController extends Controller
             'superficie_total' => $request->superficie_total,
             'imagen_principal' => $rutaImagen,
             'publicada' => true,
+            'fecha_publicacion' => now(),
+            'porcentaje_descuento' => $request->porcentaje_descuento,
         ]);
     
         // 3. Guardar Galería (Ahora sí $propiedad existe)
         if ($request->hasFile('imagenes')) {
             foreach ($request->file('imagenes') as $foto) {
-                $ruta = $foto->store('galerias', 'public');
-    
+                // Usamos nuestra nueva función para cada foto
+                $ruta = $this->subirImagenConMarcaAgua($foto, 'galerias');
+
                 Imagen::create([
-                    'propiedad_id' => $propiedad->id, // ¡Ahora esto funciona!
+                    'propiedad_id' => $propiedad->id,
                     'ruta' => $ruta
                 ]);
             }
@@ -139,19 +146,22 @@ class PropiedadController extends Controller
             'descripcion' => 'required',
             'estado' => 'required',
             'ciudad' => 'required',
-            // Imagen principal es opcional al editar
             'imagen' => 'nullable|image|max:2048', 
-            // Galería también es opcional
             'imagenes.*' => 'image|max:2048',
+            'porcentaje_descuento' => 'nullable|integer|min:1|max:99',
         ]);
 
         // 1. Cambiar Portada (Solo si subieron una nueva)
-        if ($request->hasFile('imagen')) {
-            if ($property->imagen_principal) {
-                Storage::disk('public')->delete($property->imagen_principal);
+        if ($request->hasFile('imagenes')) {
+            foreach ($request->file('imagenes') as $foto) {
+                // 👇 Subir con marca de agua
+                $ruta = $this->subirImagenConMarcaAgua($foto, 'galerias');
+                
+                Imagen::create([
+                    'propiedad_id' => $property->id,
+                    'ruta' => $ruta
+                ]);
             }
-            $property->imagen_principal = $request->file('imagen')->store('propiedades', 'public');
-            $property->save();
         }
 
         // 2. Agregar nuevas fotos a la Galería (Sin borrar las viejas)
@@ -175,7 +185,7 @@ class PropiedadController extends Controller
             'descripcion' => $request->descripcion,
             'ciudad' => $request->ciudad,
             'direccion' => $request->direccion,
-            // Agrega aquí los campos de habitaciones/baños si los usas
+            'porcentaje_descuento' => $request->porcentaje_descuento,
         ]);
 
         return redirect()->route('admin.properties.index')->with('success', 'Propiedad actualizada correctamente.');
@@ -238,5 +248,40 @@ class PropiedadController extends Controller
         }
 
         return back()->with('error', 'Acción no válida.');
+    }
+
+    /**
+     * Función auxiliar para procesar imagen con marca de agua
+     */
+    private function subirImagenConMarcaAgua($file, $carpeta)
+    {
+        // 1. Crear instancia del Manager (Driver GD)
+        $manager = new ImageManager(new Driver());
+
+        // 2. Leer la imagen subida
+        $image = $manager->read($file);
+
+        // 3. Redimensionar para optimizar (opcional, ancho máx 1200px)
+        $image->scale(width: 1200);
+
+        // 4. Insertar Marca de Agua
+        // Asegúrate de que exista el archivo en public/img/watermark.png
+        $pathWatermark = public_path('img/watermark.png');
+        
+        if (file_exists($pathWatermark)) {
+            // position: 'center', 'top-left', 'bottom-right', etc.
+            // x, y: margen en píxeles
+            $image->place($pathWatermark, 'center');
+        }
+
+        // 5. Generar nombre único y ruta
+        $filename = uniqid() . '.webp'; // Convertimos a WebP para que sea liviano
+        $rutaFinal = $carpeta . '/' . $filename;
+
+        // 6. Guardar en Storage (Laravel)
+        // encode() convierte la imagen procesada a datos binarios
+        Storage::disk('public')->put($rutaFinal, (string) $image->toWebp(80));
+
+        return $rutaFinal;
     }
 }

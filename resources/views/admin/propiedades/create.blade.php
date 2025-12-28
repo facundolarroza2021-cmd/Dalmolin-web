@@ -45,6 +45,20 @@
                                                    class="w-full pl-8 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 shadow-sm font-bold text-gray-700" 
                                                    placeholder="0.00" required>
                                         </div>
+
+                                        <div>
+                                            <label class="block font-medium text-sm text-gray-700 text-green-600 font-bold">
+                                                % Descuento (Opcional)
+                                            </label>
+                                            <div class="relative mt-1">
+                                                <input type="number" name="porcentaje_descuento" min="0" max="99" placeholder="Ej: 10" 
+                                                    class="border-gray-300 focus:border-green-500 focus:ring-green-500 rounded-md shadow-sm block w-full pl-3 pr-8">
+                                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                                    <span class="text-gray-500 sm:text-sm">%</span>
+                                                </div>
+                                            </div>
+                                            <p class="text-xs text-gray-400 mt-1">Si pones 10, se mostrará un 10% OFF.</p>
+                                        </div>
                                     </div>
                                     <div>
                                         <label class="block font-bold text-sm text-gray-700 mb-2">Tipo de Operación</label>

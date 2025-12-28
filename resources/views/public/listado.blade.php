@@ -199,9 +199,35 @@
                                 
                                 {{-- Precio y Ubicación --}}
                                 <div class="mb-3">
-                                    <p class="text-2xl  text-gray-800">
-                                        {{ $propiedad->moneda }} {{ number_format($propiedad->precio, 0, ',', '.') }}
-                                    </p>
+                                    <div class="mb-2">
+                                        @if($propiedad->porcentaje_descuento > 0)
+                                            {{-- Lógica matemática --}}
+                                            @php
+                                                $montoDescuento = $propiedad->precio * ($propiedad->porcentaje_descuento / 100);
+                                                $precioFinal = $propiedad->precio - $montoDescuento;
+                                            @endphp
+
+                                            {{-- Etiqueta de Oferta --}}
+                                            <div class="inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded mb-1 ">
+                                                Rebajado {{ $propiedad->moneda }} {{ number_format($montoDescuento, 0, ',', '.') }} ({{ $propiedad->porcentaje_descuento }}%)
+                                            </div>
+
+                                            {{-- Precios: Viejo tachado y Nuevo grande --}}
+                                            <div class="flex items-baseline gap-2">
+                                                <span class="text-sm text-gray-400 line-through decoration-red-400">
+                                                    {{ $propiedad->moneda }} {{ number_format($propiedad->precio, 0, ',', '.') }}
+                                                </span>
+                                                <span class="text-2xl font-bold text-gray-900">
+                                                    {{ $propiedad->moneda }} {{ number_format($precioFinal, 0, ',', '.') }}
+                                                </span>
+                                            </div>
+                                        @else
+                                            {{-- Precio Normal --}}
+                                            <p class="text-2xl font-bold text-gray-900">
+                                                {{ $propiedad->moneda }} {{ number_format($propiedad->precio, 0, ',', '.') }}
+                                            </p>
+                                        @endif
+                                    </div>
                                     <p class="text-gray-500 text-sm flex items-center gap-1">
                                         <i class="fa-solid fa-location-dot text-red-500"></i> {{ Str::limit($propiedad->ciudad, 25) }}
                                     </p>
@@ -213,6 +239,14 @@
                                         {{ Str::limit($propiedad->titulo, 45) }}
                                     </a>
                                 </h3>
+                                <div class="mb-4 text-xs text-gray-400 flex items-center">
+                                    <i class="fa-regular fa-clock mr-1.5"></i>
+                                    @if($propiedad->fecha_publicacion)
+                                        Publicado {{ $propiedad->fecha_publicacion->diffForHumans() }}
+                                    @else
+                                        Recientemente
+                                    @endif
+                                </div>
 
                                 {{-- Características --}}
                                 <div class="grid grid-cols-3 gap-2 border-t border-gray-100 pt-4 mt-auto">

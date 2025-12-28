@@ -22,6 +22,37 @@
 </head>
 <body>
 
+<div class="topbar">
+    <div class="topbar-container">
+        <div class="topbar-content">
+            
+            {{-- Ubicación --}}
+            <div class="topbar-item">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>Concordia, Entre Ríos</span>
+            </div>
+
+            {{-- Separador --}}
+            <div class="topbar-separator"></div>
+
+            {{-- Teléfono --}}
+            <a href="tel:+543456256190" class="topbar-item topbar-link">
+                <i class="fa-solid fa-phone"></i>
+                <span>+54 345 625 6190</span>
+            </a>
+
+            {{-- Separador --}}
+            <div class="topbar-separator"></div>
+
+            {{-- Horarios --}}
+            <div class="topbar-item">
+                <i class="fa-solid fa-clock"></i>
+                <span>Lunes a Viernes: 9:00 - 18:00hs</span>
+            </div>
+
+        </div>
+    </div>
+</div>
 <nav class="navbar">
   <div class="navbar-container">
     

@@ -36,13 +36,14 @@ class Propiedad extends Model
         'publicada',
         'destacada',
         'fecha_publicacion',
+        'porcentaje_descuento',
     ];
 
     protected $casts = [
+        'fecha_publicacion' => 'datetime',
         'precio' => 'decimal:2',
         'publicada' => 'boolean',
         'destacada' => 'boolean',
-        'fecha_publicacion' => 'datetime',
     ];
 
     public function scopeActivas($query)
@@ -52,5 +53,12 @@ class Propiedad extends Model
     public function imagenes()
     {
         return $this->hasMany(Imagen::class);
+    }
+    public function getPrecioFinalAttribute()
+    {
+        if ($this->porcentaje_descuento > 0) {
+            return $this->precio - ($this->precio * ($this->porcentaje_descuento / 100));
+        }
+        return $this->precio;
     }
 }
