@@ -115,6 +115,23 @@
                                       placeholder="Describe los detalles más atractivos de la propiedad...">{{ old('descripcion') }}</textarea>
                             <p class="text-xs text-gray-500 mt-2 text-right">Se recomienda escribir al menos 2 párrafos.</p>
                         </div>
+                        <div class="mb-4">
+                            <label for="video_url" class="block text-sm font-medium text-gray-700 mb-1">
+                                Video o Tour Virtual 360° (Opcional)
+                            </label>
+                            <div class="relative rounded-md shadow-sm">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <i class="fa-solid fa-link text-gray-400"></i>
+                                </div>
+                                <input type="text" 
+                                    name="video_url" 
+                                    id="video_url" 
+                                    value="{{ old('video_url', $propiedad->video_url ?? '') }}"
+                                    class="block w-full rounded-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" 
+                                    placeholder="Ej: https://www.youtube.com/watch?v=... o Link de Matterport">
+                            </div>
+                            <p class="mt-1 text-xs text-gray-500">Pega aquí el enlace directo de YouTube o de la plataforma 360.</p>
+                        </div>
 
                         {{-- 3. TARJETA MULTIMEDIA --}}
                         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -179,21 +196,33 @@
                         </div>
 
                         {{-- 5. TARJETA UBICACIÓN --}}
+
                         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                             <h3 class="text-gray-800 font-bold text-lg mb-4 flex items-center gap-2">
                                 <i class="fa-solid fa-map-location-dot text-blue-600"></i> Ubicación
                             </h3>
                             
-                            <div class="space-y-3">
+                            <div class="space-y-4">
                                 <div>
                                     <label class="block font-bold text-xs text-gray-500 uppercase tracking-wider mb-1">Ciudad</label>
-                                    <input type="text" name="ciudad" value="{{ old('ciudad') }}" 
+                                    <input type="text" name="ciudad" value="{{ old('ciudad', 'Concordia') }}" 
                                            class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 shadow-sm" required>
                                 </div>
                                 <div>
                                     <label class="block font-bold text-xs text-gray-500 uppercase tracking-wider mb-1">Dirección Exacta</label>
                                     <input type="text" name="direccion" value="{{ old('direccion') }}" 
                                            class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 shadow-sm">
+                                </div>
+
+                                {{-- MAPA INTERACTIVO --}}
+                                <div>
+                                    <label class="block font-bold text-xs text-gray-500 uppercase tracking-wider mb-2">Marcar en Mapa (Click para fijar)</label>
+                                    <div id="map-admin" class="w-full h-64 rounded-lg border border-gray-300 z-0"></div>
+                                    <p class="text-xs text-gray-400 mt-1 text-center">Mueve el mapa y haz clic donde está la propiedad.</p>
+                                    
+                                    {{-- Inputs Ocultos (Aquí se guardan las coordenadas) --}}
+                                    <input type="hidden" name="latitud" id="latitud" value="{{ old('latitud') }}">
+                                    <input type="hidden" name="longitud" id="longitud" value="{{ old('longitud') }}">
                                 </div>
                             </div>
                         </div>
@@ -214,4 +243,38 @@
             </form>
         </div>
     </div>
+
+{{-- Scripts para el Mapa (Leaflet) --}}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Inicializar mapa centrado en Concordia
+            var map = L.map('map-admin').setView([-31.3929, -58.0209], 13);
+            var marker;
+
+            // 2. Capa base (OpenStreetMap)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            // 3. Función al hacer clic
+            map.on('click', function(e) {
+                var lat = e.latlng.lat;
+                var lng = e.latlng.lng;
+
+                // Si ya hay marcador, lo movemos. Si no, lo creamos.
+                if (marker) {
+                    marker.setLatLng(e.latlng);
+                } else {
+                    marker = L.marker(e.latlng).addTo(map);
+                }
+
+                // Guardar en los inputs ocultos
+                document.getElementById('latitud').value = lat;
+                document.getElementById('longitud').value = lng;
+            });
+        });
+    </script>
 </x-app-layout>

@@ -95,6 +95,28 @@
                             </h3>
                             <textarea name="descripcion" rows="6" class="w-full rounded-lg border-gray-300 focus:border-orange-500 focus:ring-orange-500 shadow-sm">{{ old('descripcion', $propiedad->descripcion) }}</textarea>
                         </div>
+                        <div class="mb-6">
+                            <label for="video_url" class="block text-sm font-medium text-gray-700 mb-1">
+                                Video de YouTube o Tour 360° (Opcional)
+                            </label>
+                            
+                            <div class="relative rounded-md shadow-sm">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <i class="fa-solid fa-link text-gray-400"></i>
+                                </div>
+                                
+                                <input type="url" 
+                                    name="video_url" 
+                                    id="video_url" 
+                                    value="{{ old('video_url') }}"
+                                    class="block w-full rounded-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2" 
+                                    placeholder="Pega aquí el link (Ej: https://youtu.be/... o Matterport)">
+                            </div>
+                            
+                            <p class="mt-1 text-xs text-gray-500">
+                                Soporta enlaces de YouTube, Vimeo, Matterport o Kuula. El sistema lo detectará automáticamente.
+                            </p>
+                        </div>
 
                         {{-- FOTOS --}}
                         <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
@@ -189,6 +211,14 @@
                                     <label class="block font-medium text-sm text-gray-700 mb-1">Dirección</label>
                                     <input type="text" name="direccion" value="{{ old('direccion', $propiedad->direccion) }}" class="w-full rounded-lg border-gray-300 focus:border-orange-500 focus:ring-orange-500 shadow-sm">
                                 </div>
+
+                                {{-- MAPA --}}
+                                <div>
+                                    <label class="block font-medium text-sm text-gray-700 mb-2">Ubicación en Mapa</label>
+                                    <div id="map-edit" class="w-full h-64 rounded-lg border border-gray-300 z-0"></div>
+                                    <input type="hidden" name="latitud" id="latitud_edit" value="{{ old('latitud', $propiedad->latitud) }}">
+                                    <input type="hidden" name="longitud" id="longitud_edit" value="{{ old('longitud', $propiedad->longitud) }}">
+                                </div>
                             </div>
                         </div>
 
@@ -206,4 +236,42 @@
             </form>
         </div>
     </div>
+{{-- Scripts Mapa Edición --}}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar si hay coordenadas previas
+            var savedLat = "{{ $propiedad->latitud }}";
+            var savedLng = "{{ $propiedad->longitud }}";
+            
+            // Centro por defecto (Concordia) o la ubicación guardada
+            var center = (savedLat && savedLng) ? [savedLat, savedLng] : [-31.3929, -58.0209];
+            var zoom = (savedLat && savedLng) ? 15 : 13;
+
+            var map = L.map('map-edit').setView(center, zoom);
+            var marker;
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            // Si hay coordenadas, poner el marcador de una
+            if(savedLat && savedLng) {
+                marker = L.marker([savedLat, savedLng]).addTo(map);
+            }
+
+            // Actualizar al hacer clic
+            map.on('click', function(e) {
+                if (marker) {
+                    marker.setLatLng(e.latlng);
+                } else {
+                    marker = L.marker(e.latlng).addTo(map);
+                }
+                document.getElementById('latitud_edit').value = e.latlng.lat;
+                document.getElementById('longitud_edit').value = e.latlng.lng;
+            });
+        });
+    </script>
 </x-app-layout>

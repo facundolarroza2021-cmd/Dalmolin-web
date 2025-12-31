@@ -6325,10 +6325,11 @@ a {
 
 .property-gallery-section {
   border-radius: 8px;
+  height: auto;
   overflow: hidden;
   margin-bottom: 30px;
   display: grid;
-  grid-template-columns: 1fr 400px;
+  grid-template-columns: 2.5fr 1fr;
   gap: 12px;
   padding: 12px;
 }
@@ -6336,7 +6337,7 @@ a {
 .gallery-main-image {
   position: relative;
   width: 100%;
-  height: 450px;
+  height: 100%;
   background: #000;
   overflow: hidden;
   border-radius: 6px;
@@ -6400,7 +6401,7 @@ a {
 .thumb-image {
   position: relative;
   width: 100%;
-  height: 219px;
+  height: calc(50% - 6px);
   border-radius: 6px;
   overflow: hidden;
   cursor: pointer;
@@ -7644,8 +7645,7 @@ a {
                 gap: 8px;
             }
         }
-
-/* ==========================================
+   /* ==========================================
    MINI NAVBAR / TOP BAR
    ========================================== */
 
@@ -7654,143 +7654,26 @@ a {
     top: 0;
     left: 0;
     right: 0;
-    background: #f8f9fa;
+    background: #D62020;
     border-bottom: 1px solid #e5e7eb;
     z-index: 1001;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
 }
 
 .topbar-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
-}
-
-.topbar-content {
+    padding: 0;
     display: flex;
-    align-items: center;
     justify-content: center;
-    height: 36px;
-    gap: 20px;
 }
 
-.topbar-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    color: #6b7280;
-}
 
-.topbar-item i {
-    font-size: 12px;
-    color: #9ca3af;
-}
-
-.topbar-link {
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.topbar-link:hover {
-    color: #c41e3a;
-}
-
-.topbar-link:hover i {
-    color: #c41e3a;
-}
-
-.topbar-separator {
-    width: 1px;
-    height: 14px;
-    background: #d1d5db;
-}
-
-/* Ajustar body y navbar para el topbar */
-body {
-    padding-top: 111px !important; /* 36px topbar + 75px navbar */
-}
-
-.navbar {
-    top: 36px !important;
-}
-
-/* Animación suave */
-.topbar {
-    animation: slideDownTopbar 0.3s ease-out;
-}
-
-@keyframes slideDownTopbar {
-    from {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* ==========================================
-   RESPONSIVE
-   ========================================== */
-
-@media (max-width: 768px) {
-    .topbar-content {
-        justify-content: flex-start;
-        overflow-x: auto;
-        gap: 15px;
-    }
-
-    .topbar-item {
-        font-size: 12px;
-        white-space: nowrap;
-    }
-
-    .topbar-item i {
-        font-size: 11px;
-    }
-
-    .topbar-separator {
-        display: none;
-    }
-
-    body {
-        padding-top: 101px !important; /* 36px topbar + 65px navbar mobile */
-    }
-}
-
-@media (max-width: 480px) {
-    .topbar-item span {
-        font-size: 11px;
-    }
-    
-    /* Ocultar texto de horarios en móviles muy pequeños */
-    .topbar-item:last-child {
-        display: none;
-    }
-}
-
-/* ==========================================
-   MINI NAVBAR / TOP BAR
-   ========================================== */
-
-.topbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: #f8f9fa;
-    border-bottom: 1px solid #e5e7eb;
-    z-index: 1001;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
-.topbar-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
 
 .topbar-content {
     display: flex;
@@ -7804,13 +7687,13 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 12px;
-    color: #6b7280;
+    font-size: 14px;
+    color: #F0F0F0;
 }
 
 .topbar-item i {
     font-size: 11px;
-    color: #9ca3af;
+    color: #F0F0F0;
 }
 
 .topbar-link {
@@ -7829,7 +7712,7 @@ body {
 .topbar-separator {
     width: 1px;
     height: 14px;
-    background: #d1d5db;
+    background: #000000;
 }
 
 /* Ajustar body y navbar para el topbar */
@@ -7895,4 +7778,411 @@ body {
     .topbar-item:last-child {
         display: none;
     }
+}
+/* ==========================================
+   RESPONSIVE - NAVBAR Y TOPBAR
+   ========================================== */
+
+/* AJUSTES PARA PANTALLAS GRANDES (1400px - 1600px) */
+@media (min-width: 1400px) and (max-width: 1600px) {
+  .navbar-container {
+    padding: 0 40px 0 200px !important;
+    gap: 50px !important;
+  }
+}
+
+/* PANTALLAS MEDIANAS-GRANDES (1200px - 1400px) */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .navbar-container {
+    padding: 0 30px 0 150px !important;
+    gap: 35px !important;
+  }
+
+  .navbar-menu {
+    gap: 4px !important;
+    padding-right: 25px !important;
+  }
+
+  .navbar-menu:last-of-type {
+    padding-left: 25px !important;
+  }
+
+  .navbar-menu a {
+    padding: 10px 14px !important;
+    font-size: 14px !important;
+  }
+
+  .navbar-logo img {
+    height: 45px !important;
+  }
+
+  .navbar-social {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .navbar-user {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+/* TABLET Y PANTALLAS PEQUEÑAS (1300px y menos) */
+@media (max-width: 1300px) {
+  
+  /* Ajustar body padding */
+  body {
+    padding-top: 97px !important; /* 32px topbar + 65px navbar */
+  }
+
+  /* Ajustar navbar */
+  .navbar {
+    top: 32px !important;
+  }
+
+  .navbar-container {
+    display: flex !important;
+    justify-content: space-between;
+    padding: 0 25px !important;
+    height: 65px !important;
+    gap: 20px !important;
+    grid-template-columns: unset !important;
+  }
+
+  /* Ocultar menús de escritorio */
+  .navbar-menu {
+    display: none !important;
+  }
+
+  .navbar-icons {
+    display: none !important;
+  }
+
+  /* Reordenar logo */
+  .navbar-logo {
+    order: -1;
+  }
+
+  .navbar-logo img {
+    height: 45px !important;
+  }
+
+  /* Mostrar botón hamburguesa */
+  .navbar-toggle {
+    display: flex !important;
+  }
+
+  /* Ajustar menú móvil */
+  .navbar-mobile {
+    padding: 20px 25px;
+  }
+
+  /* Ocultar mini-navbar si existe */
+  .mini-navbar {
+    display: none !important;
+  }
+}
+
+/* MÓVIL GRANDE (768px y menos) */
+@media (max-width: 768px) {
+  
+  body {
+    padding-top: 97px !important;
+  }
+
+  /* Topbar responsive */
+  .topbar-content {
+    gap: 15px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .topbar-item {
+    font-size: 12px !important;
+    white-space: nowrap;
+  }
+
+  .topbar-separator {
+    display: none !important;
+  }
+
+  /* Navbar ajustes */
+  .navbar-container {
+    padding: 0 20px !important;
+    height: 60px !important;
+  }
+
+  .navbar-logo img {
+    height: 40px !important;
+  }
+
+  .navbar-toggle {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .navbar-toggle span {
+    width: 20px !important;
+    height: 2.5px !important;
+  }
+
+  .navbar-mobile {
+    padding: 20px;
+  }
+}
+
+/* MÓVIL PEQUEÑO (480px y menos) */
+@media (max-width: 480px) {
+  
+  /* Ocultar último item del topbar en móviles pequeños */
+  .topbar-item:last-child {
+    display: none !important;
+  }
+
+  .navbar-logo img {
+    height: 35px !important;
+  }
+
+  .navbar-toggle {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .navbar-toggle span {
+    width: 18px !important;
+  }
+}
+
+/* ==========================================
+   BOTÓN HAMBURGUESA
+   ========================================== */
+
+.navbar-toggle {
+  position: relative;
+  background: #ffffff;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  border: 2px solid #e5e7eb;
+  cursor: pointer;
+  display: none; /* Oculto por defecto */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.navbar-toggle:hover {
+  border-color: #b91c1c;
+  box-shadow: 0 4px 12px rgba(185, 28, 28, 0.15);
+}
+
+.navbar-toggle span {
+  display: block;
+  width: 22px;
+  height: 3px;
+  background: #b91c1c;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Animación del botón cuando está activo */
+.navbar-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translateY(8px);
+}
+
+.navbar-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translateY(-8px);
+}
+
+/* ==========================================
+   MENÚ MÓVIL
+   ========================================== */
+
+.navbar-mobile {
+  display: none;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(185, 28, 28, 0.1);
+  padding: 20px 25px;
+  gap: 6px;
+  max-height: calc(100vh - 107px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.navbar-mobile.active {
+  display: flex;
+}
+
+.navbar-mobile > a {
+  padding: 14px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1f2937;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.navbar-mobile > a:hover {
+  background: linear-gradient(135deg, rgba(185, 28, 28, 0.08), rgba(185, 28, 28, 0.12));
+  color: #b91c1c;
+  padding-left: 24px;
+}
+
+/* ==========================================
+   DROPDOWN MÓVIL
+   ========================================== */
+
+.mobile-dropdown {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-dropdown-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: transparent;
+  border: none;
+  color: #1f2937;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  font-family: inherit;
+}
+
+.mobile-dropdown-toggle:hover {
+  background: rgba(185, 28, 28, 0.08);
+  color: #b91c1c;
+}
+
+.mobile-dropdown-toggle i {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.mobile-dropdown.active .mobile-dropdown-toggle i {
+  transform: rotate(180deg);
+}
+
+.mobile-dropdown-content {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 0 8px 20px;
+  margin-left: 20px;
+  border-left: 2px solid rgba(185, 28, 28, 0.2);
+}
+
+.mobile-dropdown.active .mobile-dropdown-content {
+  display: flex;
+}
+
+.mobile-dropdown-content a {
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #6b7280;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.mobile-dropdown-content a:hover {
+  background: rgba(185, 28, 28, 0.05);
+  color: #b91c1c;
+  padding-left: 20px;
+}
+
+/* ==========================================
+   PREVENIR OVERFLOW
+   ========================================== */
+
+@media (max-width: 1300px) {
+  html, body {
+    overflow-x: hidden;
+  }
+
+  * {
+    max-width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* ==========================================
+   MEJORAS DE ACCESIBILIDAD TÁCTIL
+   ========================================== */
+
+@media (max-width: 768px) {
+  /* Aumentar área de toque */
+  .navbar-toggle,
+  button,
+  a {
+    min-height: 44px;
+  }
+
+  /* Links más fáciles de tocar */
+  .navbar-mobile a,
+  .mobile-dropdown-toggle {
+    padding: 16px 18px !important;
+    font-size: 16px !important;
+  }
+
+  /* Prevenir zoom en inputs de iOS */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* ==========================================
+   SUAVIZAR TRANSICIONES
+   ========================================== */
+
+@media (max-width: 1300px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .navbar-mobile,
+  .mobile-dropdown-content {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* ==========================================
+   OPTIMIZACIÓN PARA DROPDOWNS EN DESKTOP
+   ========================================== */
+
+@media (min-width: 1301px) {
+  /* Asegurar que los dropdowns no se salgan de la pantalla */
+  .dropdown-menu {
+    max-width: 250px;
+  }
+
+  .dropdown-content {
+    min-width: 200px;
+  }
 }

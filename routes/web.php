@@ -7,6 +7,7 @@ use App\Http\Controllers\Public\PropiedadController;
 use App\Http\Controllers\Admin\PropiedadController as AdminPropiedadController;
 use App\Http\Controllers\ProfileController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +24,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Páginas Estáticas
 Route::get('/contacto', [HomeController::class, 'contacto'])->name('public.contacto');
 Route::get('/nosotros', [HomeController::class, 'nosotros'])->name('public.nosotros');
+Route::get('/api/propiedades-mapa', [PropiedadController::class, 'apiMapa'])->name('api.mapa');
+Route::get('/mapa-propiedades', [PropiedadController::class, 'mapaGeneral'])->name('public.mapa');
 
 // Catálogo y Filtros (Importante: poner antes de /{slug} para evitar conflictos)
 Route::get('/propiedades/{operacion?}/{tipo?}', [PropiedadController::class, 'index'])

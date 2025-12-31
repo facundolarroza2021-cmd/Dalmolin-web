@@ -12,9 +12,22 @@
   <meta property="og:url" content="{{ url()->current() }}" />
   <meta property="og:site_name" content="Rodrigo Dalmolin Inmobiliaria" />
 
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="@yield('meta_title', 'Inmobiliaria Dalmolin')">
+  <meta name="twitter:description" content="@yield('meta_description', 'Tu socio de confianza en bienes raíces en Concordia.')">
+  <meta name="twitter:image" content="@yield('meta_image', asset('img/dalmolin_logo2.png'))">
+
+  @if(request()->has('search') || request()->has('orden') || request()->has('precio_min'))
+      <meta name="robots" content="noindex, follow">
+  @else
+      <meta name="robots" content="index, follow">
+  @endif
+
   <link href="https://unpkg.com/lucide-static/font/lucide.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
   <link rel="canonical" href="{{ url()->current() }}" />
+
+  <meta name="theme-color" content="#1f2937">
 
   <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
   @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -46,8 +59,8 @@
 
             {{-- Horarios --}}
             <div class="topbar-item">
-                <i class="fa-solid fa-clock"></i>
-                <span>Lunes a Viernes: 9:00 - 18:00hs</span>
+                <i class="fa-regular fa-envelope"></i>
+                <span>dalmolinnegociosinmobiliarios@gmail.com</span>
             </div>
 
         </div>
@@ -171,43 +184,16 @@
 
     <ul class="navbar-menu">
       <!-- DROPDOWN SERVICIOS -->
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle">
-          Servicios
-          <i class="fa-solid fa-chevron-down dropdown-icon"></i>
-        </a>
-        <div class="dropdown-menu">
-          <div class="dropdown-content">
-            <a href="#tasaciones" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Tasaciones</span>
-                <span class="dropdown-desc">Valuación profesional</span>
-              </div>
-            </a>
-            <a href="#asesoria" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Asesoría Inmobiliaria</span>
-                <span class="dropdown-desc">Consultoría especializada</span>
-              </div>
-            </a>
-            <a href="#administracion" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Administración</span>
-                <span class="dropdown-desc">Gestión de propiedades</span>
-              </div>
-            </a>
-            <a href="#inversiones" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Inversiones</span>
-                <span class="dropdown-desc">Oportunidades de inversión</span>
-              </div>
-            </a>
-          </div>
-        </div>
-      </li>
+
 
       <li><a href="{{ route('public.nosotros') }}">Nosotros</a></li>
       <li><a href="{{ route('public.contacto') }}">Contacto</a></li>
+      <li>
+          <a href="{{ route('public.mapa') }}" class="flex items-center gap-1 text-indigo-600 font-bold hover:text-indigo-800 transition">
+              <i class="fa-solid fa-map-location-dot"></i>
+              Ver Mapa
+          </a>
+      </li>
     </ul>
 
     <div class="navbar-icons">
@@ -283,6 +269,9 @@
       </div>
     </div>
 
+    <a href="{{ route('public.mapa') }}" class="font-bold text-indigo-600">
+        <i class="fa-solid fa-map-location-dot mr-2"></i> Ver Mapa Interactivo
+    </a>
     <a href="#nosotros">Nosotros</a>
     <a href="#contacto">Contacto</a>
     @auth
@@ -354,12 +343,6 @@
           <a href="#servicios">
             <i class="fa-solid fa-chevron-right"></i>
             Servicios
-          </a>
-        </li>
-        <li>
-          <a href="#blog">
-            <i class="fa-solid fa-chevron-right"></i>
-            Blog
           </a>
         </li>
         <li>

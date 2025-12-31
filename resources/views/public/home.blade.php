@@ -79,7 +79,220 @@
         .hero-img-wrapper { height: 350px; width: 90%; margin: 0 auto; }
         .hero-title { font-size: 2.5rem; }
     }
+        /* --- HERO CON OVERLAY MEJORADO --- */
+        .hero-split-section {
+        background-color: #ffffff;
+        position: relative;
+        width: 100%;
+        height: 90vh;
+        min-height: 650px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+    }
     
+    .hero-swiper { width: 100%; height: 100%; }
+    .swiper-slide { background: white; display: flex; align-items: center; justify-content: center; }
+    
+    .hero-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        width: 100%;
+        max-width: 1280px;
+        padding: 0 2rem;
+        align-items: center;
+        height: 100%;
+    }
+    
+    .hero-text-col { z-index: 10; text-align: left; }
+    
+    .hero-badge-pill {
+        display: inline-block;
+        background: rgba(235, 37, 37, 0.15);
+        color: rgb(235, 37, 37);
+        font-weight: 700;
+        font-size: 0.85rem;
+        padding: 8px 16px;
+        border-radius: 50px;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: 2px solid rgba(235, 37, 37, 0.3);
+        backdrop-filter: blur(10px);
+    }
+    
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: #111827;
+        line-height: 1.1;
+        margin-bottom: 25px;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: #6b7280;
+        margin-bottom: 40px;
+        line-height: 1.6;
+        max-width: 90%;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease 0.2s;
+    }
+    
+    .hero-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 40px;
+        background-color: rgb(235, 37, 37);
+        color: white;
+        font-weight: bold;
+        border-radius: 12px;
+        text-decoration: none;
+        transition: all 0.3s;
+        box-shadow: 0 10px 20px -5px rgba(235, 37, 37, 0.3);
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s, background 0.3s, box-shadow 0.3s;
+    }
+    
+    .hero-btn:hover {
+        background-color: rgb(187, 0, 0);
+        box-shadow: 0 15px 25px -5px rgba(235, 37, 37, 0.4);
+        transform: translateY(-2px);
+    }
+    
+    .hero-img-col {
+        position: relative;
+        height: 80%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* === MEJORA PRINCIPAL: OVERLAY MÁS DRAMÁTICO === */
+    .hero-img-wrapper {
+        position: relative;
+        width: 100%;
+        height: 550px;
+        border-radius: 30px;
+        overflow: hidden;
+        box-shadow: 20px 20px 60px rgba(0,0,0,0.1);
+        transform: scale(0.95);
+        opacity: 0;
+        transition: all 1s ease 0.2s;
+    }
+    
+    /* Overlay oscuro con gradiente mejorado */
+    .hero-img-wrapper::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            135deg,
+            rgba(0, 0, 0, 0.4) 0%,
+            rgba(185, 28, 28, 0.3) 50%,
+            rgba(0, 0, 0, 0.5) 100%
+        );
+        z-index: 1;
+        transition: opacity 0.4s ease;
+    }
+    
+    .hero-img-wrapper:hover::after {
+        opacity: 0.9;
+    }
+    
+    /* Badge flotante sobre la imagen */
+    .hero-img-badge {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 12px 20px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 700;
+        color: rgb(235, 37, 37);
+        z-index: 2;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .hero-img-badge i {
+        font-size: 16px;
+    }
+    
+    .hero-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+    
+    
+    .swiper-slide-active .hero-title,
+    .swiper-slide-active .hero-subtitle,
+    .swiper-slide-active .hero-btn {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .swiper-slide-active .hero-img-wrapper {
+        opacity: 1;
+        transform: scale(1);
+    }
+    
+    .swiper-pagination-bullet {
+        background: #cbd5e1 !important;
+        width: 12px;
+        height: 12px;
+        opacity: 1;
+        transition: all 0.3s;
+    }
+    
+    .swiper-pagination-bullet-active {
+        background: rgb(235, 37, 37) !important;
+        width: 30px;
+        border-radius: 6px;
+    }
+
+    @media (max-width: 1024px) {
+        .hero-grid {
+            grid-template-columns: 1fr;
+            text-align: center;
+            gap: 30px;
+        }
+        
+        .hero-text-col {
+            order: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .hero-img-col {
+            order: 1;
+            height: auto;
+        }
+        
+        .hero-img-wrapper {
+            height: 350px;
+            width: 90%;
+            margin: 0 auto;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+        }
+    }
 </style>
 
 
@@ -122,7 +335,7 @@
                 </div>
             </div>
         </div>
-        <div class="swiper-pagination"></div>
+        <div class="swiper-pagination mb-4"></div>
     </div>
 </section>
 

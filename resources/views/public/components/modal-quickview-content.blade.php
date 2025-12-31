@@ -1,19 +1,20 @@
-<div class="grid grid-cols-1 md:grid-cols-5 gap-0 h-full">
+<div class="flex flex-col md:grid md:grid-cols-12 h-full w-full overflow-hidden rounded-2xl bg-white shadow-2xl">
     
-    {{-- COLUMNA IZQUIERDA: CARRUSEL DE FOTOS --}}
-    <div class="bg-black relative group h-64 md:h-auto md:col-span-3">
+    {{-- COLUMNA IZQUIERDA: IMAGEN (7 de 12 columnas - 60% aprox) --}}
+    <div class="relative h-72 md:h-full md:col-span-7 bg-gray-900 group overflow-hidden">
         
+        {{-- Swiper Container --}}
         <div class="swiper quickview-swiper w-full h-full">
             <div class="swiper-wrapper">
                 {{-- Foto Principal --}}
-                <div class="swiper-slide">
+                <div class="swiper-slide h-full bg-black flex items-center justify-center">
                     <img src="{{ asset('storage/' . $propiedad->imagen_principal) }}" 
                          class="w-full h-full object-cover" 
                          alt="{{ $propiedad->titulo }}">
                 </div>
                 {{-- Galería --}}
                 @foreach($propiedad->imagenes as $img)
-                    <div class="swiper-slide">
+                    <div class="swiper-slide h-full bg-black flex items-center justify-center">
                         <img src="{{ asset('storage/' . $img->ruta) }}" 
                              class="w-full h-full object-cover" 
                              alt="{{ $propiedad->titulo }}">
@@ -21,155 +22,190 @@
                 @endforeach
             </div>
             
-            {{-- Navegación minimalista --}}
-            <div class="swiper-button-next !w-10 !h-10 !rounded-full after:!text-sm after:!text-gray-800"></div>
-            <div class="swiper-button-prev !w-10 !h-10 !rounded-full after:!text-sm after:!text-gray-800"></div>
-            <div class="swiper-pagination !bottom-4"></div>
+            {{-- Navegación: Solo Flechas (Sin círculo de fondo) --}}
+            <div class="swiper-button-prev transition-transform hover:-translate-x-1"></div>
+            <div class="swiper-button-next transition-transform hover:translate-x-1"></div>
+            
+            {{-- Paginación --}}
+            <div class="swiper-pagination !bottom-6"></div>
         </div>
 
-        {{-- Badge simple VENTA/ALQUILER --}}
-        <div class="absolute top-4 left-4 z-10">
-            <span class="px-3 py-1.5 rounded-md text-xs font-bold uppercase bg-blue-600 text-white shadow-lg">
+        {{-- Badges Flotantes --}}
+        <div class="absolute top-5 left-5 z-20 flex flex-col gap-2 items-start pointer-events-none">
+            <span class="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider text-white shadow-md backdrop-blur-md
+                {{ $propiedad->tipo_operacion == 'venta' ? 'bg-indigo-600/90' : 'bg-orange-500/90' }}">
                 {{ $propiedad->tipo_operacion }}
             </span>
-        </div>
-
-        {{-- Contador de fotos discreto --}}
-        <div class="absolute bottom-4 left-4 z-10 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-md">
-            <span class="text-white text-xs font-medium">
-                <span class="quickview-photo-counter">1</span> / {{ $propiedad->imagenes->count() + 1 }}
-            </span>
+            @if($propiedad->porcentaje_descuento > 0)
+                <span class="bg-red-500/90 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-md animate-pulse backdrop-blur-md">
+                    {{ $propiedad->porcentaje_descuento }}% OFF
+                </span>
+            @endif
         </div>
     </div>
 
-    {{-- COLUMNA DERECHA: INFORMACIÓN LIMPIA --}}
-    <div class="p-8 flex flex-col h-full overflow-y-auto bg-white md:col-span-2">
+    {{-- COLUMNA DERECHA: DETALLES (5 de 12 columnas - 40% aprox) --}}
+    <div class="flex flex-col h-full md:col-span-5 bg-white overflow-y-auto custom-scrollbar relative">
         
-        {{-- Ubicación --}}
-        <div class="flex items-center gap-1.5 text-sm text-gray-500 mb-3">
-            <i class="fa-solid fa-location-dot text-gray-400"></i>
-            <span>{{ $propiedad->ciudad }}</span>
-            @if($propiedad->direccion)
-                <span>• {{ $propiedad->direccion }}</span>
-            @endif
-        </div>
-
-        {{-- Título limpio --}}
-        <h2 class="text-2xl text-gray-900 leading-tight mb-6">
-            {{ $propiedad->titulo }}
-        </h2>
-        <div class="flex items-center text-sm text-gray-500 mb-4">
-            <span class="flex items-center">
-                <i class="fa-regular fa-clock mr-1"></i>
-                {{ $propiedad->fecha_publicacion ? 'Publicado ' . $propiedad->fecha_publicacion->diffForHumans() : 'Reciente' }}
-            </span>
-        </div>
-
-        {{-- Precio destacado minimalista --}}
-        <div class="mb-6">
-            <p class="text-xs text-gray-400 uppercase tracking-wide mb-1">Precio</p>
-            <p class="text-4xl  text-gray-900">
-                {{ $propiedad->moneda }} {{ number_format($propiedad->precio, 0, ',', '.') }}
-            </p>
-        </div>
-
-        {{-- Características minimalistas --}}
-        <div class="flex gap-6 pb-6 mb-6 border-b border-gray-200">
-            @if($propiedad->habitaciones)
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-bed text-gray-400"></i>
-                <span class="text-sm font-semibold text-gray-900">{{ $propiedad->habitaciones }}</span>
-                <span class="text-xs text-gray-500">dorms</span>
-            </div>
-            @endif
-
-            @if($propiedad->banos)
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-bath text-gray-400"></i>
-                <span class="text-sm font-semibold text-gray-900">{{ $propiedad->banos }}</span>
-                <span class="text-xs text-gray-500">baños</span>
-            </div>
-            @endif
-
-            @if($propiedad->superficie_total)
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-expand text-gray-400"></i>
-                <span class="text-sm font-semibold text-gray-900">{{ $propiedad->superficie_total }}</span>
-                <span class="text-xs text-gray-500">m²</span>
-            </div>
-            @endif
-        </div>
-
-        {{-- Descripción --}}
-        <div class="mb-6 flex-1">
-            <h4 class="text-sm font-semibold text-gray-900 mb-2">Descripción</h4>
-            <p class="text-sm text-gray-600 leading-relaxed line-clamp-3">
-                {{ $propiedad->descripcion }}
-            </p>
-        </div>
-
-        {{-- Botones limpios y espaciados --}}
-        <div class="mb-[120px] space-y-3">
-            <a href="{{ route('public.propiedad.show', $propiedad->slug) }}" 
-               class="block w-full text-center bg-gray-900 hover:bg-black text-white font-semibold py-3.5 rounded-lg transition-colors">
-                Ver Ficha Completa
-            </a>
+        <div class="p-6 flex flex-col min-h-full">
             
-            <a href="https://wa.me/5493456256190?text=Hola,%20me%20interesa%20{{ urlencode($propiedad->titulo) }}" 
-               target="_blank" 
-               class="block w-full text-center bg-green-500 hover:bg-green-600 text-white font-semibold py-3.5 rounded-lg transition-colors flex items-center justify-center gap-2">
-                <i class="fa-brands fa-whatsapp"></i>
-                Consultar
-            </a>
+            {{-- 1. Encabezado --}}
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex flex-col">
+                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1">
+                        {{ ucfirst($propiedad->tipo_propiedad) }}
+                    </span>
+                    <div class="flex items-center text-gray-500 text-sm">
+                        <i class="fa-solid fa-location-dot mr-1.5 text-red-500"></i>
+                        {{ $propiedad->ciudad }}
+                    </div>
+                </div>
+            </div>
+
+            {{-- 2. Título --}}
+            <h2 class="text-2xl font-bold text-gray-900 leading-tight mb-4">
+                {{ $propiedad->titulo }}
+            </h2>
+
+            {{-- 3. Precio --}}
+            <div class="mb-6">
+                @if($propiedad->porcentaje_descuento > 0)
+                    <div class="flex flex-col">
+                        <span class="text-sm text-gray-400 line-through decoration-red-400">
+                            {{ $propiedad->moneda }} {{ number_format($propiedad->precio, 0, ',', '.') }}
+                        </span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-3xl  text-gray-900">
+                                {{ $propiedad->moneda }} {{ number_format($propiedad->getPrecioFinalAttribute(), 0, ',', '.') }}
+                            </span>
+                            <span class="text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                                Oportunidad
+                            </span>
+                        </div>
+                    </div>
+                @else
+                    <span class="text-3xl text-gray-900">
+                        {{ $propiedad->moneda }} {{ number_format($propiedad->precio, 0, ',', '.') }}
+                    </span>
+                @endif
+            </div>
+
+            {{-- 4. Specs --}}
+            <div class="grid grid-cols-3 gap-0 border-y border-gray-100 py-4 mb-6">
+                <div class="text-center px-2 border-r border-gray-100">
+                    <i class="fa-solid fa-bed text-gray-400 text-lg mb-1 block"></i>
+                    <span class="font-bold text-gray-800 text-lg block leading-none">{{ $propiedad->habitaciones ?? '-' }}</span>
+                    <span class="text-[10px] text-gray-400 uppercase font-medium">Dorm.</span>
+                </div>
+                <div class="text-center px-2 border-r border-gray-100">
+                    <i class="fa-solid fa-bath text-gray-400 text-lg mb-1 block"></i>
+                    <span class="font-bold text-gray-800 text-lg block leading-none">{{ $propiedad->banos ?? '-' }}</span>
+                    <span class="text-[10px] text-gray-400 uppercase font-medium">Baños</span>
+                </div>
+                <div class="text-center px-2">
+                    <i class="fa-solid fa-ruler-combined text-gray-400 text-lg mb-1 block"></i>
+                    <span class="font-bold text-gray-800 text-lg block leading-none">{{ $propiedad->superficie_total ?? '-' }}</span>
+                    <span class="text-[10px] text-gray-400 uppercase font-medium">m²</span>
+                </div>
+            </div>
+
+            {{-- 5. Descripción --}}
+            <div class="prose prose-sm text-gray-600 mb-8 leading-relaxed">
+                <p>
+                    {{ Str::limit($propiedad->descripcion, 250) }}
+                </p>
+                @if(strlen($propiedad->descripcion) > 250)
+                    <a href="{{ route('public.propiedad.show', $propiedad->slug) }}" class="text-indigo-600 font-medium text-xs hover:underline mt-2 inline-block">
+                        Seguir leyendo en la ficha...
+                    </a>
+                @endif
+            </div>
+
+            {{-- 6. Botones --}}
+            <div class="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 border-t border-gray-50">
+                <a href="https://wa.me/5493456256190?text=Hola,%20me%20interesa%20la%20propiedad%20#{{ $propiedad->id }}%20({{ $propiedad->titulo }})" 
+                   target="_blank"
+                   class="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 px-4 rounded-xl transition-all hover:shadow-lg hover:shadow-green-200 group">
+                    <i class="fa-brands fa-whatsapp text-xl group-hover:scale-110 transition-transform"></i>
+                    <span>Consultar</span>
+                </a>
+                
+                <a href="{{ route('public.propiedad.show', $propiedad->slug) }}" 
+                   class="flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-bold py-3.5 px-4 rounded-xl transition-all hover:shadow-lg">
+                    <span>Ver Detalles</span>
+                    <i class="fa-solid fa-arrow-right-long text-sm"></i>
+                </a>
+            </div>
+
         </div>
     </div>
 </div>
 
 <style>
-    /* Paginación minimalista */
+    /* 1. FLECHAS MINIMALISTAS (SOLO FLECHA) */
+    .swiper-button-prev, .swiper-button-next {
+        /* Eliminamos cualquier fondo o caja */
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        
+        /* Flecha blanca pura con sombra para contraste */
+        color: #ffffff !important;
+        text-shadow: 0 2px 5px rgba(0,0,0,0.6); /* Sombra clave para que se vea sobre blanco */
+
+        /* Centrado y posición */
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        margin-top: 0 !important;
+        z-index: 50;
+        
+        /* Área de click generosa aunque no se vea el fondo */
+        width: 40px !important;
+        height: 100% !important; /* Ocupa toda la altura para clickear fácil (opcional) o dejar en px */
+        height: 50px !important;
+    }
+
+    /* Aumentar tamaño del ícono */
+    .swiper-button-prev::after, .swiper-button-next::after {
+        font-size: 24px !important; /* Flecha más grande y elegante */
+        font-weight: bold;
+    }
+    
+    /* Separarlas un poco del borde */
+    .swiper-button-prev { left: 10px !important; }
+    .swiper-button-next { right: 10px !important; }
+
+    /* 2. Paginación (Puntitos) */
     .quickview-swiper .swiper-pagination-bullet {
         background: white;
-        opacity: 0.4;
+        opacity: 0.5;
         width: 6px;
         height: 6px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.5); /* Sombra para verlos sobre blanco */
+        transition: all 0.3s;
     }
-
     .quickview-swiper .swiper-pagination-bullet-active {
         opacity: 1;
-        width: 20px;
-        border-radius: 3px;
+        width: 18px;
+        border-radius: 4px;
+        background: white;
     }
 
-    /* Line clamp */
-    .line-clamp-3 {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+    /* 3. Scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 5px;
     }
-
-    /* Scrollbar minimalista */
-    .overflow-y-auto::-webkit-scrollbar {
-        width: 4px;
-    }
-
-    .overflow-y-auto::-webkit-scrollbar-track {
+    .custom-scrollbar::-webkit-scrollbar-track {
         background: transparent;
     }
-
-    .overflow-y-auto::-webkit-scrollbar-thumb {
-        background: #e5e7eb;
-        border-radius: 2px;
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
     }
-
-    .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-        background: #d1d5db;
-    }
-    .swiper-button-prev, .swiper-button-next {
-        color: #ffffff !important;
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
     }
 </style>
-
 <script>
 
     // Actualizar contador

@@ -23,7 +23,10 @@ class Propiedad extends Model
         'tipo_propiedad',
         'habitaciones',
         'banos',
+        'latitud',
+        'longitud',
         'cocheras',
+        'video_url',
         'superficie_cubierta',
         'superficie_total',
         'descripcion',
@@ -31,8 +34,6 @@ class Propiedad extends Model
         'ciudad',
         'provincia',
         'barrio',
-        'latitud',
-        'longitud',
         'publicada',
         'destacada',
         'fecha_publicacion',
@@ -61,4 +62,27 @@ class Propiedad extends Model
         }
         return $this->precio;
     }
+    public function getEmbedUrlAttribute()
+{
+    $url = $this->video_url;
+
+    if (!$url) return null;
+
+    // Lógica para YouTube: Convertir 'watch?v=' a 'embed/'
+    if (str_contains($url, 'youtube.com/watch?v=')) {
+        $videoId = explode('v=', $url)[1];
+        // Quitar parámetros extra si los hay (&t=...)
+        $videoId = explode('&', $videoId)[0]; 
+        return "https://www.youtube.com/embed/{$videoId}";
+    }
+    
+    // Lógica para YouTube corto (youtu.be)
+    if (str_contains($url, 'youtu.be/')) {
+        $videoId = explode('youtu.be/', $url)[1];
+        return "https://www.youtube.com/embed/{$videoId}";
+    }
+
+    // Para Matterport, Kuula o Vimeo, devolvemos la URL tal cual
+    return $url;
+}
 }

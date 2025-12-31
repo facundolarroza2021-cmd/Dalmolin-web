@@ -40,6 +40,9 @@ class PropiedadController extends Controller
             'superficie_total' => 'nullable|integer',
             'direccion' => 'nullable|string|max:255',
             'porcentaje_descuento' => 'nullable|integer|min:1|max:99',
+            'latitud' => 'nullable', 
+            'longitud' => 'nullable',
+            'video_url' => 'nullable',
             
         ]);
     
@@ -52,7 +55,7 @@ class PropiedadController extends Controller
         // Subir imagen de portada
         $rutaImagen = null;
         if ($request->hasFile('imagen')) {
-            $rutaImagen = $this->subirImagenConMarcaAgua($request->file('imagen'), 'propiedades');
+            $rutaImagen = $this->subirImagenConMarcaAgua($request->file('imagen'), 'propiedades', $request->titulo);
         }
     
         // 2. CREAR LA PROPIEDAD Y GUARDARLA EN LA VARIABLE $propiedad
@@ -78,6 +81,9 @@ class PropiedadController extends Controller
             'publicada' => true,
             'fecha_publicacion' => now(),
             'porcentaje_descuento' => $request->porcentaje_descuento,
+            'latitud' => $request->latitud,
+            'longitud' => $request->longitud,
+            'video_url' => $request->video_url,
         ]);
     
         // 3. Guardar Galería (Ahora sí $propiedad existe)
@@ -149,13 +155,16 @@ class PropiedadController extends Controller
             'imagen' => 'nullable|image|max:2048', 
             'imagenes.*' => 'image|max:2048',
             'porcentaje_descuento' => 'nullable|integer|min:1|max:99',
+            'latitud' => 'nullable',
+            'longitud' => 'nullable',
+            'video_url' => 'nullable',
         ]);
 
         // 1. Cambiar Portada (Solo si subieron una nueva)
         if ($request->hasFile('imagenes')) {
             foreach ($request->file('imagenes') as $foto) {
                 // 👇 Subir con marca de agua
-                $ruta = $this->subirImagenConMarcaAgua($foto, 'galerias');
+                $ruta = $this->subirImagenConMarcaAgua($foto, 'galerias', $request->titulo);
                 
                 Imagen::create([
                     'propiedad_id' => $property->id,
@@ -186,6 +195,9 @@ class PropiedadController extends Controller
             'ciudad' => $request->ciudad,
             'direccion' => $request->direccion,
             'porcentaje_descuento' => $request->porcentaje_descuento,
+            'latitud' => $request->latitud,
+            'longitud' => $request->longitud,
+            'video_url' => $request->video_url,
         ]);
 
         return redirect()->route('admin.properties.index')->with('success', 'Propiedad actualizada correctamente.');
@@ -253,7 +265,7 @@ class PropiedadController extends Controller
     /**
      * Función auxiliar para procesar imagen con marca de agua
      */
-    private function subirImagenConMarcaAgua($file, $carpeta)
+    private function subirImagenConMarcaAgua($file, $carpeta, $nombreBase = 'propiedad')
     {
         // 1. Crear instancia del Manager (Driver GD)
         $manager = new ImageManager(new Driver());
@@ -274,8 +286,9 @@ class PropiedadController extends Controller
             $image->place($pathWatermark, 'center');
         }
 
+        $nombreLimpio = Str::slug($nombreBase);
         // 5. Generar nombre único y ruta
-        $filename = uniqid() . '.webp'; // Convertimos a WebP para que sea liviano
+        $filename = $nombreLimpio . '-' . uniqid() . '.webp'; // Convertimos a WebP para que sea liviano
         $rutaFinal = $carpeta . '/' . $filename;
 
         // 6. Guardar en Storage (Laravel)
@@ -284,4 +297,5 @@ class PropiedadController extends Controller
 
         return $rutaFinal;
     }
+
 }
