@@ -8,14 +8,7 @@
     {{-- Contenedor del Mapa --}}
     <div id="map" class="h-full w-full z-0"></div>
 
-    {{-- Filtros Flotantes (Ejemplo visual) --}}
-    <div class="absolute top-4 left-4 z-[500] bg-white p-4 rounded-lg shadow-lg max-w-xs">
-        <h1 class="font-bold text-gray-800 mb-2">Explorar Mapa</h1>
-        <p class="text-sm text-gray-600 mb-4">Navega para ver las propiedades agrupadas por zona.</p>
-        <a href="{{ route('public.listado') }}" class="text-indigo-600 text-sm hover:underline">
-            <i class="fa-solid fa-list"></i> Volver al listado
-        </a>
-    </div>
+
 
 </div>
 

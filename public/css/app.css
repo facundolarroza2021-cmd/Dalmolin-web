@@ -13,9 +13,6 @@
   }
 
   
-body {
-    padding-top: 75px;
-}
 
 a {
     text-decoration: none;
@@ -123,7 +120,7 @@ a {
 .navbar-menu a {
   display: block;
   padding: 12px 18px;
-  font-size: 15px;
+  font-size: 17px;
   color: #1f2937;
   position: relative;
   font-family: "Roboto", sans-serif;
@@ -3978,10 +3975,6 @@ a {
 /* ========== TABLET (1024px y menos) ========== */
 @media (max-width: 1024px) {
   
-  /* NAVBAR */
-  body {
-    padding-top: 65px;
-  }
 
   .navbar-container {
     grid-template-columns: 1fr auto;
@@ -4125,11 +4118,6 @@ a {
 /* ========== MÓVIL GRANDE (768px y menos) ========== */
 @media (max-width: 768px) {
   
-  /* NAVBAR */
-  body {
-    padding-top: 65px;
-  }
-
   .navbar-container {
     padding: 0 20px;
     height: 60px;
@@ -4662,11 +4650,6 @@ a {
     padding: 60px 0;
   }
 
-  .hero-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    padding: 0 1.5rem;
-  }
 
   .hero-text-col {
     order: 2;
@@ -4909,10 +4892,6 @@ a {
 /* ========== TABLET (1024px y menos) ========== */
 @media (max-width: 1024px) {
   
-  /* NAVBAR - AQUÍ ES DONDE SE ACTIVA EL MODO MÓVIL */
-  body {
-    padding-top: 65px;
-  }
 
   .navbar-container {
     grid-template-columns: 1fr auto;
@@ -5057,10 +5036,6 @@ a {
 /* ========== MÓVIL GRANDE (768px y menos) ========== */
 @media (max-width: 768px) {
   
-  /* NAVBAR */
-  body {
-    padding-top: 65px;
-  }
 
   .navbar-container {
     padding: 0 20px;
@@ -5597,7 +5572,7 @@ a {
   .hero-grid {
     grid-template-columns: 1fr;
     gap: 40px;
-    padding: 0 1.5rem;
+    padding: 0 2rem !important;
   }
 
   .hero-text-col {
@@ -5631,7 +5606,7 @@ a {
 
   .hero-grid {
     gap: 30px;
-    padding: 0 1rem;
+    padding: 0 2rem ;
   }
 
   .hero-img-wrapper {
@@ -7687,12 +7662,12 @@ a {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 14px;
+    font-size: 15px;
     color: #F0F0F0;
 }
 
 .topbar-item i {
-    font-size: 11px;
+    font-size: 15px;
     color: #F0F0F0;
 }
 
@@ -7701,13 +7676,6 @@ a {
     transition: all 0.2s ease;
 }
 
-.topbar-link:hover {
-    color: #c41e3a;
-}
-
-.topbar-link:hover i {
-    color: #c41e3a;
-}
 
 .topbar-separator {
     width: 1px;
@@ -7715,13 +7683,10 @@ a {
     background: #000000;
 }
 
-/* Ajustar body y navbar para el topbar */
-body {
-    padding-top: 107px !important; /* 32px topbar + 75px navbar */
-}
+
 
 .navbar {
-    top: 32px !important;
+    top: 52px !important;
 }
 
 /* Animación suave */
@@ -7765,7 +7730,7 @@ body {
     }
 
     body {
-        padding-top: 97px !important; /* 32px topbar + 65px navbar mobile */
+        padding-top: 15px !important; /* 32px topbar + 65px navbar mobile */
     }
 }
 
@@ -7830,10 +7795,6 @@ body {
 /* TABLET Y PANTALLAS PEQUEÑAS (1300px y menos) */
 @media (max-width: 1300px) {
   
-  /* Ajustar body padding */
-  body {
-    padding-top: 97px !important; /* 32px topbar + 65px navbar */
-  }
 
   /* Ajustar navbar */
   .navbar {
@@ -7886,10 +7847,6 @@ body {
 /* MÓVIL GRANDE (768px y menos) */
 @media (max-width: 768px) {
   
-  body {
-    padding-top: 97px !important;
-  }
-
   /* Topbar responsive */
   .topbar-content {
     gap: 15px;
@@ -8186,3 +8143,4 @@ body {
     min-width: 200px;
   }
 }
+

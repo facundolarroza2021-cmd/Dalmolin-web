@@ -32,255 +32,479 @@
   <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   <link rel="shortcut icon" href="{{ asset('img/dalmolin_icon2.png') }}" type="image/x-icon">
+
+    <style>
+    /* TOPBAR ROJO */
+    .topbar {
+      background: #dc2626;
+      color: white;
+      padding: 10px 0;
+      font-size: 15px;
+    }
+    .topbar-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .topbar-content {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+    .topbar-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .topbar-link {
+      color: white;
+      text-decoration: none;
+      transition: opacity 0.3s;
+    }
+    .topbar-separator {
+      width: 1px;
+      height: 14px;
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    /* NAVBAR PRINCIPAL */
+    .navbar {
+      background: white;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 85px;
+    }
+    .navbar-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    /* LOGO IZQUIERDA */
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .navbar-logo img {
+      height: 55px;
+      width: auto;
+      transition: transform 0.3s;
+    }
+
+    /* ZONA DERECHA (MENÚ + ICONOS) */
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .navbar-menu {
+      display: flex;
+      list-style: none;
+      gap: 25px;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar-menu > li > a {
+      color: #374151;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* DROPDOWNS */
+    .dropdown { position: relative; }
+    .dropdown-toggle { cursor: pointer; }
+    .dropdown-icon { font-size: 10px; transition: transform 0.3s; color: #9ca3af; }
+    .dropdown:hover .dropdown-icon { transform: rotate(180deg); color: #dc2626; }
+    
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+      border: 1px solid #f3f4f6;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease-in-out;
+      margin-top: 20px;
+      min-width: 260px;
+      padding: 8px;
+    }
+    .dropdown:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      margin-top: 15px;
+    }
+    .dropdown-item {
+      padding: 10px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: block;
+      transition: background 0.2s;
+    }
+    .dropdown-item:hover { background: #fef2f2; }
+    .dropdown-title { font-weight: 700; font-size: 14px; color: #1f2937; display: block; }
+    .dropdown-item:hover .dropdown-title { color: #dc2626; }
+    .dropdown-desc { font-size: 12px; color: #6b7280; display: block; margin-top: 2px; }
+
+    /* BOTÓN VER MAPA DESTACADO */
+    .btn-mapa {
+      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+      color: white !important;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(220, 38, 38, 0.25);
+      transition: all 0.3s;
+    }
+
+
+    /* ICONOS SOCIALES */
+    .navbar-icons {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding-left: 20px;
+      border-left: 1px solid #e5e7eb;
+    }
+    .navbar-social, .navbar-user {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      text-decoration: none;
+      transition: all 0.3s;
+      background: #f9fafb;
+      color: #4b5563;
+    }
+    .navbar-social:hover { transform: translateY(-2px); }
+    .navbar-social.facebook:hover { background: #1877f2; color: white; }
+    .navbar-social.instagram:hover { background: #E1306C; color: white; }
+    .navbar-user:hover { background: #1f2937; color: white; }
+
+    /* BOTÓN HAMBURGUESA */
+    .navbar-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      z-index: 1001;
+    }
+    .navbar-toggle span {
+      width: 24px;
+      height: 3px;
+      background: #1f2937;
+      transition: all 0.3s;
+      border-radius: 3px;
+    }
+
+    /* MENÚ MÓVIL */
+    .navbar-mobile {
+      display: none;
+      background: white;
+      padding: 0;
+      border-top: 1px solid #e5e7eb;
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 100%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    
+    .navbar-mobile.active {
+      display: block;
+      max-height: 600px;
+      padding: 20px;
+    }
+
+    .navbar-mobile a {
+      display: block;
+      padding: 14px 0;
+      color: #374151;
+      text-decoration: none;
+      border-bottom: 1px solid #f3f4f6;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    .navbar-mobile a:hover {
+      color: #dc2626;
+      padding-left: 10px;
+    }
+
+    .navbar-mobile a:last-child {
+      border-bottom: none;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1100px) {
+      .navbar-menu { gap: 15px; }
+      .dropdown-desc { display: none; }
+    }
+    
+    @media (max-width: 900px) {
+      .navbar {
+        height: auto;
+        min-height: 70px;
+      }
+      
+      .navbar-container {
+        height: 70px;
+      }
+
+      .navbar-logo img {
+        height: 45px;
+      }
+
+      .navbar-menu,
+      .navbar-icons {
+        display: none;
+      }
+
+      .navbar-toggle {
+        display: flex;
+      }
+
+      .topbar-content {
+        justify-content: center;
+        gap: 15px;
+        font-size: 11px;
+      }
+
+      .topbar-item span {
+        font-size: 11px;
+      }
+
+      .topbar-separator {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        padding: 8px 0;
+      }
+
+      .topbar-content {
+        gap: 10px;
+        font-size: 10px;
+      }
+
+      .navbar-logo img {
+        height: 40px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<div class="topbar">
+  {{-- 1. TOPBAR ROJO --}}
+  <div class="topbar">
     <div class="topbar-container">
-        <div class="topbar-content">
-            
-            {{-- Ubicación --}}
-            <div class="topbar-item">
-                <i class="fa-solid fa-location-dot"></i>
-                <span>Concordia, Entre Ríos</span>
-            </div>
-
-            {{-- Separador --}}
-            <div class="topbar-separator"></div>
-
-            {{-- Teléfono --}}
-            <a href="tel:+543456256190" class="topbar-item topbar-link">
-                <i class="fa-solid fa-phone"></i>
-                <span>+54 345 625 6190</span>
-            </a>
-
-            {{-- Separador --}}
-            <div class="topbar-separator"></div>
-
-            {{-- Horarios --}}
-            <div class="topbar-item">
-                <i class="fa-regular fa-envelope"></i>
-                <span>dalmolinnegociosinmobiliarios@gmail.com</span>
-            </div>
-
+      <div class="topbar-content">
+        
+        <div class="topbar-item">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Concordia, Entre Ríos</span>
         </div>
+
+        <div class="topbar-separator"></div>
+
+        <a href="tel:+543456256190" class="topbar-item topbar-link">
+          <i class="fa-solid fa-phone"></i>
+          <span>+54 345 625 6190</span>
+        </a>
+
+        <div class="topbar-separator"></div>
+
+        <a href="mailto:dalmolinnegociosinmobiliarios@gmail.com" class="topbar-item topbar-link">
+          <i class="fa-regular fa-envelope"></i>
+          <span>dalmolinnegociosinmobiliarios@gmail.com</span>
+        </a>
+
+      </div>
     </div>
-</div>
-<nav class="navbar">
-  <div class="navbar-container">
-    
-    <ul class="navbar-menu">
-      <!-- DROPDOWN COMPRAR -->
-      <li class="dropdown">
-        <a href="{{ route('public.listado', ['operacion' => 'venta']) }}" class="dropdown-toggle">
-          Comprar
-          <i class="fa-solid fa-chevron-down dropdown-icon"></i>
-        </a>
-        <div class="dropdown-menu">
-          <div class="dropdown-content">
-            <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'casa']) }}" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Casas</span>
-                <span class="dropdown-desc">Viviendas familiares</span>
-              </div>
-            </a>
-            <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'departamento']) }}" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Departamentos</span>
-                <span class="dropdown-desc">Unidades en edificios</span>
-              </div>
-            </a>
-            <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'terreno']) }}" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Terrenos</span>
-                <span class="dropdown-desc">Lotes para construir</span>
-              </div>
-            </a>
-            <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'campo']) }}" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Campos</span>
-                <span class="dropdown-desc">Propiedades rurales</span>
-              </div>
-            </a>
-            <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'local']) }}" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Locales Comerciales</span>
-                <span class="dropdown-desc">Espacios comerciales</span>
-              </div>
-            </a>
-            <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'galpon']) }}" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Galpones</span>
-                <span class="dropdown-desc">Almacenes industriales</span>
-              </div>
-            </a>
-          </div>
-        </div>
-      </li>
+  </div>
 
-      <!-- DROPDOWN VENDER -->
-      <li class="dropdown">
-        <a href="{{ route('public.listado', ['operacion' => 'alquiler']) }}" class="dropdown-toggle">
-          Vender
-          <i class="fa-solid fa-chevron-down dropdown-icon"></i>
-        </a>
-        <div class="dropdown-menu">
-          <div class="dropdown-content">
-            <a href="{{ route('public.listado', ['operacion' => 'venta']) }}" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Vender mi Propiedad</span>
-                <span class="dropdown-desc">Asesoramiento completo</span>
-              </div>
-            </a>
-            <a href="{{ route('public.listado', ['operacion' => 'venta']) }}#tasar" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Tasación Gratuita</span>
-                <span class="dropdown-desc">Valuá tu propiedad</span>
-              </div>
-            </a>
-            <a href="#publicar" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Plan de Marketing</span>
-                <span class="dropdown-desc">Máxima difusión</span>
-              </div>
-            </a>
-          </div>
-        </div>
-      </li>
-
-      <!-- DROPDOWN ALQUILAR -->
-      <li class="dropdown">
-        <a href="{{ route('public.listado', ['operacion' => 'alquiler']) }}" class="dropdown-toggle">
-          Alquilar
-          <i class="fa-solid fa-chevron-down dropdown-icon"></i>
-        </a>
-        <div class="dropdown-menu">
-          <div class="dropdown-content">
-            <a href="{{ route('public.listado', ['operacion' => 'alquiler', 'tipo' => 'casa']) }}" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Casas</span>
-                <span class="dropdown-desc">Propiedades disponibles</span>
-              </div>
-            </a>
-            <a href="{{ route('public.listado', ['operacion' => 'alquiler', 'tipo' => 'departamento']) }}" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Departamentos</span>
-              </div>
-            </a>
-            <a href="{{ route('public.listado', ['operacion' => 'alquiler', 'tipo' => 'local']) }}" class="dropdown-item">
-              <div>
-                <span class="dropdown-title">Locales</span>
-                <span class="dropdown-desc">Para tu negocio</span>
-              </div>
-            </a>
-          </div>
-        </div>
-      </li>
-    </ul>
-
-    <a href="{{ route('home') }}" class="navbar-logo">
-      <img src="{{ asset('img/dalmolin_logo2.png') }}" alt="Rodrigo Dalmolin">
-    </a>
-
-    <ul class="navbar-menu">
-      <!-- DROPDOWN SERVICIOS -->
-
-
-      <li><a href="{{ route('public.nosotros') }}">Nosotros</a></li>
-      <li><a href="{{ route('public.contacto') }}">Contacto</a></li>
-      <li>
-          <a href="{{ route('public.mapa') }}" class="flex items-center gap-1 text-indigo-600 font-bold hover:text-indigo-800 transition">
-              <i class="fa-solid fa-map-location-dot"></i>
-              Ver Mapa
-          </a>
-      </li>
-    </ul>
-
-    <div class="navbar-icons">
-      <a href="https://www.facebook.com/rd.inmo" target="_blank" class="navbar-social facebook"><i class="fa-brands fa-facebook-f"></i></a>
-      <a href="https://www.instagram.com/dalmolin_inmobiliaria/?hl=es" target="_blank" class="navbar-social instagram"><i class="fa-brands fa-instagram"></i></a>
+  {{-- 2. NAVBAR PRINCIPAL --}}
+  <nav class="navbar">
+    <div class="navbar-container">
       
+      {{-- LOGO (IZQUIERDA) --}}
+      <a href="{{ route('home') }}" class="navbar-logo">
+        <img src="{{ asset('img/dalmolin_logo2.png') }}" alt="Rodrigo Dalmolin Inmobiliaria">
+      </a>
+
+      {{-- ZONA DERECHA (MENÚ + ICONOS) --}}
+      <div class="navbar-right">
+        
+        <ul class="navbar-menu">
+          
+          {{-- COMPRAR --}}
+          <li class="dropdown">
+            <a href="{{ route('public.listado', ['operacion' => 'venta']) }}" class="dropdown-toggle">
+              Comprar <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+            </a>
+            <div class="dropdown-menu">
+              <div class="dropdown-content">
+                <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'casa']) }}" class="dropdown-item">
+                  <span class="dropdown-title">Casas</span>
+                  <span class="dropdown-desc">Viviendas familiares</span>
+                </a>
+                <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'departamento']) }}" class="dropdown-item">
+                  <span class="dropdown-title">Departamentos</span>
+                  <span class="dropdown-desc">Unidades céntricas</span>
+                </a>
+                <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'terreno']) }}" class="dropdown-item">
+                  <span class="dropdown-title">Terrenos</span>
+                  <span class="dropdown-desc">Lotes para construir</span>
+                </a>
+                <a href="{{ route('public.listado', ['operacion' => 'venta', 'tipo' => 'campo']) }}" class="dropdown-item">
+                  <span class="dropdown-title">Campos</span>
+                  <span class="dropdown-desc">Inversión rural</span>
+                </a>
+              </div>
+            </div>
+          </li>
+
+          {{-- VENDER --}}
+          <li class="dropdown">
+            <a href="{{ route('public.listado', ['operacion' => 'venta']) }}" class="dropdown-toggle">
+              Vender <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+            </a>
+            <div class="dropdown-menu">
+              <div class="dropdown-content">
+                <a href="{{ route('public.listado', ['operacion' => 'venta']) }}" class="dropdown-item">
+                  <span class="dropdown-title">Vender mi Propiedad</span>
+                </a>
+                <a href="{{ route('public.listado') }}#tasar" class="dropdown-item">
+                  <span class="dropdown-title">Tasación Gratuita</span>
+                  <span class="dropdown-desc">Conoce el valor real</span>
+                </a>
+              </div>
+            </div>
+          </li>
+
+          {{-- ALQUILAR --}}
+          <li class="dropdown">
+            <a href="{{ route('public.listado', ['operacion' => 'alquiler']) }}" class="dropdown-toggle">
+              Alquilar <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+            </a>
+            <div class="dropdown-menu">
+              <div class="dropdown-content">
+                <a href="{{ route('public.listado', ['operacion' => 'alquiler', 'tipo' => 'casa']) }}" class="dropdown-item">
+                  <span class="dropdown-title">Casas</span>
+                </a>
+                <a href="{{ route('public.listado', ['operacion' => 'alquiler', 'tipo' => 'departamento']) }}" class="dropdown-item">
+                  <span class="dropdown-title">Departamentos</span>
+                </a>
+                <a href="{{ route('public.listado', ['operacion' => 'alquiler', 'tipo' => 'local']) }}" class="dropdown-item">
+                  <span class="dropdown-title">Locales</span>
+                </a>
+              </div>
+            </div>
+          </li>
+
+          <li><a href="{{ route('public.nosotros') }}">Nosotros</a></li>
+          <li><a href="{{ route('public.contacto') }}">Contacto</a></li>
+
+          {{-- BOTÓN DESTACADO VER MAPA --}}
+          <li>
+            <a href="{{ route('public.mapa') }}" class="btn-mapa">
+              <i class="fa-solid fa-map-location-dot"></i> Ver Mapa
+            </a>
+          </li>
+
+        </ul>
+
+        {{-- ICONOS SOCIALES Y LOGIN --}}
+        <div class="navbar-icons">
+          <a href="https://www.facebook.com/rd.inmo" target="_blank" class="navbar-social facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+          <a href="https://www.instagram.com/dalmolin_inmobiliaria/?hl=es" target="_blank" class="navbar-social instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          
+          @auth
+            <a href="{{ route('dashboard') }}" class="navbar-user" title="Ir al Panel">
+              <i class="fa-solid fa-gear"></i>
+            </a>
+          @else
+            <a href="{{ route('login') }}" class="navbar-user" title="Iniciar Sesión">
+              <i class="fa-solid fa-user"></i>
+            </a>
+          @endauth
+        </div>
+
+        {{-- HAMBURGUESA MÓVIL --}}
+        <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+      </div>
+    </div>
+
+    {{-- MENÚ MÓVIL --}}
+    <div class="navbar-mobile" id="navbarMobile">
+      <a href="{{ route('home') }}">
+        <i class="fa-solid fa-house"></i> Inicio
+      </a>
+      <a href="{{ route('public.listado', ['operacion' => 'venta']) }}">
+        <i class="fa-solid fa-key"></i> Comprar
+      </a>
+      <a href="{{ route('public.listado', ['operacion' => 'alquiler']) }}">
+        <i class="fa-solid fa-file-contract"></i> Alquilar
+      </a>
+      <a href="{{ route('public.nosotros') }}">
+        <i class="fa-solid fa-users"></i> Nosotros
+      </a>
+      <a href="{{ route('public.contacto') }}">
+        <i class="fa-solid fa-envelope"></i> Contacto
+      </a>
+      <a href="{{ route('public.mapa') }}" style="color: #dc2626; font-weight: 700;">
+        <i class="fa-solid fa-map-location-dot"></i> Ver Mapa
+      </a>
       @auth
-      <a href="{{ route('dashboard') }}" class="navbar-user"><i class="fa-solid fa-gear"></i></a>
+        <a href="{{ route('dashboard') }}" style="background: #f3f4f6; margin-top: 10px; padding: 14px 16px !important; border-radius: 8px; text-align: center;">
+          <i class="fa-solid fa-gear"></i> Dashboard
+        </a>
       @else
-      <a href="{{ route('login') }}" class="navbar-user"><i class="fa-solid fa-user"></i></a>
+        <a href="{{ route('login') }}" style="background: #f3f4f6; margin-top: 10px; padding: 14px 16px !important; border-radius: 8px; text-align: center;">
+          <i class="fa-solid fa-user"></i> Iniciar Sesión
+        </a>
       @endauth
     </div>
+  </nav>
 
-    <button class="navbar-toggle" id="navbarToggle">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </div>
-
-  <div class="navbar-mobile" id="navbarMobile">
-    <a href="{{ route('home') }}">Inicio</a>
-    
-    <!-- Dropdown móvil Comprar -->
-    <div class="mobile-dropdown">
-      <button class="mobile-dropdown-toggle">
-        Comprar <i class="fa-solid fa-chevron-down"></i>
-      </button>
-      <div class="mobile-dropdown-content">
-        <a href="#casas">🏠 Casas</a>
-        <a href="#departamentos">🏢 Departamentos</a>
-        <a href="#terrenos">🗺️ Terrenos</a>
-        <a href="#campos">🚜 Campos</a>
-        <a href="#locales">🏪 Locales</a>
-        <a href="#galpones">🏭 Galpones</a>
-      </div>
-    </div>
-
-    <!-- Dropdown móvil Vender -->
-    <div class="mobile-dropdown">
-      <button class="mobile-dropdown-toggle">
-        Vender <i class="fa-solid fa-chevron-down"></i>
-      </button>
-      <div class="mobile-dropdown-content">
-        <a href="#vender-casa">💰 Vender mi Propiedad</a>
-        <a href="#tasar">🔢 Tasación Gratuita</a>
-        <a href="#publicar">📢 Plan de Marketing</a>
-      </div>
-    </div>
-
-    <!-- Dropdown móvil Alquilar -->
-    <div class="mobile-dropdown">
-      <button class="mobile-dropdown-toggle">
-        Alquilar <i class="fa-solid fa-chevron-down"></i>
-      </button>
-      <div class="mobile-dropdown-content">
-        <a href="#alquiler-casas">🔑 Buscar Alquileres</a>
-        <a href="#alquilar-propiedad">📋 Alquilar mi Propiedad</a>
-        <a href="#garantias">🛡️ Garantías</a>
-      </div>
-    </div>
-
-    <!-- Dropdown móvil Servicios -->
-    <div class="mobile-dropdown">
-      <button class="mobile-dropdown-toggle">
-        Servicios <i class="fa-solid fa-chevron-down"></i>
-      </button>
-      <div class="mobile-dropdown-content">
-        <a href="#tasaciones">📊 Tasaciones</a>
-        <a href="#asesoria">🤝 Asesoría</a>
-        <a href="#administracion">🏢 Administración</a>
-        <a href="#inversiones">💰 Inversiones</a>
-      </div>
-    </div>
-
-    <a href="{{ route('public.mapa') }}" class="font-bold text-indigo-600">
-        <i class="fa-solid fa-map-location-dot mr-2"></i> Ver Mapa Interactivo
-    </a>
-    <a href="#nosotros">Nosotros</a>
-    <a href="#contacto">Contacto</a>
-    @auth
-    <a href="{{ route('dashboard') }}">Dashboard</a>
-    @else
-    <a href="{{ route('login') }}">Iniciar Sesión</a>
-    @endauth
-  </div>
-</nav>
 <main>
     @yield('contenido')
 </main>
